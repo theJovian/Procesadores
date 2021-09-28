@@ -1,19 +1,23 @@
 %{
-#include <math.h>
 %}
 
-DIGIT		[0-9]
-ID			[a-z][a-z0-9]*
-ESPECIAL	"'"|"/"|"("|")"|"="|"["|"]"|"+"|"*"|"{"|"}"|","|";"|"."|":"|"-"|"_"|">"|"<"
-VACIO		" "|"\t"|"\n"
+CIFRA			[0-9]
+LETRA			[A-Za-z]
+IDENTIFICADOR	CIFRA
+
+ID				[a-z][a-z0-9]*
+OPERADOR_PRI 	*|/
+OPERADOR_SEC 	\+|-
+ESPECIAL		'|(|)|=|[|]|\+|\{|\}|,|;|\.|:|\_|">"|"<"
+SEPARADOR			" "|"\t"|"\n"
 %%
 
-{DIGIT}+    {
+{CIFRA}+    {
 			printf( "An integer: %s (%d)\n", yytext,
 					atoi( yytext ) );
 			}
 
-{DIGIT}+"."{DIGIT}*        {
+{CIFRA}+"."{CIFRA}*        {
 			printf( "A float: %s (%g)\n", yytext,
 					atof( yytext ) );
 			}
@@ -22,11 +26,7 @@ if|then|begin|end|procedure|function        {
 			printf( "A keyword: %s\n", yytext );
 			}
 
-{ID}        printf( "An identifier: %s\n", yytext );
-
-{ESPECIAL}	printf("Especial xd");
-
-{VACIO}		/*me lo salto*/
+{IDENTIFICADOR}        printf( "An identifier: %s\n", yytext );
 
 %%
 
