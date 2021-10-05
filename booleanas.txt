@@ -1,0 +1,24 @@
+algoritmo sumacomb;
+    ent n, m: entero;
+    sal suma: entero;
+{Prec: n= N AND m = M AND M >= N >0}
+    var
+        ba, bc, bd: booleano;
+        i, j: entero;
+    fvar
+    ba = bc and bd;
+    ba = bc or bd;
+    ba =  (bc);
+    ba = bd;
+    ba =  (bc or bd);
+    ba = i < j;
+    ba = i > j;
+    ba = i == j;
+    ba = i >= j;
+    ba = i <= j;
+    ba = no bc;
+    ba = verdadero;
+    ba = falso
+{Post: n =N AND suma = SUMATORIO(i=1..N)(M sobre i)}
+falgoritmo
+
