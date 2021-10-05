@@ -34,23 +34,107 @@ DR_TUPLA			(?i:(tupla))
 DR_FTUPLA			(?i:(ftupla))
 DR_VAR				(?i:(var))
 DR_FVAR				(?i:(fvar))
-
-
-ID				[a-z][a-z0-9]*
-OPERADOR_SEC 	\+|-
-ESPECIAL		'|(|)|=|[|]|\+|\{|\}|,|;|\.|:|\_|">"|"<"
+DR_CONTINUAR		(?i:(continuar))
+DR_DE				(?i:(de))
+DR_DEV				(?i:(dev))
+DR_ENT				(?i:(ent))
+DR_ENTRADASALIDA	(?i:(e\/s))
+DR_HACER			(?i:(hacer))
+DR_HASTA			(?i:(hasta))
+DR_NO				(?i:(no))
+DR_REF				(?i:(ref))
+DR_SAL				(?i:(sal))
+DR_TABLA			(?i:(tabla))
+DR_ENTONCES			->
+DR_OPERADORRELACIONAL	<|>|>=|<=
+DR_ASIGNACION 		:=
+DR_PUNTOYCOMA		;
+DR_COMA				,
+DR_DOSPUNTOS		:
+DR_SINOSI			\[\]
+ID					[a-z][a-z0-9]*
+OPERADOR_SEC 		\+|-
 SEPARADOR			" "|"\t"|"\n"
 
 
 %%
+{DR_OPERADORLOGICO}		printf( "Es un operador logico: %s\n", yytext );
+
+{DR_PUNTOYCOMA}			printf( "Punto y coma: %s\n", yytext );
+
+{DR_SINOSI}				printf( "Si no Si:  %s\n", yytext );
+
+{DR_ASIGNACION}			printf( "Asignacion: %s\n", yytext );
+
+{DR_COMA}				printf( "coma: %s\n", yytext );
+
+{DR_DOSPUNTOS}			printf( "Dos puntos : %s\n", yytext );
+
+{DR_ENTONCES}			printf( "Entonces: %s\n", yytext );
+
+{DR_OPERADORRELACIONAL}	printf( "Es un operador relacional: %s\n", yytext );
+
+{DR_CONTINUAR}			printf( "An continuar: %s\n", yytext );
+
+{DR_DE}					printf( "An de: %s\n", yytext );
+
+{DR_DEV}				printf( "An dev: %s\n", yytext );
+
+{DR_ENT}				printf( "An ent: %s\n", yytext );
+
+{DR_ENTRADASALIDA}		printf( "An entradasalida: %s\n", yytext );
+
+{DR_HACER}				printf( "An hacer: %s\n", yytext );
+
+{DR_HASTA}				printf( "An hasta: %s\n", yytext );
+
+{DR_NO}					printf( "An no: %s\n", yytext );
+
+{DR_REF}				printf( "An ref: %s\n", yytext );
+
+{DR_SAL}				printf( "An sal: %s\n", yytext );
+
+{DR_TABLA}				printf( "An tabla: %s\n", yytext );
+
+{DR_ACCION}      		printf( "An accion: %s\n", yytext );
+
+{DR_FACCION}      		printf( "An faccion: %s\n", yytext );
+
+{DR_ALGORITMO}      	printf( "An algoritmo: %s\n", yytext );
+
+{DR_FALGORITMO}      	printf( "An falgoritmo: %s\n", yytext );
+
+{DR_CONST}      		printf( "An const: %s\n", yytext );
+
+{DR_FCONST}      		printf( "An fconst: %s\n", yytext );
+
+{DR_FUNCION}      		printf( "An funcion: %s\n", yytext );
+
+{DR_FFUNCION}      		printf( "An ffuncion: %s\n", yytext );
+
+{DR_MIENTRAS}      		printf( "An mientras: %s\n", yytext );
+
+{DR_FMIENTRAS}      	printf( "An fmientras: %s\n", yytext );
+
+{DR_PARA}      			printf( "An para: %s\n", yytext );
+
+{DR_FPARA}      		printf( "An fpara: %s\n", yytext );
+
+{DR_SI}      			printf( "An si: %s\n", yytext );
+
+{DR_FSI}      			printf( "An fsi: %s\n", yytext );
+
+{DR_TUPLA}      		printf( "An tupla: %s\n", yytext );
+
+{DR_FTUPLA}      		printf( "An ftupla: %s\n", yytext );
+
+{DR_VAR}      			printf( "An var: %s\n", yytext );
+
+{DR_FVAR}      			printf( "An fvar: %s\n", yytext );
+
 {DR_LITERALBOOLEANO}	printf("Es un booleano: %s\n", yytext );
 
-if|then|begin|end|procedure|function        {
-			printf( "A keyword: %s\n", yytext );
-			}
-
 {DR_OPERADOR_PRI}		printf("Es un operador primario: %s\n", yytext );
-
 
 {DR_TIPODATO}			printf("Es un tipo de dato: %s\n", yytext );
 
