@@ -1,6 +1,7 @@
 %{
 %}
 
+DR_OPERADOR_SEC 	\+|-
 DR_CIFRA			[0-9]
 DR_LETRA			[A-Za-z]|_
 DR_IDENTIFICADOR	{DR_LETRA}({DR_CIFRA}|{DR_LETRA})*
@@ -52,12 +53,14 @@ DR_PUNTOYCOMA		;
 DR_COMA				,
 DR_DOSPUNTOS		:
 DR_SINOSI			\[\]
+
 ID					[a-z][a-z0-9]*
-OPERADOR_SEC 		\+|-
 SEPARADOR			" "|"\t"|"\n"
 
-
 %%
+
+{DR_OPERADOR_SEC}		printf( "Es un operador secundario: %s\n", yytext );
+
 {DR_OPERADORLOGICO}		printf( "Es un operador logico: %s\n", yytext );
 
 {DR_PUNTOYCOMA}			printf( "Punto y coma: %s\n", yytext );
