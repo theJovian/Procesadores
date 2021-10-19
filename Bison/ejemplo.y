@@ -29,7 +29,7 @@ exp:
 | exp exp '-'   { $$ = $1 - $2;      }
 | exp exp '*'   { $$ = $1 * $2;      }
 | exp exp '/'   { $$ = $1 / $2;      }
-| exp exp '^'   { $$ = pow ($1, $2); }  /* Exponentiation */
+| exp exp '^'   { }  /* Exponentiation */
 | exp 'n'       { $$ = -$1;          }  /* Unary minus   */
 ;
 %%
