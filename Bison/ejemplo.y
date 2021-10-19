@@ -3,6 +3,8 @@
 %{
   #include <stdio.h>
   #include <math.h>
+  #include <stdlib.h>
+  #include <ctype.h>
   int yylex (void);
   void yyerror (char const *);
 %}
