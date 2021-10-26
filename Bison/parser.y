@@ -12,7 +12,6 @@
 %token TK_ALGORITMO
 %token TK_IDENTIFICADOR
 %token TK_FALGORITMO
-<<<<<<< HEAD
 %token TK_ASIGNACION
 %token TK_DOSPUNTOS
 %token TK_COMA
@@ -38,7 +37,6 @@
 %token TK_PUNTO
 %token TK_REF
 
-=======
 %token TK_COMENTARIO
 %token TK_TIPO
 %token TK_FTIPO
@@ -58,13 +56,11 @@
 %token TK_LITERALENTERO
 %token TK_LITERALCARACTER
 %token TK_ASIGNACION
->>>>>>> master
 
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
     TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
-<<<<<<< HEAD
     ;
 listaCampos:
     TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
@@ -135,7 +131,6 @@ instruccion:
     ;
 
 
-=======
 ;
 
 cabeceraAlgoritmo:
@@ -199,7 +194,6 @@ expresionT:
     TK_LITERALENTERO
     | TK_LITERALCARACTER
 ;
->>>>>>> master
 %%
 
 
