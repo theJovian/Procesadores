@@ -8,15 +8,17 @@
 %}
 
 
-%token 
+%token TK_PUNTOYCOMA
+%token TK_ALGORITMO
+%token TK_IDENTIFICADOR
+%token TK_FALGORITMO
 
 
+%% /* Grammar rules and actions follow. */
 
-
-
-
-
-
+descAlgoritmo: 
+    TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
+%%
 
 
 int
