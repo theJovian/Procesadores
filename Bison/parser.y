@@ -35,50 +35,231 @@
 %token TK_FLECHA
 %token TK_SI
 %token TK_FSI
+%token TK_DOSPUNTOS
+%token TK_SUMA
+%token TK_RESTA
+%token TK_MULTIPLICACION
+%token TK_DIVISION
+%token TK_DIVISION_ENTERA
+%token TK_MODULO
+%token TK_LITERAL_NUMERICO
+%token TK_Y
+%token TK_O
+%token TK_NO
+%token TK_VERDADERO
+%token TK_FALSO
+%token TK_OPREL
+%token TK_CORCHETE_APERTURA
+%token TK_CORCHETE_CIERRE
+%token TK_PUNTO
+%token TK_COMENTARIO
+%token TK_TIPO
+%token TK_FTIPO
+%token TK_CONST
+%token TK_FCONST
+%token TK_VAR
+%token TK_FVAR
+%token TK_TUPLA
+%token TK_FTUPLA
+%token TK_TABLA
+%token TK_PUNTO_Y_PUNTO
+%token TK_REF
+%token TK_DE
+%token TK_TIPOBASE
+%token TK_LITERALENTERO
+%token TK_LITERALCARACTER
+%token TK_ASIGNACION
 
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
     TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
+;
 asignacion:
 	operando TK_DOSPUNTOS_IGUAL expresion
+;
 alternativa:
 	TK_SI expresion TK_FLECHA instrucciones listaOpciones TK_FSI
+;
 listaOpciones:
 	TK_CORCHETES expresion TK_FLECHA instrucciones listaOpciones 
 	| /*epsilon*/
+;
 iteracion:
 	itCotaFija
 	| itCotaVariable
+;
 itCotaVariable:
 	TK_MIENTRAS expresion TK_HACER instrucciones TK_FMIENTRAS
+;
 itCotaFija:
 	TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_PARA
+;
 defAccion:
 	TK_ACCION cabeceraAccion bloque TK_FACCION
+;
 defFuncion:
 	TK_FUNCION cabecerafuncion bloque TK_DEV expresion TK_FFUNCION
+;
 cabeceraAccion:
 	TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
+;
 cabeceraFuncion:
 	TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA
+;
 defParForm:
 	dParForm TK_PUNTOYCOMA defParForm
 	| dParForm
 	| /*epsilon*/
+;
 dParForm:
 	TK_ENT listaId TK_DOSPUNTOS defTipo
 	| TK_SAL listaId TK_DOSPUNTOS defTipo
 	| TK_ENTSAL listaId TK_DOSPUNTOS defTipo
+;
 llamadaAccion:
 	TK_IDENTIFICADOR TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
+;
 llamadaFuncion:
 	TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
+;
 parametrosReales:
 	expresion TK_COMA parametros_reales
 	| expresion
 	| /*epsilon*/
-	
+    ;
+listaCampos:
+    TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
+    | /*epsiolon*/
+    ;
+listaDefConstantes:
+    TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefConstantes
+    | /*epsilon*/
+    ;
+listaDefsVariables:
+    listaId TK_IDENTIFICADOR TK_COMA listaId
+    | TK_IDENTIFICADOR
+    ;
+defVariablesInteraccion:
+    defEntrada
+    | defEntrada defSalida
+    | defSalida
+    ;
+defEntrada:
+    TK_ENT listaDefsVariables
+    ;
+defSalida:
+    TK_SALIDA listaDefVariables
+    ;
+expresion:
+    expArit
+    | expBool
+    | llamadaFuncion
+    ;
+expArit:
+    expArit TK_SUMA expArit
+    | expArit TK_RESTA expArit
+    | expArit TK_MULTIPLICACION expArit
+    | expArit TK_DIVISION expArit
+    | expArit TK_DIVISION_ENTERA expArit
+    | expArit TK_MODULO expArit
+    | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
+    | operando
+    | TK_RESTA expArit
+    | TK_LITERAL_NUMERICO
+    ;
+expBool:
+    expBool TK_Y expBool
+    | expBool TK_O expBool
+    | TK_NO expBool
+    | operando
+    | TK_VERDADERO
+    | TK_FALSO
+    | expresion TK_OPREL expresion
+    | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
+    ;
+operando:
+    TK_IDENTIFICADOR
+    | operando TK_PUNTO operando
+    | operando TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+    | operando TK_REF
+    ;
+instrucciones:
+    instruccion TK_PUNTOYCOMA instrucciones
+    | instruccion
+    ;
+instruccion: 
+    TK_CONTINUAR
+    | asignacion
+    | alternativa
+    | iteracion
+    | llamadaAccion
+    ;
+
+
+;
+
+cabeceraAlgoritmo:
+    defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
+;
+
+bloqueAlgoritmo:
+    bloqueAlgoritmo: bloque TK_COMENTARIO
+;
+
+defGlobales: 
+    definicionTipo defGlobales
+    | definicionConst defGlobales
+    | /*epsilon*/
+;
+
+defAccionesFunciones:
+    defAccion defAccionesFunciones
+    | definicionConst defAccionesFunciones
+    | /*epsilon*/
+;
+
+bloque: 
+    declaraciones instrucciones
+;
+
+declaraciones: 
+    definicionTipo declaraciones
+    | definicionConst declaraciones
+    | definicionVar declaraciones
+    | /*epsilon*/
+;
+
+definicionTipo: 
+    TK_TIPO listaDefsTipo TK_FTIPO
+;
+
+definicionConst:
+    TK_CONST listaDefsConstantes TK_FCONST 
+;
+
+definicionVar: 
+    TK_VAR listaDefsVariables TK_FVAR
+;
+
+listaDefsTipo:
+    TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
+    | /*epsilon*/
+;
+
+defTipo:    
+    TK_TUPLA listaCampos TK_FTUPLA
+    | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
+    | TK_IDENTIFICADOR
+    | expresionT TK_PUNTO_Y_PUNTO expresionT
+    | TK_REF defTipo
+    | TK_TIPOBASE
+;
+
+expresionT: 
+    TK_LITERALENTERO
+    | TK_LITERALCARACTER
+;
 %%
 
 
