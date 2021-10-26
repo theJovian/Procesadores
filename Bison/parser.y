@@ -98,6 +98,7 @@ defTipo:
 expresionT: 
     TK_LITERALENTERO
     | TK_LITERALCARACTER
+;
 %%
 
 
