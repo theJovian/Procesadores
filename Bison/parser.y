@@ -9,6 +9,7 @@
 
 
 %token TK_PUNTOYCOMA
+%token TK_CONTINUAR
 %token TK_ALGORITMO
 %token TK_IDENTIFICADOR
 %token TK_FALGORITMO
@@ -30,12 +31,11 @@
 %token TK_HACER
 %token TK_FPARA
 %token TK_MIENTRAS
-%token TK_FMIENTRES
+%token TK_FMIENTRAS
 %token TK_CORCHETES
 %token TK_FLECHA
 %token TK_SI
 %token TK_FSI
-%token TK_DOSPUNTOS
 %token TK_SUMA
 %token TK_RESTA
 %token TK_MULTIPLICACION
@@ -93,13 +93,13 @@ itCotaVariable:
 	TK_MIENTRAS expresion TK_HACER instrucciones TK_FMIENTRAS
 ;
 itCotaFija:
-	TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_PARA
+	TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
 ;
 defAccion:
 	TK_ACCION cabeceraAccion bloque TK_FACCION
 ;
 defFuncion:
-	TK_FUNCION cabecerafuncion bloque TK_DEV expresion TK_FFUNCION
+	TK_FUNCION cabeceraFuncion bloque TK_DEV expresion TK_FFUNCION
 ;
 cabeceraAccion:
 	TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
@@ -124,7 +124,7 @@ llamadaFuncion:
 	TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
 ;
 parametrosReales:
-	expresion TK_COMA parametros_reales
+	expresion TK_COMA parametrosReales
 	| expresion
 	| /*epsilon*/
     ;
@@ -132,14 +132,18 @@ listaCampos:
     TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
     | /*epsiolon*/
     ;
-listaDefConstantes:
-    TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefConstantes
+listaDefsConstantes:
+    TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefsConstantes
     | /*epsilon*/
     ;
 listaDefsVariables:
     listaId TK_IDENTIFICADOR TK_COMA listaId
     | TK_IDENTIFICADOR
     ;
+listaId:
+	TK_IDENTIFICADOR TK_COMA listaId
+	| TK_IDENTIFICADOR
+	;
 defVariablesInteraccion:
     defEntrada
     | defEntrada defSalida
@@ -149,7 +153,7 @@ defEntrada:
     TK_ENT listaDefsVariables
     ;
 defSalida:
-    TK_SALIDA listaDefVariables
+    TK_SAL listaDefsVariables
     ;
 expresion:
     expArit
@@ -195,10 +199,6 @@ instruccion:
     | iteracion
     | llamadaAccion
     ;
-
-
-;
-
 cabeceraAlgoritmo:
     defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
 ;
@@ -212,32 +212,26 @@ defGlobales:
     | definicionConst defGlobales
     | /*epsilon*/
 ;
-
 defAccionesFunciones:
     defAccion defAccionesFunciones
-    | definicionConst defAccionesFunciones
+    | defFuncion defAccionesFunciones
     | /*epsilon*/
 ;
-
 bloque: 
     declaraciones instrucciones
 ;
-
 declaraciones: 
     definicionTipo declaraciones
     | definicionConst declaraciones
     | definicionVar declaraciones
     | /*epsilon*/
 ;
-
 definicionTipo: 
     TK_TIPO listaDefsTipo TK_FTIPO
 ;
-
 definicionConst:
     TK_CONST listaDefsConstantes TK_FCONST 
 ;
-
 definicionVar: 
     TK_VAR listaDefsVariables TK_FVAR
 ;
@@ -246,7 +240,6 @@ listaDefsTipo:
     TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
     | /*epsilon*/
 ;
-
 defTipo:    
     TK_TUPLA listaCampos TK_FTUPLA
     | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
@@ -255,7 +248,6 @@ defTipo:
     | TK_REF defTipo
     | TK_TIPOBASE
 ;
-
 expresionT: 
     TK_LITERALENTERO
     | TK_LITERALCARACTER
@@ -266,35 +258,16 @@ expresionT:
 int
 yylex (void)
 {
-  int c = getchar ();
-  /* Skip white space. */
-  while (c == ' ' || c == '\t')
-    c = getchar ();
-  /* Process numbers. */
-  if (c == '.' || isdigit (c))
-    {
-      ungetc (c, stdin);
-      if (scanf ("%lf", &yylval) != 1)
-        abort ();
-      return NUM;
-    }
-  /* Return end-of-input. */
-  else if (c == EOF)
-    return YYEOF;
-  /* Return a single char. */
-  else
-    return c;
 }
 
 int
 main (void)
 {
-  return yyparse ();
+  return 0;
 }
 
 /* Called by yyparse on error. */
 void
 yyerror (char const *s)
 {
-  fprintf (stderr, "%s\n", s);
 }

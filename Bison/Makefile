@@ -1,10 +1,10 @@
 all: bison compilar ejecutar
 
-bison : ejemplo.y
-		bison -v -d ejemplo.y
+bison : parser.y
+		bison -v -d parser.y
 
-compilar : ejemplo.tab.c
-		gcc -lm -o ejemplo ejemplo.tab.c
+compilar : parser.tab.c
+		gcc -lm -o parser parser.tab.c
 
-ejecutar : ejemplo
-		./ejemplo
+ejecutar : parser
+		./parser
