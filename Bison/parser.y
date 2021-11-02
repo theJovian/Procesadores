@@ -11,6 +11,7 @@
 %token TK_PUNTOYCOMA
 %token TK_CONTINUAR
 %token TK_ALGORITMO
+%token TK_IDENTIFICADOR_BOOLEANO
 %token TK_IDENTIFICADOR
 %token TK_FALGORITMO
 %token TK_PARA
@@ -76,7 +77,8 @@ descAlgoritmo:
     TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
 ;
 asignacion:
-	operando TK_DOSPUNTOS_IGUAL expresion
+	operandoBooleano TK_DOSPUNTOS_IGUAL expresion
+	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion
 ;
 alternativa:
 	TK_SI expresion TK_FLECHA instrucciones listaOpciones TK_FSI
@@ -168,7 +170,7 @@ expArit:
     | expArit TK_DIVISION_ENTERA expArit
     | expArit TK_MODULO expArit
     | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
-    | operando
+    | operandoAritmetico
     | TK_RESTA expArit
     | TK_LITERAL_NUMERICO
     ;
@@ -176,17 +178,23 @@ expBool:
     expBool TK_Y expBool
     | expBool TK_O expBool
     | TK_NO expBool
-    | operando
+    | operandoBooleano
     | TK_VERDADERO
     | TK_FALSO
     | expresion TK_OPREL expresion
     | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
     ;
-operando:
+operandoBooleano:
+    TK_IDENTIFICADOR_BOOLEANO
+    | operandoBooleano TK_PUNTO operandoBooleano
+    | operandoBooleano TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+    | operandoBooleano TK_REF
+    ;
+operandoAritmetico:
     TK_IDENTIFICADOR
-    | operando TK_PUNTO operando
-    | operando TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-    | operando TK_REF
+    | operandoAritmetico TK_PUNTO operandoAritmetico
+    | operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+    | operandoAritmetico TK_REF
     ;
 instrucciones:
     instruccion TK_PUNTOYCOMA instrucciones
