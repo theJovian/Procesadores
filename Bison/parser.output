@@ -1,15 +1,8 @@
 Estado 94 conflictos: 2 desplazamiento/reducción
-Estado 134 conflictos: 6 desplazamiento/reducción
 Estado 135 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
 Estado 149 conflictos: 3 desplazamiento/reducción
 Estado 152 conflictos: 3 desplazamiento/reducción
 Estado 176 conflictos: 1 desplazamiento/reducción
-Estado 177 conflictos: 6 desplazamiento/reducción
-Estado 178 conflictos: 6 desplazamiento/reducción
-Estado 179 conflictos: 6 desplazamiento/reducción
-Estado 180 conflictos: 6 desplazamiento/reducción
-Estado 181 conflictos: 6 desplazamiento/reducción
-Estado 182 conflictos: 6 desplazamiento/reducción
 Estado 183 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
 Estado 184 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
 
@@ -1781,20 +1774,12 @@ Estado 134
    47        | expArit . TK_MODULO expArit
    50        | TK_RESTA expArit .
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
     TK_MULTIPLICACION   desplazar e ir al estado 140
     TK_DIVISION         desplazar e ir al estado 141
     TK_DIVISION_ENTERA  desplazar e ir al estado 142
     TK_MODULO           desplazar e ir al estado 143
 
-    TK_SUMA             [reduce usando la regla 50 (expArit)]
-    TK_RESTA            [reduce usando la regla 50 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 50 (expArit)]
-    TK_DIVISION         [reduce usando la regla 50 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 50 (expArit)]
-    TK_MODULO           [reduce usando la regla 50 (expArit)]
-    $default            reduce usando la regla 50 (expArit)
+    $default  reduce usando la regla 50 (expArit)
 
 
 Estado 135
@@ -2335,20 +2320,12 @@ Estado 177
    46        | expArit . TK_DIVISION_ENTERA expArit
    47        | expArit . TK_MODULO expArit
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
     TK_MULTIPLICACION   desplazar e ir al estado 140
     TK_DIVISION         desplazar e ir al estado 141
     TK_DIVISION_ENTERA  desplazar e ir al estado 142
     TK_MODULO           desplazar e ir al estado 143
 
-    TK_SUMA             [reduce usando la regla 42 (expArit)]
-    TK_RESTA            [reduce usando la regla 42 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 42 (expArit)]
-    TK_DIVISION         [reduce usando la regla 42 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 42 (expArit)]
-    TK_MODULO           [reduce usando la regla 42 (expArit)]
-    $default            reduce usando la regla 42 (expArit)
+    $default  reduce usando la regla 42 (expArit)
 
 
 Estado 178
@@ -2361,20 +2338,12 @@ Estado 178
    46        | expArit . TK_DIVISION_ENTERA expArit
    47        | expArit . TK_MODULO expArit
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
     TK_MULTIPLICACION   desplazar e ir al estado 140
     TK_DIVISION         desplazar e ir al estado 141
     TK_DIVISION_ENTERA  desplazar e ir al estado 142
     TK_MODULO           desplazar e ir al estado 143
 
-    TK_SUMA             [reduce usando la regla 43 (expArit)]
-    TK_RESTA            [reduce usando la regla 43 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 43 (expArit)]
-    TK_DIVISION         [reduce usando la regla 43 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 43 (expArit)]
-    TK_MODULO           [reduce usando la regla 43 (expArit)]
-    $default            reduce usando la regla 43 (expArit)
+    $default  reduce usando la regla 43 (expArit)
 
 
 Estado 179
@@ -2387,20 +2356,7 @@ Estado 179
    46        | expArit . TK_DIVISION_ENTERA expArit
    47        | expArit . TK_MODULO expArit
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    TK_SUMA             [reduce usando la regla 44 (expArit)]
-    TK_RESTA            [reduce usando la regla 44 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 44 (expArit)]
-    TK_DIVISION         [reduce usando la regla 44 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 44 (expArit)]
-    TK_MODULO           [reduce usando la regla 44 (expArit)]
-    $default            reduce usando la regla 44 (expArit)
+    $default  reduce usando la regla 44 (expArit)
 
 
 Estado 180
@@ -2413,20 +2369,7 @@ Estado 180
    46        | expArit . TK_DIVISION_ENTERA expArit
    47        | expArit . TK_MODULO expArit
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    TK_SUMA             [reduce usando la regla 45 (expArit)]
-    TK_RESTA            [reduce usando la regla 45 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 45 (expArit)]
-    TK_DIVISION         [reduce usando la regla 45 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 45 (expArit)]
-    TK_MODULO           [reduce usando la regla 45 (expArit)]
-    $default            reduce usando la regla 45 (expArit)
+    $default  reduce usando la regla 45 (expArit)
 
 
 Estado 181
@@ -2439,20 +2382,7 @@ Estado 181
    46        | expArit TK_DIVISION_ENTERA expArit .
    47        | expArit . TK_MODULO expArit
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    TK_SUMA             [reduce usando la regla 46 (expArit)]
-    TK_RESTA            [reduce usando la regla 46 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 46 (expArit)]
-    TK_DIVISION         [reduce usando la regla 46 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 46 (expArit)]
-    TK_MODULO           [reduce usando la regla 46 (expArit)]
-    $default            reduce usando la regla 46 (expArit)
+    $default  reduce usando la regla 46 (expArit)
 
 
 Estado 182
@@ -2465,20 +2395,7 @@ Estado 182
    47        | expArit . TK_MODULO expArit
    47        | expArit TK_MODULO expArit .
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    TK_SUMA             [reduce usando la regla 47 (expArit)]
-    TK_RESTA            [reduce usando la regla 47 (expArit)]
-    TK_MULTIPLICACION   [reduce usando la regla 47 (expArit)]
-    TK_DIVISION         [reduce usando la regla 47 (expArit)]
-    TK_DIVISION_ENTERA  [reduce usando la regla 47 (expArit)]
-    TK_MODULO           [reduce usando la regla 47 (expArit)]
-    $default            reduce usando la regla 47 (expArit)
+    $default  reduce usando la regla 47 (expArit)
 
 
 Estado 183

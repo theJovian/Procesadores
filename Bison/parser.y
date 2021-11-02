@@ -71,6 +71,8 @@
 %token TK_LITERALCARACTER
 %token TK_ASIGNACION
 
+%left TK_SUMA TK_RESTA
+%left TK_MULTIPLICACION TK_DIVISION TK_DIVISION_ENTERA TK_MODULO
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
