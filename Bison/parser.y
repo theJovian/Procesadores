@@ -5,6 +5,7 @@
   #include <ctype.h>
   int yylex (void);
   void yyerror (char const *);
+  void yywrap(void);
 %}
 
 
@@ -267,12 +268,6 @@ expresionT:
 ;
 %%
 
-
-int
-yylex (void)
-{
-}
-
 int
 main (void)
 {
@@ -282,5 +277,10 @@ main (void)
 /* Called by yyparse on error. */
 void
 yyerror (char const *s)
+{
+}
+
+void
+yywrap (void)
 {
 }

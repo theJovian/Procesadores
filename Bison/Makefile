@@ -1,10 +1,14 @@
-all: bison compilar ejecutar
+all: bison scanner compilar ejecutar
 
 bison : parser.y
 		bison -v -d parser.y
-
-compilar : parser.tab.c
-		gcc -lm -o parser parser.tab.c
+		
+scanner: scanner.l
+		flex scanner.l;
+		gcc -lfl lex.yy.c;
+		
+compilar : parser.tab.c lex.yy.c
+		gcc -lm -o parser parser.tab.c lex.yy.c 
 
 ejecutar : parser
 		./parser
