@@ -73,6 +73,9 @@
 
 %left TK_SUMA TK_RESTA
 %left TK_MULTIPLICACION TK_DIVISION TK_DIVISION_ENTERA TK_MODULO
+%nonassoc TK_NO
+%left TK_OPREL
+%left TK_Y TK_O
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 

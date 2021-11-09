@@ -1,10 +1,9 @@
 Estado 94 conflictos: 2 desplazamiento/reducción
-Estado 135 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
+Estado 135 conflictos: 1 reducción/reducción
 Estado 149 conflictos: 3 desplazamiento/reducción
 Estado 152 conflictos: 3 desplazamiento/reducción
-Estado 176 conflictos: 1 desplazamiento/reducción
-Estado 183 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
-Estado 184 conflictos: 2 desplazamiento/reducción, 1 reducción/reducción
+Estado 183 conflictos: 1 reducción/reducción
+Estado 184 conflictos: 1 reducción/reducción
 
 
 Gramática
@@ -1792,8 +1791,6 @@ Estado 135
     TK_Y  desplazar e ir al estado 144
     TK_O  desplazar e ir al estado 145
 
-    TK_Y      [reduce usando la regla 54 (expBool)]
-    TK_O      [reduce usando la regla 54 (expBool)]
     TK_OPREL  reduce usando la regla 40 (expresion)
     TK_OPREL  [reduce usando la regla 54 (expBool)]
     $default  reduce usando la regla 54 (expBool)
@@ -2304,9 +2301,6 @@ Estado 176
    58 expBool: expresion . TK_OPREL expresion
    58        | expresion TK_OPREL expresion .
 
-    TK_OPREL  desplazar e ir al estado 137
-
-    TK_OPREL  [reduce usando la regla 58 (expBool)]
     $default  reduce usando la regla 58 (expBool)
 
 
@@ -2405,11 +2399,6 @@ Estado 183
    52        | expBool TK_Y expBool .
    53        | expBool . TK_O expBool
 
-    TK_Y  desplazar e ir al estado 144
-    TK_O  desplazar e ir al estado 145
-
-    TK_Y      [reduce usando la regla 52 (expBool)]
-    TK_O      [reduce usando la regla 52 (expBool)]
     TK_OPREL  reduce usando la regla 40 (expresion)
     TK_OPREL  [reduce usando la regla 52 (expBool)]
     $default  reduce usando la regla 52 (expBool)
@@ -2422,11 +2411,6 @@ Estado 184
    53        | expBool . TK_O expBool
    53        | expBool TK_O expBool .
 
-    TK_Y  desplazar e ir al estado 144
-    TK_O  desplazar e ir al estado 145
-
-    TK_Y      [reduce usando la regla 53 (expBool)]
-    TK_O      [reduce usando la regla 53 (expBool)]
     TK_OPREL  reduce usando la regla 40 (expresion)
     TK_OPREL  [reduce usando la regla 53 (expBool)]
     $default  reduce usando la regla 53 (expBool)
