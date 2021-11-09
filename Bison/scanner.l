@@ -117,26 +117,58 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_DE}					{
 							printf( "An de: %s\n", yytext );
+							return(TK_DE);
+						}
 
-{DR_DEV}				printf( "An dev: %s\n", yytext );
+{DR_DEV}				{
+							printf( "An dev: %s\n", yytext );
+							return(TK_DEV);
+						}
 
-{DR_ENT}				printf( "An ent: %s\n", yytext );
+{DR_ENT}				{
+							printf( "An ent: %s\n", yytext );
+							return(TK_ENT);
+						}
 
-{DR_ENTRADASALIDA}		printf( "An entradasalida: %s\n", yytext );
+{DR_ENTRADASALIDA}		{
+							printf( "An entradasalida: %s\n", yytext );
+							return(TK_ENTSAL);
+						}
 
-{DR_HACER}				printf( "An hacer: %s\n", yytext );
+{DR_HACER}				{
+							printf( "An hacer: %s\n", yytext );
+							return(TK_HACER);
+						}
 
-{DR_HASTA}				printf( "An hasta: %s\n", yytext );
+{DR_HASTA}				{
+							printf( "An hasta: %s\n", yytext );
+							return(TK_HASTA);
+						}
 
-{DR_NO}					printf( "An no: %s\n", yytext );
+{DR_NO}					{
+							printf( "An no: %s\n", yytext );
+							return(TK_NO);
+						}
 
-{DR_REF}				printf( "An ref: %s\n", yytext );
+{DR_REF}				{
+							printf( "An ref: %s\n", yytext );
+							return(TK_REF);
+						}
 
-{DR_SAL}				printf( "An sal: %s\n", yytext );
+{DR_SAL}				{
+							printf( "An sal: %s\n", yytext );
+							return(TK_SAL);
+						}
 
-{DR_TABLA}				printf( "An tabla: %s\n", yytext );
+{DR_TABLA}				{
+							printf( "An tabla: %s\n", yytext );
+							return(TK_TABLA);
+						}
 
-{DR_ACCION}      		printf( "An accion: %s\n", yytext );
+{DR_ACCION}      		{
+							printf( "An accion: %s\n", yytext );
+							return(TK_ACCION);
+						}
 
 {DR_FACCION}      		printf( "An faccion: %s\n", yytext );
 
