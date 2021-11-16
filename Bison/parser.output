@@ -1,9 +1,9 @@
-Estado 94 conflictos: 2 desplazamiento/reducción
-Estado 135 conflictos: 1 reducción/reducción
-Estado 149 conflictos: 3 desplazamiento/reducción
-Estado 152 conflictos: 3 desplazamiento/reducción
-Estado 183 conflictos: 1 reducción/reducción
-Estado 184 conflictos: 1 reducción/reducción
+Estado 97 conflictos: 2 desplazamiento/reducción
+Estado 145 conflictos: 1 reducción/reducción
+Estado 159 conflictos: 3 desplazamiento/reducción
+Estado 162 conflictos: 3 desplazamiento/reducción
+Estado 191 conflictos: 1 reducción/reducción
+Estado 192 conflictos: 1 reducción/reducción
 
 
 Gramática
@@ -54,123 +54,128 @@ Gramática
    26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
    27            | %empty
 
-   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefsConstantes
-   29                    | %empty
+   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
+   29                    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
+   30                    | TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
+   31                    | TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
+   32                    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
+   33                    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
+   34                    | %empty
 
-   30 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA listaId
-   31                   | TK_IDENTIFICADOR
+   35 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA listaId
+   36                   | TK_IDENTIFICADOR
 
-   32 listaId: TK_IDENTIFICADOR TK_COMA listaId
-   33        | TK_IDENTIFICADOR
+   37 listaId: TK_IDENTIFICADOR TK_COMA listaId
+   38        | TK_IDENTIFICADOR
 
-   34 defVariablesInteraccion: defEntrada
-   35                        | defEntrada defSalida
-   36                        | defSalida
+   39 defVariablesInteraccion: defEntrada
+   40                        | defEntrada defSalida
+   41                        | defSalida
 
-   37 defEntrada: TK_ENT listaDefsVariables
+   42 defEntrada: TK_ENT listaDefsVariables
 
-   38 defSalida: TK_SAL listaDefsVariables
+   43 defSalida: TK_SAL listaDefsVariables
 
-   39 expresion: expArit
-   40          | expBool
-   41          | llamadaFuncion
+   44 expBool: expBool TK_Y expBool
+   45        | expBool TK_O expBool
+   46        | TK_NO expBool
+   47        | operandoBooleano
+   48        | TK_VERDADERO
+   49        | TK_FALSO
+   50        | expresion TK_OPREL expresion
+   51        | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
 
-   42 expArit: expArit TK_SUMA expArit
-   43        | expArit TK_RESTA expArit
-   44        | expArit TK_MULTIPLICACION expArit
-   45        | expArit TK_DIVISION expArit
-   46        | expArit TK_DIVISION_ENTERA expArit
-   47        | expArit TK_MODULO expArit
-   48        | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
-   49        | operandoAritmetico
-   50        | TK_RESTA expArit
-   51        | TK_LITERAL_NUMERICO
+   52 expresion: expArit
+   53          | expBool
+   54          | llamadaFuncion
 
-   52 expBool: expBool TK_Y expBool
-   53        | expBool TK_O expBool
-   54        | TK_NO expBool
-   55        | operandoBooleano
-   56        | TK_VERDADERO
-   57        | TK_FALSO
-   58        | expresion TK_OPREL expresion
-   59        | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
+   55 expArit: expArit TK_SUMA expArit
+   56        | expArit TK_RESTA expArit
+   57        | expArit TK_MULTIPLICACION expArit
+   58        | expArit TK_DIVISION expArit
+   59        | expArit TK_DIVISION_ENTERA expArit
+   60        | expArit TK_MODULO expArit
+   61        | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
+   62        | operandoAritmetico
+   63        | TK_RESTA expArit
+   64        | TK_LITERAL_NUMERICO
 
-   60 operandoBooleano: TK_IDENTIFICADOR_BOOLEANO
-   61                 | operandoBooleano TK_PUNTO operandoBooleano
-   62                 | operandoBooleano TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   63                 | operandoBooleano TK_REF
+   65 operandoBooleano: TK_IDENTIFICADOR_BOOLEANO
+   66                 | operandoBooleano TK_PUNTO operandoBooleano
+   67                 | operandoBooleano TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   68                 | operandoBooleano TK_REF
 
-   64 operandoAritmetico: TK_IDENTIFICADOR
-   65                   | operandoAritmetico TK_PUNTO operandoAritmetico
-   66                   | operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   67                   | operandoAritmetico TK_REF
+   69 operandoAritmetico: TK_IDENTIFICADOR
+   70                   | operandoAritmetico TK_PUNTO operandoAritmetico
+   71                   | operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   72                   | operandoAritmetico TK_REF
 
-   68 instrucciones: instruccion TK_PUNTOYCOMA instrucciones
-   69              | instruccion
+   73 instrucciones: instruccion TK_PUNTOYCOMA instrucciones
+   74              | instruccion
 
-   70 instruccion: TK_CONTINUAR
-   71            | asignacion
-   72            | alternativa
-   73            | iteracion
-   74            | llamadaAccion
+   75 instruccion: TK_CONTINUAR
+   76            | asignacion
+   77            | alternativa
+   78            | iteracion
+   79            | llamadaAccion
 
-   75 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
+   80 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
 
-   76 bloqueAlgoritmo: %empty
-   77                | bloque TK_COMENTARIO
+   81 bloqueAlgoritmo: %empty
+   82                | bloque TK_COMENTARIO
 
-   78 defGlobales: definicionTipo defGlobales
-   79            | definicionConst defGlobales
-   80            | %empty
+   83 defGlobales: definicionTipo defGlobales
+   84            | definicionConst defGlobales
+   85            | %empty
 
-   81 defAccionesFunciones: defAccion defAccionesFunciones
-   82                     | defFuncion defAccionesFunciones
-   83                     | %empty
+   86 defAccionesFunciones: defAccion defAccionesFunciones
+   87                     | defFuncion defAccionesFunciones
+   88                     | %empty
 
-   84 bloque: declaraciones instrucciones
+   89 bloque: declaraciones instrucciones
 
-   85 declaraciones: definicionTipo declaraciones
-   86              | definicionConst declaraciones
-   87              | definicionVar declaraciones
-   88              | %empty
-
-   89 definicionTipo: TK_TIPO listaDefsTipo TK_FTIPO
-
-   90 definicionConst: TK_CONST listaDefsConstantes TK_FCONST
-
-   91 definicionVar: TK_VAR listaDefsVariables TK_FVAR
-
-   92 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
+   90 declaraciones: definicionTipo declaraciones
+   91              | definicionConst declaraciones
+   92              | definicionVar declaraciones
    93              | %empty
 
-   94 defTipo: TK_TUPLA listaCampos TK_FTUPLA
-   95        | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
-   96        | TK_IDENTIFICADOR
-   97        | expresionT TK_PUNTO_Y_PUNTO expresionT
-   98        | TK_REF defTipo
-   99        | TK_TIPOBASE
+   94 definicionTipo: TK_TIPO listaDefsTipo TK_FTIPO
 
-  100 expresionT: TK_LITERALENTERO
-  101           | TK_LITERALCARACTER
+   95 definicionConst: TK_CONST listaDefsConstantes TK_FCONST
+
+   96 definicionVar: TK_VAR listaDefsVariables TK_FVAR
+
+   97 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
+   98              | %empty
+
+   99 defTipo: TK_TUPLA listaCampos TK_FTUPLA
+  100        | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
+  101        | TK_IDENTIFICADOR
+  102        | expresionT TK_PUNTO_Y_PUNTO expresionT
+  103        | TK_REF defTipo
+  104        | TK_TIPOBASE
+
+  105 expresionT: TK_LITERALENTERO
+  106           | TK_LITERALCARACTER
 
 
 Terminales con las reglas donde aparecen
 
     $end (0) 0
     error (256)
-    TK_PUNTOYCOMA (258) 1 13 14 15 26 28 68 92
-    TK_CONTINUAR (259) 70
+    TK_PUNTOYCOMA (258) 1 13 14 15 26 28 29 30 31 32 33 73 97
+    TK_CONTINUAR (259) 75
     TK_ALGORITMO (260) 1
-    TK_IDENTIFICADOR_BOOLEANO (261) 60
-    TK_IDENTIFICADOR (262) 1 10 13 14 21 22 26 28 30 31 32 33 64 92 96
+    TK_IDENTIFICADOR_BOOLEANO (261) 65
+    TK_IDENTIFICADOR (262) 1 10 13 14 21 22 26 28 29 30 31 32 33 35 36 37 38 69 97 101
     TK_FALGORITMO (263) 1
     TK_PARA (264) 10
-    TK_COMA (265) 23 30 32
-    TK_PARENTESIS_APERTURA (266) 13 14 21 22 48 59
-    TK_PARENTESIS_CIERRE (267) 13 14 21 22 48 59
-    TK_ENT (268) 18 37
+    TK_COMA (265) 23 35 37
+    TK_PARENTESIS_APERTURA (266) 13 14 21 22 51 61
+    TK_PARENTESIS_CIERRE (267) 13 14 21 22 51 61
+    TK_ENT (268) 18 42
     TK_DOSPUNTOS (269) 18 19 20 26
-    TK_SAL (270) 19 38
+    TK_SAL (270) 19 43
     TK_ENTSAL (271) 20
     TK_DEV (272) 12 14
     TK_FUNCION (273) 12
@@ -187,171 +192,172 @@ Terminales con las reglas donde aparecen
     TK_FLECHA (284) 4 5
     TK_SI (285) 4
     TK_FSI (286) 4
-    TK_SUMA (287) 42
-    TK_RESTA (288) 43 50
-    TK_MULTIPLICACION (289) 44
-    TK_DIVISION (290) 45
-    TK_DIVISION_ENTERA (291) 46
-    TK_MODULO (292) 47
-    TK_LITERAL_NUMERICO (293) 51
-    TK_Y (294) 52
-    TK_O (295) 53
-    TK_NO (296) 54
-    TK_VERDADERO (297) 56
-    TK_FALSO (298) 57
-    TK_OPREL (299) 58
-    TK_CORCHETE_APERTURA (300) 62 66 95
-    TK_CORCHETE_CIERRE (301) 62 66 95
-    TK_PUNTO (302) 61 65
-    TK_COMENTARIO (303) 75 77
-    TK_TIPO (304) 89
-    TK_FTIPO (305) 89
-    TK_CONST (306) 90
-    TK_FCONST (307) 90
-    TK_VAR (308) 91
-    TK_FVAR (309) 91
-    TK_TUPLA (310) 94
-    TK_FTUPLA (311) 94
-    TK_TABLA (312) 95
-    TK_PUNTO_Y_PUNTO (313) 95 97
-    TK_REF (314) 63 67 98
-    TK_DE (315) 95
-    TK_TIPOBASE (316) 99
-    TK_LITERALENTERO (317) 100
-    TK_LITERALCARACTER (318) 101
-    TK_ASIGNACION (319) 28 92
+    TK_SUMA (287) 55
+    TK_RESTA (288) 56 63
+    TK_MULTIPLICACION (289) 57
+    TK_DIVISION (290) 58
+    TK_DIVISION_ENTERA (291) 59
+    TK_MODULO (292) 60
+    TK_LITERAL_NUMERICO (293) 33 64
+    TK_Y (294) 44
+    TK_O (295) 45
+    TK_NO (296) 46
+    TK_VERDADERO (297) 30 48
+    TK_FALSO (298) 31 49
+    TK_OPREL (299) 50
+    TK_CORCHETE_APERTURA (300) 67 71 100
+    TK_CORCHETE_CIERRE (301) 67 71 100
+    TK_PUNTO (302) 66 70
+    TK_COMENTARIO (303) 80 82
+    TK_TIPO (304) 94
+    TK_FTIPO (305) 94
+    TK_CONST (306) 95
+    TK_FCONST (307) 95
+    TK_VAR (308) 96
+    TK_FVAR (309) 96
+    TK_TUPLA (310) 99
+    TK_FTUPLA (311) 99
+    TK_TABLA (312) 100
+    TK_PUNTO_Y_PUNTO (313) 100 102
+    TK_REF (314) 68 72 103
+    TK_DE (315) 100
+    TK_TIPOBASE (316) 104
+    TK_LITERALENTERO (317) 28 105
+    TK_LITERALCARACTER (318) 29 106
+    TK_ASIGNACION (319) 28 29 30 31 32 33 97
+    TK_LITERAL_CADENA (320) 32
 
 
 No terminales con las reglas donde aparecen
 
-    $accept (65)
+    $accept (66)
         on left: 0
-    descAlgoritmo (66)
+    descAlgoritmo (67)
         on left: 1
         on right: 0
-    asignacion (67)
+    asignacion (68)
         on left: 2 3
-        on right: 71
-    alternativa (68)
+        on right: 76
+    alternativa (69)
         on left: 4
-        on right: 72
-    listaOpciones (69)
+        on right: 77
+    listaOpciones (70)
         on left: 5 6
         on right: 4 5
-    iteracion (70)
+    iteracion (71)
         on left: 7 8
-        on right: 73
-    itCotaVariable (71)
+        on right: 78
+    itCotaVariable (72)
         on left: 9
         on right: 8
-    itCotaFija (72)
+    itCotaFija (73)
         on left: 10
         on right: 7
-    defAccion (73)
+    defAccion (74)
         on left: 11
-        on right: 81
-    defFuncion (74)
+        on right: 86
+    defFuncion (75)
         on left: 12
-        on right: 82
-    cabeceraAccion (75)
+        on right: 87
+    cabeceraAccion (76)
         on left: 13
         on right: 11
-    cabeceraFuncion (76)
+    cabeceraFuncion (77)
         on left: 14
         on right: 12
-    defParForm (77)
+    defParForm (78)
         on left: 15 16 17
         on right: 13 15
-    dParForm (78)
+    dParForm (79)
         on left: 18 19 20
         on right: 15 16
-    llamadaAccion (79)
+    llamadaAccion (80)
         on left: 21
-        on right: 74
-    llamadaFuncion (80)
+        on right: 79
+    llamadaFuncion (81)
         on left: 22
-        on right: 41
-    parametrosReales (81)
+        on right: 54
+    parametrosReales (82)
         on left: 23 24 25
         on right: 21 22 23
-    listaCampos (82)
+    listaCampos (83)
         on left: 26 27
-        on right: 26 94
-    listaDefsConstantes (83)
-        on left: 28 29
-        on right: 28 90
-    listaDefsVariables (84)
-        on left: 30 31
-        on right: 14 37 38 91
-    listaId (85)
-        on left: 32 33
-        on right: 18 19 20 30 32
-    defVariablesInteraccion (86)
-        on left: 34 35 36
-        on right: 75
-    defEntrada (87)
-        on left: 37
-        on right: 34 35
-    defSalida (88)
-        on left: 38
-        on right: 35 36
-    expresion (89)
+        on right: 26 99
+    listaDefsConstantes (84)
+        on left: 28 29 30 31 32 33 34
+        on right: 28 29 30 31 32 33 95
+    listaDefsVariables (85)
+        on left: 35 36
+        on right: 14 42 43 96
+    listaId (86)
+        on left: 37 38
+        on right: 18 19 20 35 37
+    defVariablesInteraccion (87)
         on left: 39 40 41
-        on right: 2 3 4 5 9 10 12 23 24 58 62 66
-    expArit (90)
-        on left: 42 43 44 45 46 47 48 49 50 51
-        on right: 39 42 43 44 45 46 47 48 50
-    expBool (91)
-        on left: 52 53 54 55 56 57 58 59
-        on right: 40 52 53 54 59
-    operandoBooleano (92)
-        on left: 60 61 62 63
-        on right: 2 55 61 62 63
-    operandoAritmetico (93)
-        on left: 64 65 66 67
-        on right: 3 49 65 66 67
-    instrucciones (94)
-        on left: 68 69
-        on right: 4 5 9 10 68 84
-    instruccion (95)
-        on left: 70 71 72 73 74
-        on right: 68 69
-    cabeceraAlgoritmo (96)
-        on left: 75
+        on right: 80
+    defEntrada (88)
+        on left: 42
+        on right: 39 40
+    defSalida (89)
+        on left: 43
+        on right: 40 41
+    expBool (90)
+        on left: 44 45 46 47 48 49 50 51
+        on right: 44 45 46 51 53
+    expresion (91)
+        on left: 52 53 54
+        on right: 2 3 4 5 9 10 12 23 24 50 67 71
+    expArit (92)
+        on left: 55 56 57 58 59 60 61 62 63 64
+        on right: 52 55 56 57 58 59 60 61 63
+    operandoBooleano (93)
+        on left: 65 66 67 68
+        on right: 2 47 66 67 68
+    operandoAritmetico (94)
+        on left: 69 70 71 72
+        on right: 3 62 70 71 72
+    instrucciones (95)
+        on left: 73 74
+        on right: 4 5 9 10 73 89
+    instruccion (96)
+        on left: 75 76 77 78 79
+        on right: 73 74
+    cabeceraAlgoritmo (97)
+        on left: 80
         on right: 1
-    bloqueAlgoritmo (97)
-        on left: 76 77
+    bloqueAlgoritmo (98)
+        on left: 81 82
         on right: 1
-    defGlobales (98)
-        on left: 78 79 80
-        on right: 75 78 79
-    defAccionesFunciones (99)
-        on left: 81 82 83
-        on right: 75 81 82
-    bloque (100)
-        on left: 84
-        on right: 11 12 77
-    declaraciones (101)
-        on left: 85 86 87 88
-        on right: 84 85 86 87
-    definicionTipo (102)
+    defGlobales (99)
+        on left: 83 84 85
+        on right: 80 83 84
+    defAccionesFunciones (100)
+        on left: 86 87 88
+        on right: 80 86 87
+    bloque (101)
         on left: 89
-        on right: 78 85
-    definicionConst (103)
-        on left: 90
-        on right: 79 86
-    definicionVar (104)
-        on left: 91
-        on right: 87
-    listaDefsTipo (105)
-        on left: 92 93
-        on right: 89 92
-    defTipo (106)
-        on left: 94 95 96 97 98 99
-        on right: 14 18 19 20 26 92 95 98
-    expresionT (107)
-        on left: 100 101
-        on right: 95 97
+        on right: 11 12 82
+    declaraciones (102)
+        on left: 90 91 92 93
+        on right: 89 90 91 92
+    definicionTipo (103)
+        on left: 94
+        on right: 83 90
+    definicionConst (104)
+        on left: 95
+        on right: 84 91
+    definicionVar (105)
+        on left: 96
+        on right: 92
+    listaDefsTipo (106)
+        on left: 97 98
+        on right: 94 97
+    defTipo (107)
+        on left: 99 100 101 102 103 104
+        on right: 14 18 19 20 26 97 100 103
+    expresionT (108)
+        on left: 105 106
+        on right: 100 102
 
 
 Estado 0
@@ -398,7 +404,7 @@ Estado 5
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
 
-    $default  reduce usando la regla 80 (defGlobales)
+    $default  reduce usando la regla 85 (defGlobales)
 
     cabeceraAlgoritmo  ir al estado 8
     defGlobales        ir al estado 9
@@ -408,22 +414,22 @@ Estado 5
 
 Estado 6
 
-   89 definicionTipo: TK_TIPO . listaDefsTipo TK_FTIPO
+   94 definicionTipo: TK_TIPO . listaDefsTipo TK_FTIPO
 
     TK_IDENTIFICADOR  desplazar e ir al estado 12
 
-    $default  reduce usando la regla 93 (listaDefsTipo)
+    $default  reduce usando la regla 98 (listaDefsTipo)
 
     listaDefsTipo  ir al estado 13
 
 
 Estado 7
 
-   90 definicionConst: TK_CONST . listaDefsConstantes TK_FCONST
+   95 definicionConst: TK_CONST . listaDefsConstantes TK_FCONST
 
     TK_IDENTIFICADOR  desplazar e ir al estado 14
 
-    $default  reduce usando la regla 29 (listaDefsConstantes)
+    $default  reduce usando la regla 34 (listaDefsConstantes)
 
     listaDefsConstantes  ir al estado 15
 
@@ -436,8 +442,8 @@ Estado 8
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    TK_FALGORITMO  reduce usando la regla 76 (bloqueAlgoritmo)
-    $default       reduce usando la regla 88 (declaraciones)
+    TK_FALGORITMO  reduce usando la regla 81 (bloqueAlgoritmo)
+    $default       reduce usando la regla 93 (declaraciones)
 
     bloqueAlgoritmo  ir al estado 17
     bloque           ir al estado 18
@@ -449,12 +455,12 @@ Estado 8
 
 Estado 9
 
-   75 cabeceraAlgoritmo: defGlobales . defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
+   80 cabeceraAlgoritmo: defGlobales . defAccionesFunciones defVariablesInteraccion TK_COMENTARIO
 
     TK_FUNCION  desplazar e ir al estado 23
     TK_ACCION   desplazar e ir al estado 24
 
-    $default  reduce usando la regla 83 (defAccionesFunciones)
+    $default  reduce usando la regla 88 (defAccionesFunciones)
 
     defAccion             ir al estado 25
     defFuncion            ir al estado 26
@@ -463,12 +469,12 @@ Estado 9
 
 Estado 10
 
-   78 defGlobales: definicionTipo . defGlobales
+   83 defGlobales: definicionTipo . defGlobales
 
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
 
-    $default  reduce usando la regla 80 (defGlobales)
+    $default  reduce usando la regla 85 (defGlobales)
 
     defGlobales      ir al estado 28
     definicionTipo   ir al estado 10
@@ -477,12 +483,12 @@ Estado 10
 
 Estado 11
 
-   79 defGlobales: definicionConst . defGlobales
+   84 defGlobales: definicionConst . defGlobales
 
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
 
-    $default  reduce usando la regla 80 (defGlobales)
+    $default  reduce usando la regla 85 (defGlobales)
 
     defGlobales      ir al estado 29
     definicionTipo   ir al estado 10
@@ -491,35 +497,40 @@ Estado 11
 
 Estado 12
 
-   92 listaDefsTipo: TK_IDENTIFICADOR . TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
+   97 listaDefsTipo: TK_IDENTIFICADOR . TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
 
     TK_ASIGNACION  desplazar e ir al estado 30
 
 
 Estado 13
 
-   89 definicionTipo: TK_TIPO listaDefsTipo . TK_FTIPO
+   94 definicionTipo: TK_TIPO listaDefsTipo . TK_FTIPO
 
     TK_FTIPO  desplazar e ir al estado 31
 
 
 Estado 14
 
-   28 listaDefsConstantes: TK_IDENTIFICADOR . TK_ASIGNACION TK_PUNTOYCOMA listaDefsConstantes
+   28 listaDefsConstantes: TK_IDENTIFICADOR . TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
+   29                    | TK_IDENTIFICADOR . TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
+   30                    | TK_IDENTIFICADOR . TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
+   31                    | TK_IDENTIFICADOR . TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
+   32                    | TK_IDENTIFICADOR . TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
+   33                    | TK_IDENTIFICADOR . TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
 
     TK_ASIGNACION  desplazar e ir al estado 32
 
 
 Estado 15
 
-   90 definicionConst: TK_CONST listaDefsConstantes . TK_FCONST
+   95 definicionConst: TK_CONST listaDefsConstantes . TK_FCONST
 
     TK_FCONST  desplazar e ir al estado 33
 
 
 Estado 16
 
-   91 definicionVar: TK_VAR . listaDefsVariables TK_FVAR
+   96 definicionVar: TK_VAR . listaDefsVariables TK_FVAR
 
     TK_IDENTIFICADOR  desplazar e ir al estado 34
 
@@ -536,14 +547,14 @@ Estado 17
 
 Estado 18
 
-   77 bloqueAlgoritmo: bloque . TK_COMENTARIO
+   82 bloqueAlgoritmo: bloque . TK_COMENTARIO
 
     TK_COMENTARIO  desplazar e ir al estado 38
 
 
 Estado 19
 
-   84 bloque: declaraciones . instrucciones
+   89 bloque: declaraciones . instrucciones
 
     TK_CONTINUAR               desplazar e ir al estado 39
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
@@ -566,13 +577,13 @@ Estado 19
 
 Estado 20
 
-   85 declaraciones: definicionTipo . declaraciones
+   90 declaraciones: definicionTipo . declaraciones
 
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    $default  reduce usando la regla 88 (declaraciones)
+    $default  reduce usando la regla 93 (declaraciones)
 
     declaraciones    ir al estado 55
     definicionTipo   ir al estado 20
@@ -582,13 +593,13 @@ Estado 20
 
 Estado 21
 
-   86 declaraciones: definicionConst . declaraciones
+   91 declaraciones: definicionConst . declaraciones
 
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    $default  reduce usando la regla 88 (declaraciones)
+    $default  reduce usando la regla 93 (declaraciones)
 
     declaraciones    ir al estado 56
     definicionTipo   ir al estado 20
@@ -598,13 +609,13 @@ Estado 21
 
 Estado 22
 
-   87 declaraciones: definicionVar . declaraciones
+   92 declaraciones: definicionVar . declaraciones
 
     TK_TIPO   desplazar e ir al estado 6
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    $default  reduce usando la regla 88 (declaraciones)
+    $default  reduce usando la regla 93 (declaraciones)
 
     declaraciones    ir al estado 57
     definicionTipo   ir al estado 20
@@ -632,12 +643,12 @@ Estado 24
 
 Estado 25
 
-   81 defAccionesFunciones: defAccion . defAccionesFunciones
+   86 defAccionesFunciones: defAccion . defAccionesFunciones
 
     TK_FUNCION  desplazar e ir al estado 23
     TK_ACCION   desplazar e ir al estado 24
 
-    $default  reduce usando la regla 83 (defAccionesFunciones)
+    $default  reduce usando la regla 88 (defAccionesFunciones)
 
     defAccion             ir al estado 25
     defFuncion            ir al estado 26
@@ -646,12 +657,12 @@ Estado 25
 
 Estado 26
 
-   82 defAccionesFunciones: defFuncion . defAccionesFunciones
+   87 defAccionesFunciones: defFuncion . defAccionesFunciones
 
     TK_FUNCION  desplazar e ir al estado 23
     TK_ACCION   desplazar e ir al estado 24
 
-    $default  reduce usando la regla 83 (defAccionesFunciones)
+    $default  reduce usando la regla 88 (defAccionesFunciones)
 
     defAccion             ir al estado 25
     defFuncion            ir al estado 26
@@ -660,7 +671,7 @@ Estado 26
 
 Estado 27
 
-   75 cabeceraAlgoritmo: defGlobales defAccionesFunciones . defVariablesInteraccion TK_COMENTARIO
+   80 cabeceraAlgoritmo: defGlobales defAccionesFunciones . defVariablesInteraccion TK_COMENTARIO
 
     TK_ENT  desplazar e ir al estado 64
     TK_SAL  desplazar e ir al estado 65
@@ -672,21 +683,21 @@ Estado 27
 
 Estado 28
 
-   78 defGlobales: definicionTipo defGlobales .
+   83 defGlobales: definicionTipo defGlobales .
 
-    $default  reduce usando la regla 78 (defGlobales)
+    $default  reduce usando la regla 83 (defGlobales)
 
 
 Estado 29
 
-   79 defGlobales: definicionConst defGlobales .
+   84 defGlobales: definicionConst defGlobales .
 
-    $default  reduce usando la regla 79 (defGlobales)
+    $default  reduce usando la regla 84 (defGlobales)
 
 
 Estado 30
 
-   92 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION . defTipo TK_PUNTOYCOMA listaDefsTipo
+   97 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION . defTipo TK_PUNTOYCOMA listaDefsTipo
 
     TK_IDENTIFICADOR    desplazar e ir al estado 69
     TK_TUPLA            desplazar e ir al estado 70
@@ -702,49 +713,59 @@ Estado 30
 
 Estado 31
 
-   89 definicionTipo: TK_TIPO listaDefsTipo TK_FTIPO .
+   94 definicionTipo: TK_TIPO listaDefsTipo TK_FTIPO .
 
-    $default  reduce usando la regla 89 (definicionTipo)
+    $default  reduce usando la regla 94 (definicionTipo)
 
 
 Estado 32
 
-   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION . TK_PUNTOYCOMA listaDefsConstantes
+   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION . TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
+   29                    | TK_IDENTIFICADOR TK_ASIGNACION . TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
+   30                    | TK_IDENTIFICADOR TK_ASIGNACION . TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
+   31                    | TK_IDENTIFICADOR TK_ASIGNACION . TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
+   32                    | TK_IDENTIFICADOR TK_ASIGNACION . TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
+   33                    | TK_IDENTIFICADOR TK_ASIGNACION . TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 78
+    TK_LITERAL_NUMERICO  desplazar e ir al estado 78
+    TK_VERDADERO         desplazar e ir al estado 79
+    TK_FALSO             desplazar e ir al estado 80
+    TK_LITERALENTERO     desplazar e ir al estado 81
+    TK_LITERALCARACTER   desplazar e ir al estado 82
+    TK_LITERAL_CADENA    desplazar e ir al estado 83
 
 
 Estado 33
 
-   90 definicionConst: TK_CONST listaDefsConstantes TK_FCONST .
+   95 definicionConst: TK_CONST listaDefsConstantes TK_FCONST .
 
-    $default  reduce usando la regla 90 (definicionConst)
+    $default  reduce usando la regla 95 (definicionConst)
 
 
 Estado 34
 
-   31 listaDefsVariables: TK_IDENTIFICADOR .
-   32 listaId: TK_IDENTIFICADOR . TK_COMA listaId
-   33        | TK_IDENTIFICADOR .
+   36 listaDefsVariables: TK_IDENTIFICADOR .
+   37 listaId: TK_IDENTIFICADOR . TK_COMA listaId
+   38        | TK_IDENTIFICADOR .
 
-    TK_COMA  desplazar e ir al estado 79
+    TK_COMA  desplazar e ir al estado 84
 
-    TK_IDENTIFICADOR  reduce usando la regla 33 (listaId)
-    $default          reduce usando la regla 31 (listaDefsVariables)
+    TK_IDENTIFICADOR  reduce usando la regla 38 (listaId)
+    $default          reduce usando la regla 36 (listaDefsVariables)
 
 
 Estado 35
 
-   91 definicionVar: TK_VAR listaDefsVariables . TK_FVAR
+   96 definicionVar: TK_VAR listaDefsVariables . TK_FVAR
 
-    TK_FVAR  desplazar e ir al estado 80
+    TK_FVAR  desplazar e ir al estado 85
 
 
 Estado 36
 
-   30 listaDefsVariables: listaId . TK_IDENTIFICADOR TK_COMA listaId
+   35 listaDefsVariables: listaId . TK_IDENTIFICADOR TK_COMA listaId
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 81
+    TK_IDENTIFICADOR  desplazar e ir al estado 86
 
 
 Estado 37
@@ -756,40 +777,40 @@ Estado 37
 
 Estado 38
 
-   77 bloqueAlgoritmo: bloque TK_COMENTARIO .
+   82 bloqueAlgoritmo: bloque TK_COMENTARIO .
 
-    $default  reduce usando la regla 77 (bloqueAlgoritmo)
+    $default  reduce usando la regla 82 (bloqueAlgoritmo)
 
 
 Estado 39
 
-   70 instruccion: TK_CONTINUAR .
+   75 instruccion: TK_CONTINUAR .
 
-    $default  reduce usando la regla 70 (instruccion)
+    $default  reduce usando la regla 75 (instruccion)
 
 
 Estado 40
 
-   60 operandoBooleano: TK_IDENTIFICADOR_BOOLEANO .
+   65 operandoBooleano: TK_IDENTIFICADOR_BOOLEANO .
 
-    $default  reduce usando la regla 60 (operandoBooleano)
+    $default  reduce usando la regla 65 (operandoBooleano)
 
 
 Estado 41
 
    21 llamadaAccion: TK_IDENTIFICADOR . TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
-   64 operandoAritmetico: TK_IDENTIFICADOR .
+   69 operandoAritmetico: TK_IDENTIFICADOR .
 
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 82
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 87
 
-    $default  reduce usando la regla 64 (operandoAritmetico)
+    $default  reduce usando la regla 69 (operandoAritmetico)
 
 
 Estado 42
 
    10 itCotaFija: TK_PARA . TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 83
+    TK_IDENTIFICADOR  desplazar e ir al estado 88
 
 
 Estado 43
@@ -797,20 +818,20 @@ Estado 43
     9 itCotaVariable: TK_MIENTRAS . expresion TK_HACER instrucciones TK_FMIENTRAS
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 92
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 98
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 44
@@ -818,41 +839,41 @@ Estado 44
     4 alternativa: TK_SI . expresion TK_FLECHA instrucciones listaOpciones TK_FSI
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 97
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 102
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 45
 
-   71 instruccion: asignacion .
+   76 instruccion: asignacion .
 
-    $default  reduce usando la regla 71 (instruccion)
+    $default  reduce usando la regla 76 (instruccion)
 
 
 Estado 46
 
-   72 instruccion: alternativa .
+   77 instruccion: alternativa .
 
-    $default  reduce usando la regla 72 (instruccion)
+    $default  reduce usando la regla 77 (instruccion)
 
 
 Estado 47
 
-   73 instruccion: iteracion .
+   78 instruccion: iteracion .
 
-    $default  reduce usando la regla 73 (instruccion)
+    $default  reduce usando la regla 78 (instruccion)
 
 
 Estado 48
@@ -871,80 +892,80 @@ Estado 49
 
 Estado 50
 
-   74 instruccion: llamadaAccion .
+   79 instruccion: llamadaAccion .
 
-    $default  reduce usando la regla 74 (instruccion)
+    $default  reduce usando la regla 79 (instruccion)
 
 
 Estado 51
 
     2 asignacion: operandoBooleano . TK_DOSPUNTOS_IGUAL expresion
-   61 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
-   62                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   63                 | operandoBooleano . TK_REF
+   66 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
+   67                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   68                 | operandoBooleano . TK_REF
 
-    TK_DOSPUNTOS_IGUAL    desplazar e ir al estado 98
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 99
-    TK_PUNTO              desplazar e ir al estado 100
-    TK_REF                desplazar e ir al estado 101
+    TK_DOSPUNTOS_IGUAL    desplazar e ir al estado 103
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 104
+    TK_PUNTO              desplazar e ir al estado 105
+    TK_REF                desplazar e ir al estado 106
 
 
 Estado 52
 
     3 asignacion: operandoAritmetico . TK_DOSPUNTOS_IGUAL expresion
-   65 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
-   66                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   67                   | operandoAritmetico . TK_REF
+   70 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
+   71                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   72                   | operandoAritmetico . TK_REF
 
-    TK_DOSPUNTOS_IGUAL    desplazar e ir al estado 102
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 103
-    TK_PUNTO              desplazar e ir al estado 104
-    TK_REF                desplazar e ir al estado 105
+    TK_DOSPUNTOS_IGUAL    desplazar e ir al estado 107
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 108
+    TK_PUNTO              desplazar e ir al estado 109
+    TK_REF                desplazar e ir al estado 110
 
 
 Estado 53
 
-   84 bloque: declaraciones instrucciones .
+   89 bloque: declaraciones instrucciones .
 
-    $default  reduce usando la regla 84 (bloque)
+    $default  reduce usando la regla 89 (bloque)
 
 
 Estado 54
 
-   68 instrucciones: instruccion . TK_PUNTOYCOMA instrucciones
-   69              | instruccion .
+   73 instrucciones: instruccion . TK_PUNTOYCOMA instrucciones
+   74              | instruccion .
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 106
+    TK_PUNTOYCOMA  desplazar e ir al estado 111
 
-    $default  reduce usando la regla 69 (instrucciones)
+    $default  reduce usando la regla 74 (instrucciones)
 
 
 Estado 55
 
-   85 declaraciones: definicionTipo declaraciones .
+   90 declaraciones: definicionTipo declaraciones .
 
-    $default  reduce usando la regla 85 (declaraciones)
+    $default  reduce usando la regla 90 (declaraciones)
 
 
 Estado 56
 
-   86 declaraciones: definicionConst declaraciones .
+   91 declaraciones: definicionConst declaraciones .
 
-    $default  reduce usando la regla 86 (declaraciones)
+    $default  reduce usando la regla 91 (declaraciones)
 
 
 Estado 57
 
-   87 declaraciones: definicionVar declaraciones .
+   92 declaraciones: definicionVar declaraciones .
 
-    $default  reduce usando la regla 87 (declaraciones)
+    $default  reduce usando la regla 92 (declaraciones)
 
 
 Estado 58
 
    14 cabeceraFuncion: TK_IDENTIFICADOR . TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA
 
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 107
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 112
 
 
 Estado 59
@@ -955,9 +976,9 @@ Estado 59
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    $default  reduce usando la regla 88 (declaraciones)
+    $default  reduce usando la regla 93 (declaraciones)
 
-    bloque           ir al estado 108
+    bloque           ir al estado 113
     declaraciones    ir al estado 19
     definicionTipo   ir al estado 20
     definicionConst  ir al estado 21
@@ -968,7 +989,7 @@ Estado 60
 
    13 cabeceraAccion: TK_IDENTIFICADOR . TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
 
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 109
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 114
 
 
 Estado 61
@@ -979,9 +1000,9 @@ Estado 61
     TK_CONST  desplazar e ir al estado 7
     TK_VAR    desplazar e ir al estado 16
 
-    $default  reduce usando la regla 88 (declaraciones)
+    $default  reduce usando la regla 93 (declaraciones)
 
-    bloque           ir al estado 110
+    bloque           ir al estado 115
     declaraciones    ir al estado 19
     definicionTipo   ir al estado 20
     definicionConst  ir al estado 21
@@ -990,92 +1011,92 @@ Estado 61
 
 Estado 62
 
-   81 defAccionesFunciones: defAccion defAccionesFunciones .
+   86 defAccionesFunciones: defAccion defAccionesFunciones .
 
-    $default  reduce usando la regla 81 (defAccionesFunciones)
+    $default  reduce usando la regla 86 (defAccionesFunciones)
 
 
 Estado 63
 
-   82 defAccionesFunciones: defFuncion defAccionesFunciones .
+   87 defAccionesFunciones: defFuncion defAccionesFunciones .
 
-    $default  reduce usando la regla 82 (defAccionesFunciones)
+    $default  reduce usando la regla 87 (defAccionesFunciones)
 
 
 Estado 64
 
-   37 defEntrada: TK_ENT . listaDefsVariables
+   42 defEntrada: TK_ENT . listaDefsVariables
 
     TK_IDENTIFICADOR  desplazar e ir al estado 34
 
-    listaDefsVariables  ir al estado 111
+    listaDefsVariables  ir al estado 116
     listaId             ir al estado 36
 
 
 Estado 65
 
-   38 defSalida: TK_SAL . listaDefsVariables
+   43 defSalida: TK_SAL . listaDefsVariables
 
     TK_IDENTIFICADOR  desplazar e ir al estado 34
 
-    listaDefsVariables  ir al estado 112
+    listaDefsVariables  ir al estado 117
     listaId             ir al estado 36
 
 
 Estado 66
 
-   75 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion . TK_COMENTARIO
+   80 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion . TK_COMENTARIO
 
-    TK_COMENTARIO  desplazar e ir al estado 113
+    TK_COMENTARIO  desplazar e ir al estado 118
 
 
 Estado 67
 
-   34 defVariablesInteraccion: defEntrada .
-   35                        | defEntrada . defSalida
+   39 defVariablesInteraccion: defEntrada .
+   40                        | defEntrada . defSalida
 
     TK_SAL  desplazar e ir al estado 65
 
-    $default  reduce usando la regla 34 (defVariablesInteraccion)
+    $default  reduce usando la regla 39 (defVariablesInteraccion)
 
-    defSalida  ir al estado 114
+    defSalida  ir al estado 119
 
 
 Estado 68
 
-   36 defVariablesInteraccion: defSalida .
+   41 defVariablesInteraccion: defSalida .
 
-    $default  reduce usando la regla 36 (defVariablesInteraccion)
+    $default  reduce usando la regla 41 (defVariablesInteraccion)
 
 
 Estado 69
 
-   96 defTipo: TK_IDENTIFICADOR .
+  101 defTipo: TK_IDENTIFICADOR .
 
-    $default  reduce usando la regla 96 (defTipo)
+    $default  reduce usando la regla 101 (defTipo)
 
 
 Estado 70
 
-   94 defTipo: TK_TUPLA . listaCampos TK_FTUPLA
+   99 defTipo: TK_TUPLA . listaCampos TK_FTUPLA
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 115
+    TK_IDENTIFICADOR  desplazar e ir al estado 120
 
     $default  reduce usando la regla 27 (listaCampos)
 
-    listaCampos  ir al estado 116
+    listaCampos  ir al estado 121
 
 
 Estado 71
 
-   95 defTipo: TK_TABLA . TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
+  100 defTipo: TK_TABLA . TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
 
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 117
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 122
 
 
 Estado 72
 
-   98 defTipo: TK_REF . defTipo
+  103 defTipo: TK_REF . defTipo
 
     TK_IDENTIFICADOR    desplazar e ir al estado 69
     TK_TUPLA            desplazar e ir al estado 70
@@ -1085,403 +1106,434 @@ Estado 72
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 118
+    defTipo     ir al estado 123
     expresionT  ir al estado 77
 
 
 Estado 73
 
-   99 defTipo: TK_TIPOBASE .
+  104 defTipo: TK_TIPOBASE .
 
-    $default  reduce usando la regla 99 (defTipo)
+    $default  reduce usando la regla 104 (defTipo)
 
 
 Estado 74
 
-  100 expresionT: TK_LITERALENTERO .
+  105 expresionT: TK_LITERALENTERO .
 
-    $default  reduce usando la regla 100 (expresionT)
+    $default  reduce usando la regla 105 (expresionT)
 
 
 Estado 75
 
-  101 expresionT: TK_LITERALCARACTER .
+  106 expresionT: TK_LITERALCARACTER .
 
-    $default  reduce usando la regla 101 (expresionT)
+    $default  reduce usando la regla 106 (expresionT)
 
 
 Estado 76
 
-   92 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo . TK_PUNTOYCOMA listaDefsTipo
+   97 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo . TK_PUNTOYCOMA listaDefsTipo
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 119
+    TK_PUNTOYCOMA  desplazar e ir al estado 124
 
 
 Estado 77
 
-   97 defTipo: expresionT . TK_PUNTO_Y_PUNTO expresionT
+  102 defTipo: expresionT . TK_PUNTO_Y_PUNTO expresionT
 
-    TK_PUNTO_Y_PUNTO  desplazar e ir al estado 120
+    TK_PUNTO_Y_PUNTO  desplazar e ir al estado 125
 
 
 Estado 78
 
-   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA . listaDefsConstantes
+   33 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO . TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 14
-
-    $default  reduce usando la regla 29 (listaDefsConstantes)
-
-    listaDefsConstantes  ir al estado 121
+    TK_PUNTOYCOMA  desplazar e ir al estado 126
 
 
 Estado 79
 
-   32 listaId: TK_IDENTIFICADOR TK_COMA . listaId
+   30 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO . TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 122
-
-    listaId  ir al estado 123
+    TK_PUNTOYCOMA  desplazar e ir al estado 127
 
 
 Estado 80
 
-   91 definicionVar: TK_VAR listaDefsVariables TK_FVAR .
+   31 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO . TK_PUNTOYCOMA listaDefsConstantes
 
-    $default  reduce usando la regla 91 (definicionVar)
+    TK_PUNTOYCOMA  desplazar e ir al estado 128
 
 
 Estado 81
 
-   30 listaDefsVariables: listaId TK_IDENTIFICADOR . TK_COMA listaId
+   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO . TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_COMA  desplazar e ir al estado 124
+    TK_PUNTOYCOMA  desplazar e ir al estado 129
 
 
 Estado 82
 
-   21 llamadaAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA . parametrosReales TK_PARENTESIS_CIERRE
+   29 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER . TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    $default  reduce usando la regla 25 (parametrosReales)
-
-    llamadaFuncion      ir al estado 91
-    parametrosReales    ir al estado 125
-    expresion           ir al estado 126
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    TK_PUNTOYCOMA  desplazar e ir al estado 130
 
 
 Estado 83
 
-   10 itCotaFija: TK_PARA TK_IDENTIFICADOR . TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
+   32 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA . TK_PUNTOYCOMA listaDefsConstantes
 
-    TK_DOSPUNTOS_IGUAL  desplazar e ir al estado 127
+    TK_PUNTOYCOMA  desplazar e ir al estado 131
 
 
 Estado 84
 
-   22 llamadaFuncion: TK_IDENTIFICADOR . TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
-   64 operandoAritmetico: TK_IDENTIFICADOR .
+   37 listaId: TK_IDENTIFICADOR TK_COMA . listaId
 
-    TK_DOSPUNTOS_IGUAL  desplazar e ir al estado 128
+    TK_IDENTIFICADOR  desplazar e ir al estado 132
 
-    $default  reduce usando la regla 64 (operandoAritmetico)
+    listaId  ir al estado 133
 
 
 Estado 85
 
-   48 expArit: TK_PARENTESIS_APERTURA . expArit TK_PARENTESIS_CIERRE
-   59 expBool: TK_PARENTESIS_APERTURA . expBool TK_PARENTESIS_CIERRE
+   96 definicionVar: TK_VAR listaDefsVariables TK_FVAR .
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 129
-    expArit             ir al estado 130
-    expBool             ir al estado 131
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    $default  reduce usando la regla 96 (definicionVar)
 
 
 Estado 86
 
-   50 expArit: TK_RESTA . expArit
+   35 listaDefsVariables: listaId TK_IDENTIFICADOR . TK_COMA listaId
 
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 134
-    operandoAritmetico  ir al estado 96
+    TK_COMA  desplazar e ir al estado 134
 
 
 Estado 87
 
-   51 expArit: TK_LITERAL_NUMERICO .
+   21 llamadaAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA . parametrosReales TK_PARENTESIS_CIERRE
 
-    $default  reduce usando la regla 51 (expArit)
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    $default  reduce usando la regla 25 (parametrosReales)
+
+    llamadaFuncion      ir al estado 96
+    parametrosReales    ir al estado 135
+    expBool             ir al estado 97
+    expresion           ir al estado 136
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 88
 
-   54 expBool: TK_NO . expBool
+   10 itCotaFija: TK_PARA TK_IDENTIFICADOR . TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 129
-    expArit             ir al estado 93
-    expBool             ir al estado 135
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    TK_DOSPUNTOS_IGUAL  desplazar e ir al estado 137
 
 
 Estado 89
 
-   56 expBool: TK_VERDADERO .
+   22 llamadaFuncion: TK_IDENTIFICADOR . TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
+   69 operandoAritmetico: TK_IDENTIFICADOR .
 
-    $default  reduce usando la regla 56 (expBool)
+    TK_DOSPUNTOS_IGUAL  desplazar e ir al estado 138
+
+    $default  reduce usando la regla 69 (operandoAritmetico)
 
 
 Estado 90
 
-   57 expBool: TK_FALSO .
+   51 expBool: TK_PARENTESIS_APERTURA . expBool TK_PARENTESIS_CIERRE
+   61 expArit: TK_PARENTESIS_APERTURA . expArit TK_PARENTESIS_CIERRE
 
-    $default  reduce usando la regla 57 (expBool)
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 139
+    expresion           ir al estado 140
+    expArit             ir al estado 141
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 91
 
-   41 expresion: llamadaFuncion .
+   63 expArit: TK_RESTA . expArit
 
-    $default  reduce usando la regla 41 (expresion)
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 144
+    operandoAritmetico  ir al estado 101
 
 
 Estado 92
 
-    9 itCotaVariable: TK_MIENTRAS expresion . TK_HACER instrucciones TK_FMIENTRAS
-   58 expBool: expresion . TK_OPREL expresion
+   64 expArit: TK_LITERAL_NUMERICO .
 
-    TK_HACER  desplazar e ir al estado 136
-    TK_OPREL  desplazar e ir al estado 137
+    $default  reduce usando la regla 64 (expArit)
 
 
 Estado 93
 
-   39 expresion: expArit .
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
+   46 expBool: TK_NO . expBool
 
-    TK_SUMA             desplazar e ir al estado 138
-    TK_RESTA            desplazar e ir al estado 139
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    $default  reduce usando la regla 39 (expresion)
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 145
+    expresion           ir al estado 140
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 94
 
-   40 expresion: expBool .
-   52 expBool: expBool . TK_Y expBool
-   53        | expBool . TK_O expBool
+   48 expBool: TK_VERDADERO .
 
-    TK_Y  desplazar e ir al estado 144
-    TK_O  desplazar e ir al estado 145
-
-    TK_Y      [reduce usando la regla 40 (expresion)]
-    TK_O      [reduce usando la regla 40 (expresion)]
-    $default  reduce usando la regla 40 (expresion)
+    $default  reduce usando la regla 48 (expBool)
 
 
 Estado 95
 
-   55 expBool: operandoBooleano .
-   61 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
-   62                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   63                 | operandoBooleano . TK_REF
+   49 expBool: TK_FALSO .
 
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 99
-    TK_PUNTO              desplazar e ir al estado 100
-    TK_REF                desplazar e ir al estado 101
-
-    $default  reduce usando la regla 55 (expBool)
+    $default  reduce usando la regla 49 (expBool)
 
 
 Estado 96
 
-   49 expArit: operandoAritmetico .
-   65 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
-   66                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   67                   | operandoAritmetico . TK_REF
+   54 expresion: llamadaFuncion .
 
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 103
-    TK_PUNTO              desplazar e ir al estado 104
-    TK_REF                desplazar e ir al estado 105
-
-    $default  reduce usando la regla 49 (expArit)
+    $default  reduce usando la regla 54 (expresion)
 
 
 Estado 97
 
-    4 alternativa: TK_SI expresion . TK_FLECHA instrucciones listaOpciones TK_FSI
-   58 expBool: expresion . TK_OPREL expresion
+   44 expBool: expBool . TK_Y expBool
+   45        | expBool . TK_O expBool
+   53 expresion: expBool .
 
-    TK_FLECHA  desplazar e ir al estado 146
-    TK_OPREL   desplazar e ir al estado 137
+    TK_Y  desplazar e ir al estado 146
+    TK_O  desplazar e ir al estado 147
+
+    TK_Y      [reduce usando la regla 53 (expresion)]
+    TK_O      [reduce usando la regla 53 (expresion)]
+    $default  reduce usando la regla 53 (expresion)
 
 
 Estado 98
 
-    2 asignacion: operandoBooleano TK_DOSPUNTOS_IGUAL . expresion
+    9 itCotaVariable: TK_MIENTRAS expresion . TK_HACER instrucciones TK_FMIENTRAS
+   50 expBool: expresion . TK_OPREL expresion
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 147
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    TK_HACER  desplazar e ir al estado 148
+    TK_OPREL  desplazar e ir al estado 149
 
 
 Estado 99
 
-   62 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA . expresion TK_CORCHETE_CIERRE
+   52 expresion: expArit .
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_SUMA             desplazar e ir al estado 150
+    TK_RESTA            desplazar e ir al estado 151
+    TK_MULTIPLICACION   desplazar e ir al estado 152
+    TK_DIVISION         desplazar e ir al estado 153
+    TK_DIVISION_ENTERA  desplazar e ir al estado 154
+    TK_MODULO           desplazar e ir al estado 155
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 148
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    $default  reduce usando la regla 52 (expresion)
 
 
 Estado 100
 
-   61 operandoBooleano: operandoBooleano TK_PUNTO . operandoBooleano
+   47 expBool: operandoBooleano .
+   66 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
+   67                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   68                 | operandoBooleano . TK_REF
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 104
+    TK_PUNTO              desplazar e ir al estado 105
+    TK_REF                desplazar e ir al estado 106
 
-    operandoBooleano  ir al estado 149
+    $default  reduce usando la regla 47 (expBool)
 
 
 Estado 101
 
-   63 operandoBooleano: operandoBooleano TK_REF .
+   62 expArit: operandoAritmetico .
+   70 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
+   71                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   72                   | operandoAritmetico . TK_REF
 
-    $default  reduce usando la regla 63 (operandoBooleano)
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 108
+    TK_PUNTO              desplazar e ir al estado 109
+    TK_REF                desplazar e ir al estado 110
+
+    $default  reduce usando la regla 62 (expArit)
 
 
 Estado 102
 
-    3 asignacion: operandoAritmetico TK_DOSPUNTOS_IGUAL . expresion
+    4 alternativa: TK_SI expresion . TK_FLECHA instrucciones listaOpciones TK_FSI
+   50 expBool: expresion . TK_OPREL expresion
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 150
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    TK_FLECHA  desplazar e ir al estado 156
+    TK_OPREL   desplazar e ir al estado 149
 
 
 Estado 103
 
-   66 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA . expresion TK_CORCHETE_CIERRE
+    2 asignacion: operandoBooleano TK_DOSPUNTOS_IGUAL . expresion
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 151
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 157
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 104
 
-   65 operandoAritmetico: operandoAritmetico TK_PUNTO . operandoAritmetico
+   67 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA . expresion TK_CORCHETE_CIERRE
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 132
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    operandoAritmetico  ir al estado 152
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 158
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 105
 
-   67 operandoAritmetico: operandoAritmetico TK_REF .
+   66 operandoBooleano: operandoBooleano TK_PUNTO . operandoBooleano
 
-    $default  reduce usando la regla 67 (operandoAritmetico)
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+
+    operandoBooleano  ir al estado 159
 
 
 Estado 106
 
-   68 instrucciones: instruccion TK_PUNTOYCOMA . instrucciones
+   68 operandoBooleano: operandoBooleano TK_REF .
+
+    $default  reduce usando la regla 68 (operandoBooleano)
+
+
+Estado 107
+
+    3 asignacion: operandoAritmetico TK_DOSPUNTOS_IGUAL . expresion
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 160
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 108
+
+   71 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA . expresion TK_CORCHETE_CIERRE
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 161
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 109
+
+   70 operandoAritmetico: operandoAritmetico TK_PUNTO . operandoAritmetico
+
+    TK_IDENTIFICADOR  desplazar e ir al estado 142
+
+    operandoAritmetico  ir al estado 162
+
+
+Estado 110
+
+   72 operandoAritmetico: operandoAritmetico TK_REF .
+
+    $default  reduce usando la regla 72 (operandoAritmetico)
+
+
+Estado 111
+
+   73 instrucciones: instruccion TK_PUNTOYCOMA . instrucciones
 
     TK_CONTINUAR               desplazar e ir al estado 39
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
@@ -1498,305 +1550,406 @@ Estado 106
     llamadaAccion       ir al estado 50
     operandoBooleano    ir al estado 51
     operandoAritmetico  ir al estado 52
-    instrucciones       ir al estado 153
+    instrucciones       ir al estado 163
     instruccion         ir al estado 54
 
 
-Estado 107
+Estado 112
 
    14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA . listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA
 
     TK_IDENTIFICADOR  desplazar e ir al estado 34
 
-    listaDefsVariables  ir al estado 154
+    listaDefsVariables  ir al estado 164
     listaId             ir al estado 36
-
-
-Estado 108
-
-   12 defFuncion: TK_FUNCION cabeceraFuncion bloque . TK_DEV expresion TK_FFUNCION
-
-    TK_DEV  desplazar e ir al estado 155
-
-
-Estado 109
-
-   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA . defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
-
-    TK_ENT     desplazar e ir al estado 156
-    TK_SAL     desplazar e ir al estado 157
-    TK_ENTSAL  desplazar e ir al estado 158
-
-    $default  reduce usando la regla 17 (defParForm)
-
-    defParForm  ir al estado 159
-    dParForm    ir al estado 160
-
-
-Estado 110
-
-   11 defAccion: TK_ACCION cabeceraAccion bloque . TK_FACCION
-
-    TK_FACCION  desplazar e ir al estado 161
-
-
-Estado 111
-
-   37 defEntrada: TK_ENT listaDefsVariables .
-
-    $default  reduce usando la regla 37 (defEntrada)
-
-
-Estado 112
-
-   38 defSalida: TK_SAL listaDefsVariables .
-
-    $default  reduce usando la regla 38 (defSalida)
 
 
 Estado 113
 
-   75 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO .
+   12 defFuncion: TK_FUNCION cabeceraFuncion bloque . TK_DEV expresion TK_FFUNCION
 
-    $default  reduce usando la regla 75 (cabeceraAlgoritmo)
+    TK_DEV  desplazar e ir al estado 165
 
 
 Estado 114
 
-   35 defVariablesInteraccion: defEntrada defSalida .
+   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA . defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
 
-    $default  reduce usando la regla 35 (defVariablesInteraccion)
+    TK_ENT     desplazar e ir al estado 166
+    TK_SAL     desplazar e ir al estado 167
+    TK_ENTSAL  desplazar e ir al estado 168
+
+    $default  reduce usando la regla 17 (defParForm)
+
+    defParForm  ir al estado 169
+    dParForm    ir al estado 170
 
 
 Estado 115
 
-   26 listaCampos: TK_IDENTIFICADOR . TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
+   11 defAccion: TK_ACCION cabeceraAccion bloque . TK_FACCION
 
-    TK_DOSPUNTOS  desplazar e ir al estado 162
+    TK_FACCION  desplazar e ir al estado 171
 
 
 Estado 116
 
-   94 defTipo: TK_TUPLA listaCampos . TK_FTUPLA
+   42 defEntrada: TK_ENT listaDefsVariables .
 
-    TK_FTUPLA  desplazar e ir al estado 163
+    $default  reduce usando la regla 42 (defEntrada)
 
 
 Estado 117
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA . expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
+   43 defSalida: TK_SAL listaDefsVariables .
 
-    TK_LITERALENTERO    desplazar e ir al estado 74
-    TK_LITERALCARACTER  desplazar e ir al estado 75
-
-    expresionT  ir al estado 164
+    $default  reduce usando la regla 43 (defSalida)
 
 
 Estado 118
 
-   98 defTipo: TK_REF defTipo .
+   80 cabeceraAlgoritmo: defGlobales defAccionesFunciones defVariablesInteraccion TK_COMENTARIO .
 
-    $default  reduce usando la regla 98 (defTipo)
+    $default  reduce usando la regla 80 (cabeceraAlgoritmo)
 
 
 Estado 119
 
-   92 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA . listaDefsTipo
+   40 defVariablesInteraccion: defEntrada defSalida .
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 12
-
-    $default  reduce usando la regla 93 (listaDefsTipo)
-
-    listaDefsTipo  ir al estado 165
+    $default  reduce usando la regla 40 (defVariablesInteraccion)
 
 
 Estado 120
 
-   97 defTipo: expresionT TK_PUNTO_Y_PUNTO . expresionT
+   26 listaCampos: TK_IDENTIFICADOR . TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos
 
-    TK_LITERALENTERO    desplazar e ir al estado 74
-    TK_LITERALCARACTER  desplazar e ir al estado 75
-
-    expresionT  ir al estado 166
+    TK_DOSPUNTOS  desplazar e ir al estado 172
 
 
 Estado 121
 
-   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefsConstantes .
+   99 defTipo: TK_TUPLA listaCampos . TK_FTUPLA
 
-    $default  reduce usando la regla 28 (listaDefsConstantes)
+    TK_FTUPLA  desplazar e ir al estado 173
 
 
 Estado 122
 
-   32 listaId: TK_IDENTIFICADOR . TK_COMA listaId
-   33        | TK_IDENTIFICADOR .
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA . expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
 
-    TK_COMA  desplazar e ir al estado 79
+    TK_LITERALENTERO    desplazar e ir al estado 74
+    TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    $default  reduce usando la regla 33 (listaId)
+    expresionT  ir al estado 174
 
 
 Estado 123
 
-   32 listaId: TK_IDENTIFICADOR TK_COMA listaId .
+  103 defTipo: TK_REF defTipo .
 
-    $default  reduce usando la regla 32 (listaId)
+    $default  reduce usando la regla 103 (defTipo)
 
 
 Estado 124
 
-   30 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA . listaId
+   97 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA . listaDefsTipo
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 122
+    TK_IDENTIFICADOR  desplazar e ir al estado 12
 
-    listaId  ir al estado 167
+    $default  reduce usando la regla 98 (listaDefsTipo)
+
+    listaDefsTipo  ir al estado 175
 
 
 Estado 125
 
-   21 llamadaAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA parametrosReales . TK_PARENTESIS_CIERRE
+  102 defTipo: expresionT TK_PUNTO_Y_PUNTO . expresionT
 
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 168
+    TK_LITERALENTERO    desplazar e ir al estado 74
+    TK_LITERALCARACTER  desplazar e ir al estado 75
+
+    expresionT  ir al estado 176
 
 
 Estado 126
 
-   23 parametrosReales: expresion . TK_COMA parametrosReales
-   24                 | expresion .
-   58 expBool: expresion . TK_OPREL expresion
+   33 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_COMA   desplazar e ir al estado 169
-    TK_OPREL  desplazar e ir al estado 137
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
 
-    $default  reduce usando la regla 24 (parametrosReales)
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 177
 
 
 Estado 127
 
-   10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL . expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
+   30 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 170
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 178
 
 
 Estado 128
 
-   22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL . TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
+   31 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 171
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 179
 
 
 Estado 129
 
-   58 expBool: expresion . TK_OPREL expresion
+   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_OPREL  desplazar e ir al estado 137
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
+
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 180
 
 
 Estado 130
 
-   39 expresion: expArit .
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-   48        | TK_PARENTESIS_APERTURA expArit . TK_PARENTESIS_CIERRE
+   29 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 172
-    TK_SUMA               desplazar e ir al estado 138
-    TK_RESTA              desplazar e ir al estado 139
-    TK_MULTIPLICACION     desplazar e ir al estado 140
-    TK_DIVISION           desplazar e ir al estado 141
-    TK_DIVISION_ENTERA    desplazar e ir al estado 142
-    TK_MODULO             desplazar e ir al estado 143
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
 
-    $default  reduce usando la regla 39 (expresion)
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 181
 
 
 Estado 131
 
-   40 expresion: expBool .
-   52 expBool: expBool . TK_Y expBool
-   53        | expBool . TK_O expBool
-   59        | TK_PARENTESIS_APERTURA expBool . TK_PARENTESIS_CIERRE
+   32 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA . listaDefsConstantes
 
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 173
-    TK_Y                  desplazar e ir al estado 144
-    TK_O                  desplazar e ir al estado 145
+    TK_IDENTIFICADOR  desplazar e ir al estado 14
 
-    $default  reduce usando la regla 40 (expresion)
+    $default  reduce usando la regla 34 (listaDefsConstantes)
+
+    listaDefsConstantes  ir al estado 182
 
 
 Estado 132
 
-   64 operandoAritmetico: TK_IDENTIFICADOR .
+   37 listaId: TK_IDENTIFICADOR . TK_COMA listaId
+   38        | TK_IDENTIFICADOR .
 
-    $default  reduce usando la regla 64 (operandoAritmetico)
+    TK_COMA  desplazar e ir al estado 84
+
+    $default  reduce usando la regla 38 (listaId)
 
 
 Estado 133
 
-   48 expArit: TK_PARENTESIS_APERTURA . expArit TK_PARENTESIS_CIERRE
+   37 listaId: TK_IDENTIFICADOR TK_COMA listaId .
 
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 174
-    operandoAritmetico  ir al estado 96
+    $default  reduce usando la regla 37 (listaId)
 
 
 Estado 134
 
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-   50        | TK_RESTA expArit .
+   35 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA . listaId
 
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
+    TK_IDENTIFICADOR  desplazar e ir al estado 132
 
-    $default  reduce usando la regla 50 (expArit)
+    listaId  ir al estado 183
 
 
 Estado 135
 
-   40 expresion: expBool .
-   52 expBool: expBool . TK_Y expBool
-   53        | expBool . TK_O expBool
-   54        | TK_NO expBool .
+   21 llamadaAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA parametrosReales . TK_PARENTESIS_CIERRE
 
-    TK_Y  desplazar e ir al estado 144
-    TK_O  desplazar e ir al estado 145
-
-    TK_OPREL  reduce usando la regla 40 (expresion)
-    TK_OPREL  [reduce usando la regla 54 (expBool)]
-    $default  reduce usando la regla 54 (expBool)
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 184
 
 
 Estado 136
+
+   23 parametrosReales: expresion . TK_COMA parametrosReales
+   24                 | expresion .
+   50 expBool: expresion . TK_OPREL expresion
+
+    TK_COMA   desplazar e ir al estado 185
+    TK_OPREL  desplazar e ir al estado 149
+
+    $default  reduce usando la regla 24 (parametrosReales)
+
+
+Estado 137
+
+   10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL . expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 186
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 138
+
+   22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL . TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE
+
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 187
+
+
+Estado 139
+
+   44 expBool: expBool . TK_Y expBool
+   45        | expBool . TK_O expBool
+   51        | TK_PARENTESIS_APERTURA expBool . TK_PARENTESIS_CIERRE
+   53 expresion: expBool .
+
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 188
+    TK_Y                  desplazar e ir al estado 146
+    TK_O                  desplazar e ir al estado 147
+
+    $default  reduce usando la regla 53 (expresion)
+
+
+Estado 140
+
+   50 expBool: expresion . TK_OPREL expresion
+
+    TK_OPREL  desplazar e ir al estado 149
+
+
+Estado 141
+
+   52 expresion: expArit .
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+   61        | TK_PARENTESIS_APERTURA expArit . TK_PARENTESIS_CIERRE
+
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 189
+    TK_SUMA               desplazar e ir al estado 150
+    TK_RESTA              desplazar e ir al estado 151
+    TK_MULTIPLICACION     desplazar e ir al estado 152
+    TK_DIVISION           desplazar e ir al estado 153
+    TK_DIVISION_ENTERA    desplazar e ir al estado 154
+    TK_MODULO             desplazar e ir al estado 155
+
+    $default  reduce usando la regla 52 (expresion)
+
+
+Estado 142
+
+   69 operandoAritmetico: TK_IDENTIFICADOR .
+
+    $default  reduce usando la regla 69 (operandoAritmetico)
+
+
+Estado 143
+
+   61 expArit: TK_PARENTESIS_APERTURA . expArit TK_PARENTESIS_CIERRE
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 190
+    operandoAritmetico  ir al estado 101
+
+
+Estado 144
+
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+   63        | TK_RESTA expArit .
+
+    TK_MULTIPLICACION   desplazar e ir al estado 152
+    TK_DIVISION         desplazar e ir al estado 153
+    TK_DIVISION_ENTERA  desplazar e ir al estado 154
+    TK_MODULO           desplazar e ir al estado 155
+
+    $default  reduce usando la regla 63 (expArit)
+
+
+Estado 145
+
+   44 expBool: expBool . TK_Y expBool
+   45        | expBool . TK_O expBool
+   46        | TK_NO expBool .
+   53 expresion: expBool .
+
+    TK_Y  desplazar e ir al estado 146
+    TK_O  desplazar e ir al estado 147
+
+    TK_OPREL  reduce usando la regla 46 (expBool)
+    TK_OPREL  [reduce usando la regla 53 (expresion)]
+    $default  reduce usando la regla 46 (expBool)
+
+
+Estado 146
+
+   44 expBool: expBool TK_Y . expBool
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 191
+    expresion           ir al estado 140
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 147
+
+   45 expBool: expBool TK_O . expBool
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 192
+    expresion           ir al estado 140
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 148
 
     9 itCotaVariable: TK_MIENTRAS expresion TK_HACER . instrucciones TK_FMIENTRAS
 
@@ -1815,152 +1968,110 @@ Estado 136
     llamadaAccion       ir al estado 50
     operandoBooleano    ir al estado 51
     operandoAritmetico  ir al estado 52
-    instrucciones       ir al estado 175
+    instrucciones       ir al estado 193
     instruccion         ir al estado 54
 
 
-Estado 137
+Estado 149
 
-   58 expBool: expresion TK_OPREL . expresion
-
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 176
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
-
-
-Estado 138
-
-   42 expArit: expArit TK_SUMA . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 177
-    operandoAritmetico  ir al estado 96
-
-
-Estado 139
-
-   43 expArit: expArit TK_RESTA . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 178
-    operandoAritmetico  ir al estado 96
-
-
-Estado 140
-
-   44 expArit: expArit TK_MULTIPLICACION . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 179
-    operandoAritmetico  ir al estado 96
-
-
-Estado 141
-
-   45 expArit: expArit TK_DIVISION . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 180
-    operandoAritmetico  ir al estado 96
-
-
-Estado 142
-
-   46 expArit: expArit TK_DIVISION_ENTERA . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 181
-    operandoAritmetico  ir al estado 96
-
-
-Estado 143
-
-   47 expArit: expArit TK_MODULO . expArit
-
-    TK_IDENTIFICADOR        desplazar e ir al estado 132
-    TK_PARENTESIS_APERTURA  desplazar e ir al estado 133
-    TK_RESTA                desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO     desplazar e ir al estado 87
-
-    expArit             ir al estado 182
-    operandoAritmetico  ir al estado 96
-
-
-Estado 144
-
-   52 expBool: expBool TK_Y . expBool
+   50 expBool: expresion TK_OPREL . expresion
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 129
-    expArit             ir al estado 93
-    expBool             ir al estado 183
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
-
-
-Estado 145
-
-   53 expBool: expBool TK_O . expBool
-
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 129
-    expArit             ir al estado 93
-    expBool             ir al estado 184
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 194
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
-Estado 146
+Estado 150
+
+   55 expArit: expArit TK_SUMA . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 195
+    operandoAritmetico  ir al estado 101
+
+
+Estado 151
+
+   56 expArit: expArit TK_RESTA . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 196
+    operandoAritmetico  ir al estado 101
+
+
+Estado 152
+
+   57 expArit: expArit TK_MULTIPLICACION . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 197
+    operandoAritmetico  ir al estado 101
+
+
+Estado 153
+
+   58 expArit: expArit TK_DIVISION . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 198
+    operandoAritmetico  ir al estado 101
+
+
+Estado 154
+
+   59 expArit: expArit TK_DIVISION_ENTERA . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 199
+    operandoAritmetico  ir al estado 101
+
+
+Estado 155
+
+   60 expArit: expArit TK_MODULO . expArit
+
+    TK_IDENTIFICADOR        desplazar e ir al estado 142
+    TK_PARENTESIS_APERTURA  desplazar e ir al estado 143
+    TK_RESTA                desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO     desplazar e ir al estado 92
+
+    expArit             ir al estado 200
+    operandoAritmetico  ir al estado 101
+
+
+Estado 156
 
     4 alternativa: TK_SI expresion TK_FLECHA . instrucciones listaOpciones TK_FSI
 
@@ -1979,169 +2090,169 @@ Estado 146
     llamadaAccion       ir al estado 50
     operandoBooleano    ir al estado 51
     operandoAritmetico  ir al estado 52
-    instrucciones       ir al estado 185
+    instrucciones       ir al estado 201
     instruccion         ir al estado 54
-
-
-Estado 147
-
-    2 asignacion: operandoBooleano TK_DOSPUNTOS_IGUAL expresion .
-   58 expBool: expresion . TK_OPREL expresion
-
-    TK_OPREL  desplazar e ir al estado 137
-
-    $default  reduce usando la regla 2 (asignacion)
-
-
-Estado 148
-
-   58 expBool: expresion . TK_OPREL expresion
-   62 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA expresion . TK_CORCHETE_CIERRE
-
-    TK_OPREL            desplazar e ir al estado 137
-    TK_CORCHETE_CIERRE  desplazar e ir al estado 186
-
-
-Estado 149
-
-   61 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
-   61                 | operandoBooleano TK_PUNTO operandoBooleano .
-   62                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   63                 | operandoBooleano . TK_REF
-
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 99
-    TK_PUNTO              desplazar e ir al estado 100
-    TK_REF                desplazar e ir al estado 101
-
-    TK_CORCHETE_APERTURA  [reduce usando la regla 61 (operandoBooleano)]
-    TK_PUNTO              [reduce usando la regla 61 (operandoBooleano)]
-    TK_REF                [reduce usando la regla 61 (operandoBooleano)]
-    $default              reduce usando la regla 61 (operandoBooleano)
-
-
-Estado 150
-
-    3 asignacion: operandoAritmetico TK_DOSPUNTOS_IGUAL expresion .
-   58 expBool: expresion . TK_OPREL expresion
-
-    TK_OPREL  desplazar e ir al estado 137
-
-    $default  reduce usando la regla 3 (asignacion)
-
-
-Estado 151
-
-   58 expBool: expresion . TK_OPREL expresion
-   66 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA expresion . TK_CORCHETE_CIERRE
-
-    TK_OPREL            desplazar e ir al estado 137
-    TK_CORCHETE_CIERRE  desplazar e ir al estado 187
-
-
-Estado 152
-
-   65 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
-   65                   | operandoAritmetico TK_PUNTO operandoAritmetico .
-   66                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
-   67                   | operandoAritmetico . TK_REF
-
-    TK_CORCHETE_APERTURA  desplazar e ir al estado 103
-    TK_PUNTO              desplazar e ir al estado 104
-    TK_REF                desplazar e ir al estado 105
-
-    TK_CORCHETE_APERTURA  [reduce usando la regla 65 (operandoAritmetico)]
-    TK_PUNTO              [reduce usando la regla 65 (operandoAritmetico)]
-    TK_REF                [reduce usando la regla 65 (operandoAritmetico)]
-    $default              reduce usando la regla 65 (operandoAritmetico)
-
-
-Estado 153
-
-   68 instrucciones: instruccion TK_PUNTOYCOMA instrucciones .
-
-    $default  reduce usando la regla 68 (instrucciones)
-
-
-Estado 154
-
-   14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables . TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA
-
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 188
-
-
-Estado 155
-
-   12 defFuncion: TK_FUNCION cabeceraFuncion bloque TK_DEV . expresion TK_FFUNCION
-
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 189
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
-
-
-Estado 156
-
-   18 dParForm: TK_ENT . listaId TK_DOSPUNTOS defTipo
-
-    TK_IDENTIFICADOR  desplazar e ir al estado 122
-
-    listaId  ir al estado 190
 
 
 Estado 157
 
-   19 dParForm: TK_SAL . listaId TK_DOSPUNTOS defTipo
+    2 asignacion: operandoBooleano TK_DOSPUNTOS_IGUAL expresion .
+   50 expBool: expresion . TK_OPREL expresion
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 122
+    TK_OPREL  desplazar e ir al estado 149
 
-    listaId  ir al estado 191
+    $default  reduce usando la regla 2 (asignacion)
 
 
 Estado 158
 
-   20 dParForm: TK_ENTSAL . listaId TK_DOSPUNTOS defTipo
+   50 expBool: expresion . TK_OPREL expresion
+   67 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA expresion . TK_CORCHETE_CIERRE
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 122
-
-    listaId  ir al estado 192
+    TK_OPREL            desplazar e ir al estado 149
+    TK_CORCHETE_CIERRE  desplazar e ir al estado 202
 
 
 Estado 159
 
-   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm . TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
+   66 operandoBooleano: operandoBooleano . TK_PUNTO operandoBooleano
+   66                 | operandoBooleano TK_PUNTO operandoBooleano .
+   67                 | operandoBooleano . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   68                 | operandoBooleano . TK_REF
 
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 193
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 104
+    TK_PUNTO              desplazar e ir al estado 105
+    TK_REF                desplazar e ir al estado 106
+
+    TK_CORCHETE_APERTURA  [reduce usando la regla 66 (operandoBooleano)]
+    TK_PUNTO              [reduce usando la regla 66 (operandoBooleano)]
+    TK_REF                [reduce usando la regla 66 (operandoBooleano)]
+    $default              reduce usando la regla 66 (operandoBooleano)
 
 
 Estado 160
 
+    3 asignacion: operandoAritmetico TK_DOSPUNTOS_IGUAL expresion .
+   50 expBool: expresion . TK_OPREL expresion
+
+    TK_OPREL  desplazar e ir al estado 149
+
+    $default  reduce usando la regla 3 (asignacion)
+
+
+Estado 161
+
+   50 expBool: expresion . TK_OPREL expresion
+   71 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA expresion . TK_CORCHETE_CIERRE
+
+    TK_OPREL            desplazar e ir al estado 149
+    TK_CORCHETE_CIERRE  desplazar e ir al estado 203
+
+
+Estado 162
+
+   70 operandoAritmetico: operandoAritmetico . TK_PUNTO operandoAritmetico
+   70                   | operandoAritmetico TK_PUNTO operandoAritmetico .
+   71                   | operandoAritmetico . TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
+   72                   | operandoAritmetico . TK_REF
+
+    TK_CORCHETE_APERTURA  desplazar e ir al estado 108
+    TK_PUNTO              desplazar e ir al estado 109
+    TK_REF                desplazar e ir al estado 110
+
+    TK_CORCHETE_APERTURA  [reduce usando la regla 70 (operandoAritmetico)]
+    TK_PUNTO              [reduce usando la regla 70 (operandoAritmetico)]
+    TK_REF                [reduce usando la regla 70 (operandoAritmetico)]
+    $default              reduce usando la regla 70 (operandoAritmetico)
+
+
+Estado 163
+
+   73 instrucciones: instruccion TK_PUNTOYCOMA instrucciones .
+
+    $default  reduce usando la regla 73 (instrucciones)
+
+
+Estado 164
+
+   14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables . TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA
+
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 204
+
+
+Estado 165
+
+   12 defFuncion: TK_FUNCION cabeceraFuncion bloque TK_DEV . expresion TK_FFUNCION
+
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 205
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
+
+
+Estado 166
+
+   18 dParForm: TK_ENT . listaId TK_DOSPUNTOS defTipo
+
+    TK_IDENTIFICADOR  desplazar e ir al estado 132
+
+    listaId  ir al estado 206
+
+
+Estado 167
+
+   19 dParForm: TK_SAL . listaId TK_DOSPUNTOS defTipo
+
+    TK_IDENTIFICADOR  desplazar e ir al estado 132
+
+    listaId  ir al estado 207
+
+
+Estado 168
+
+   20 dParForm: TK_ENTSAL . listaId TK_DOSPUNTOS defTipo
+
+    TK_IDENTIFICADOR  desplazar e ir al estado 132
+
+    listaId  ir al estado 208
+
+
+Estado 169
+
+   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm . TK_PARENTESIS_CIERRE TK_PUNTOYCOMA
+
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 209
+
+
+Estado 170
+
    15 defParForm: dParForm . TK_PUNTOYCOMA defParForm
    16           | dParForm .
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 194
+    TK_PUNTOYCOMA  desplazar e ir al estado 210
 
     $default  reduce usando la regla 16 (defParForm)
 
 
-Estado 161
+Estado 171
 
    11 defAccion: TK_ACCION cabeceraAccion bloque TK_FACCION .
 
     $default  reduce usando la regla 11 (defAccion)
 
 
-Estado 162
+Estado 172
 
    26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS . defTipo TK_PUNTOYCOMA listaCampos
 
@@ -2153,440 +2264,484 @@ Estado 162
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 195
+    defTipo     ir al estado 211
     expresionT  ir al estado 77
 
 
-Estado 163
+Estado 173
 
-   94 defTipo: TK_TUPLA listaCampos TK_FTUPLA .
+   99 defTipo: TK_TUPLA listaCampos TK_FTUPLA .
 
-    $default  reduce usando la regla 94 (defTipo)
-
-
-Estado 164
-
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT . TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
-
-    TK_PUNTO_Y_PUNTO  desplazar e ir al estado 196
+    $default  reduce usando la regla 99 (defTipo)
 
 
-Estado 165
+Estado 174
 
-   92 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo .
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT . TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
 
-    $default  reduce usando la regla 92 (listaDefsTipo)
-
-
-Estado 166
-
-   97 defTipo: expresionT TK_PUNTO_Y_PUNTO expresionT .
-
-    $default  reduce usando la regla 97 (defTipo)
+    TK_PUNTO_Y_PUNTO  desplazar e ir al estado 212
 
 
-Estado 167
+Estado 175
 
-   30 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA listaId .
+   97 listaDefsTipo: TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo .
 
-    $default  reduce usando la regla 30 (listaDefsVariables)
+    $default  reduce usando la regla 97 (listaDefsTipo)
 
 
-Estado 168
+Estado 176
+
+  102 defTipo: expresionT TK_PUNTO_Y_PUNTO expresionT .
+
+    $default  reduce usando la regla 102 (defTipo)
+
+
+Estado 177
+
+   33 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 33 (listaDefsConstantes)
+
+
+Estado 178
+
+   30 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 30 (listaDefsConstantes)
+
+
+Estado 179
+
+   31 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 31 (listaDefsConstantes)
+
+
+Estado 180
+
+   28 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 28 (listaDefsConstantes)
+
+
+Estado 181
+
+   29 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 29 (listaDefsConstantes)
+
+
+Estado 182
+
+   32 listaDefsConstantes: TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes .
+
+    $default  reduce usando la regla 32 (listaDefsConstantes)
+
+
+Estado 183
+
+   35 listaDefsVariables: listaId TK_IDENTIFICADOR TK_COMA listaId .
+
+    $default  reduce usando la regla 35 (listaDefsVariables)
+
+
+Estado 184
 
    21 llamadaAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE .
 
     $default  reduce usando la regla 21 (llamadaAccion)
 
 
-Estado 169
+Estado 185
 
    23 parametrosReales: expresion TK_COMA . parametrosReales
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
     $default  reduce usando la regla 25 (parametrosReales)
 
-    llamadaFuncion      ir al estado 91
-    parametrosReales    ir al estado 197
-    expresion           ir al estado 126
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
-
-
-Estado 170
-
-   10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion . TK_HASTA expresion TK_HACER instrucciones TK_FPARA
-   58 expBool: expresion . TK_OPREL expresion
-
-    TK_HASTA  desplazar e ir al estado 198
-    TK_OPREL  desplazar e ir al estado 137
-
-
-Estado 171
-
-   22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA . parametrosReales TK_PARENTESIS_CIERRE
-
-    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
-
-    $default  reduce usando la regla 25 (parametrosReales)
-
-    llamadaFuncion      ir al estado 91
-    parametrosReales    ir al estado 199
-    expresion           ir al estado 126
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
-
-
-Estado 172
-
-   48 expArit: TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE .
-
-    $default  reduce usando la regla 48 (expArit)
-
-
-Estado 173
-
-   59 expBool: TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE .
-
-    $default  reduce usando la regla 59 (expBool)
-
-
-Estado 174
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-   48        | TK_PARENTESIS_APERTURA expArit . TK_PARENTESIS_CIERRE
-
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 172
-    TK_SUMA               desplazar e ir al estado 138
-    TK_RESTA              desplazar e ir al estado 139
-    TK_MULTIPLICACION     desplazar e ir al estado 140
-    TK_DIVISION           desplazar e ir al estado 141
-    TK_DIVISION_ENTERA    desplazar e ir al estado 142
-    TK_MODULO             desplazar e ir al estado 143
-
-
-Estado 175
-
-    9 itCotaVariable: TK_MIENTRAS expresion TK_HACER instrucciones . TK_FMIENTRAS
-
-    TK_FMIENTRAS  desplazar e ir al estado 200
-
-
-Estado 176
-
-   58 expBool: expresion . TK_OPREL expresion
-   58        | expresion TK_OPREL expresion .
-
-    $default  reduce usando la regla 58 (expBool)
-
-
-Estado 177
-
-   42 expArit: expArit . TK_SUMA expArit
-   42        | expArit TK_SUMA expArit .
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    $default  reduce usando la regla 42 (expArit)
-
-
-Estado 178
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   43        | expArit TK_RESTA expArit .
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-
-    TK_MULTIPLICACION   desplazar e ir al estado 140
-    TK_DIVISION         desplazar e ir al estado 141
-    TK_DIVISION_ENTERA  desplazar e ir al estado 142
-    TK_MODULO           desplazar e ir al estado 143
-
-    $default  reduce usando la regla 43 (expArit)
-
-
-Estado 179
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   44        | expArit TK_MULTIPLICACION expArit .
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-
-    $default  reduce usando la regla 44 (expArit)
-
-
-Estado 180
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   45        | expArit TK_DIVISION expArit .
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-
-    $default  reduce usando la regla 45 (expArit)
-
-
-Estado 181
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   46        | expArit TK_DIVISION_ENTERA expArit .
-   47        | expArit . TK_MODULO expArit
-
-    $default  reduce usando la regla 46 (expArit)
-
-
-Estado 182
-
-   42 expArit: expArit . TK_SUMA expArit
-   43        | expArit . TK_RESTA expArit
-   44        | expArit . TK_MULTIPLICACION expArit
-   45        | expArit . TK_DIVISION expArit
-   46        | expArit . TK_DIVISION_ENTERA expArit
-   47        | expArit . TK_MODULO expArit
-   47        | expArit TK_MODULO expArit .
-
-    $default  reduce usando la regla 47 (expArit)
-
-
-Estado 183
-
-   40 expresion: expBool .
-   52 expBool: expBool . TK_Y expBool
-   52        | expBool TK_Y expBool .
-   53        | expBool . TK_O expBool
-
-    TK_OPREL  reduce usando la regla 40 (expresion)
-    TK_OPREL  [reduce usando la regla 52 (expBool)]
-    $default  reduce usando la regla 52 (expBool)
-
-
-Estado 184
-
-   40 expresion: expBool .
-   52 expBool: expBool . TK_Y expBool
-   53        | expBool . TK_O expBool
-   53        | expBool TK_O expBool .
-
-    TK_OPREL  reduce usando la regla 40 (expresion)
-    TK_OPREL  [reduce usando la regla 53 (expBool)]
-    $default  reduce usando la regla 53 (expBool)
-
-
-Estado 185
-
-    4 alternativa: TK_SI expresion TK_FLECHA instrucciones . listaOpciones TK_FSI
-
-    TK_CORCHETES  desplazar e ir al estado 201
-
-    $default  reduce usando la regla 6 (listaOpciones)
-
-    listaOpciones  ir al estado 202
+    llamadaFuncion      ir al estado 96
+    parametrosReales    ir al estado 213
+    expBool             ir al estado 97
+    expresion           ir al estado 136
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 186
 
-   62 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE .
+   10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion . TK_HASTA expresion TK_HACER instrucciones TK_FPARA
+   50 expBool: expresion . TK_OPREL expresion
 
-    $default  reduce usando la regla 62 (operandoBooleano)
+    TK_HASTA  desplazar e ir al estado 214
+    TK_OPREL  desplazar e ir al estado 149
 
 
 Estado 187
 
-   66 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE .
+   22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA . parametrosReales TK_PARENTESIS_CIERRE
 
-    $default  reduce usando la regla 66 (operandoAritmetico)
+    TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
+
+    $default  reduce usando la regla 25 (parametrosReales)
+
+    llamadaFuncion      ir al estado 96
+    parametrosReales    ir al estado 215
+    expBool             ir al estado 97
+    expresion           ir al estado 136
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
 Estado 188
 
-   14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE . TK_DEV defTipo TK_PUNTOYCOMA
+   51 expBool: TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE .
 
-    TK_DEV  desplazar e ir al estado 203
+    $default  reduce usando la regla 51 (expBool)
 
 
 Estado 189
 
-   12 defFuncion: TK_FUNCION cabeceraFuncion bloque TK_DEV expresion . TK_FFUNCION
-   58 expBool: expresion . TK_OPREL expresion
+   61 expArit: TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE .
 
-    TK_FFUNCION  desplazar e ir al estado 204
-    TK_OPREL     desplazar e ir al estado 137
+    $default  reduce usando la regla 61 (expArit)
 
 
 Estado 190
 
-   18 dParForm: TK_ENT listaId . TK_DOSPUNTOS defTipo
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+   61        | TK_PARENTESIS_APERTURA expArit . TK_PARENTESIS_CIERRE
 
-    TK_DOSPUNTOS  desplazar e ir al estado 205
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 189
+    TK_SUMA               desplazar e ir al estado 150
+    TK_RESTA              desplazar e ir al estado 151
+    TK_MULTIPLICACION     desplazar e ir al estado 152
+    TK_DIVISION           desplazar e ir al estado 153
+    TK_DIVISION_ENTERA    desplazar e ir al estado 154
+    TK_MODULO             desplazar e ir al estado 155
 
 
 Estado 191
 
-   19 dParForm: TK_SAL listaId . TK_DOSPUNTOS defTipo
+   44 expBool: expBool . TK_Y expBool
+   44        | expBool TK_Y expBool .
+   45        | expBool . TK_O expBool
+   53 expresion: expBool .
 
-    TK_DOSPUNTOS  desplazar e ir al estado 206
+    TK_OPREL  reduce usando la regla 44 (expBool)
+    TK_OPREL  [reduce usando la regla 53 (expresion)]
+    $default  reduce usando la regla 44 (expBool)
 
 
 Estado 192
 
-   20 dParForm: TK_ENTSAL listaId . TK_DOSPUNTOS defTipo
+   44 expBool: expBool . TK_Y expBool
+   45        | expBool . TK_O expBool
+   45        | expBool TK_O expBool .
+   53 expresion: expBool .
 
-    TK_DOSPUNTOS  desplazar e ir al estado 207
+    TK_OPREL  reduce usando la regla 45 (expBool)
+    TK_OPREL  [reduce usando la regla 53 (expresion)]
+    $default  reduce usando la regla 45 (expBool)
 
 
 Estado 193
 
-   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE . TK_PUNTOYCOMA
+    9 itCotaVariable: TK_MIENTRAS expresion TK_HACER instrucciones . TK_FMIENTRAS
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 208
+    TK_FMIENTRAS  desplazar e ir al estado 216
 
 
 Estado 194
 
-   15 defParForm: dParForm TK_PUNTOYCOMA . defParForm
+   50 expBool: expresion . TK_OPREL expresion
+   50        | expresion TK_OPREL expresion .
 
-    TK_ENT     desplazar e ir al estado 156
-    TK_SAL     desplazar e ir al estado 157
-    TK_ENTSAL  desplazar e ir al estado 158
+    TK_OPREL  error (no asociativo)
 
-    $default  reduce usando la regla 17 (defParForm)
-
-    defParForm  ir al estado 209
-    dParForm    ir al estado 160
+    $default  reduce usando la regla 50 (expBool)
 
 
 Estado 195
 
-   26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS defTipo . TK_PUNTOYCOMA listaCampos
+   55 expArit: expArit . TK_SUMA expArit
+   55        | expArit TK_SUMA expArit .
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 210
+    TK_MULTIPLICACION   desplazar e ir al estado 152
+    TK_DIVISION         desplazar e ir al estado 153
+    TK_DIVISION_ENTERA  desplazar e ir al estado 154
+    TK_MODULO           desplazar e ir al estado 155
+
+    $default  reduce usando la regla 55 (expArit)
 
 
 Estado 196
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO . expresionT TK_CORCHETE_CIERRE TK_DE defTipo
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   56        | expArit TK_RESTA expArit .
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+
+    TK_MULTIPLICACION   desplazar e ir al estado 152
+    TK_DIVISION         desplazar e ir al estado 153
+    TK_DIVISION_ENTERA  desplazar e ir al estado 154
+    TK_MODULO           desplazar e ir al estado 155
+
+    $default  reduce usando la regla 56 (expArit)
+
+
+Estado 197
+
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   57        | expArit TK_MULTIPLICACION expArit .
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+
+    $default  reduce usando la regla 57 (expArit)
+
+
+Estado 198
+
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   58        | expArit TK_DIVISION expArit .
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+
+    $default  reduce usando la regla 58 (expArit)
+
+
+Estado 199
+
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   59        | expArit TK_DIVISION_ENTERA expArit .
+   60        | expArit . TK_MODULO expArit
+
+    $default  reduce usando la regla 59 (expArit)
+
+
+Estado 200
+
+   55 expArit: expArit . TK_SUMA expArit
+   56        | expArit . TK_RESTA expArit
+   57        | expArit . TK_MULTIPLICACION expArit
+   58        | expArit . TK_DIVISION expArit
+   59        | expArit . TK_DIVISION_ENTERA expArit
+   60        | expArit . TK_MODULO expArit
+   60        | expArit TK_MODULO expArit .
+
+    $default  reduce usando la regla 60 (expArit)
+
+
+Estado 201
+
+    4 alternativa: TK_SI expresion TK_FLECHA instrucciones . listaOpciones TK_FSI
+
+    TK_CORCHETES  desplazar e ir al estado 217
+
+    $default  reduce usando la regla 6 (listaOpciones)
+
+    listaOpciones  ir al estado 218
+
+
+Estado 202
+
+   67 operandoBooleano: operandoBooleano TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE .
+
+    $default  reduce usando la regla 67 (operandoBooleano)
+
+
+Estado 203
+
+   71 operandoAritmetico: operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE .
+
+    $default  reduce usando la regla 71 (operandoAritmetico)
+
+
+Estado 204
+
+   14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE . TK_DEV defTipo TK_PUNTOYCOMA
+
+    TK_DEV  desplazar e ir al estado 219
+
+
+Estado 205
+
+   12 defFuncion: TK_FUNCION cabeceraFuncion bloque TK_DEV expresion . TK_FFUNCION
+   50 expBool: expresion . TK_OPREL expresion
+
+    TK_FFUNCION  desplazar e ir al estado 220
+    TK_OPREL     desplazar e ir al estado 149
+
+
+Estado 206
+
+   18 dParForm: TK_ENT listaId . TK_DOSPUNTOS defTipo
+
+    TK_DOSPUNTOS  desplazar e ir al estado 221
+
+
+Estado 207
+
+   19 dParForm: TK_SAL listaId . TK_DOSPUNTOS defTipo
+
+    TK_DOSPUNTOS  desplazar e ir al estado 222
+
+
+Estado 208
+
+   20 dParForm: TK_ENTSAL listaId . TK_DOSPUNTOS defTipo
+
+    TK_DOSPUNTOS  desplazar e ir al estado 223
+
+
+Estado 209
+
+   13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE . TK_PUNTOYCOMA
+
+    TK_PUNTOYCOMA  desplazar e ir al estado 224
+
+
+Estado 210
+
+   15 defParForm: dParForm TK_PUNTOYCOMA . defParForm
+
+    TK_ENT     desplazar e ir al estado 166
+    TK_SAL     desplazar e ir al estado 167
+    TK_ENTSAL  desplazar e ir al estado 168
+
+    $default  reduce usando la regla 17 (defParForm)
+
+    defParForm  ir al estado 225
+    dParForm    ir al estado 170
+
+
+Estado 211
+
+   26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS defTipo . TK_PUNTOYCOMA listaCampos
+
+    TK_PUNTOYCOMA  desplazar e ir al estado 226
+
+
+Estado 212
+
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO . expresionT TK_CORCHETE_CIERRE TK_DE defTipo
 
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    expresionT  ir al estado 211
+    expresionT  ir al estado 227
 
 
-Estado 197
+Estado 213
 
    23 parametrosReales: expresion TK_COMA parametrosReales .
 
     $default  reduce usando la regla 23 (parametrosReales)
 
 
-Estado 198
+Estado 214
 
    10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA . expresion TK_HACER instrucciones TK_FPARA
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 212
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 228
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
-Estado 199
+Estado 215
 
    22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales . TK_PARENTESIS_CIERRE
 
-    TK_PARENTESIS_CIERRE  desplazar e ir al estado 213
+    TK_PARENTESIS_CIERRE  desplazar e ir al estado 229
 
 
-Estado 200
+Estado 216
 
     9 itCotaVariable: TK_MIENTRAS expresion TK_HACER instrucciones TK_FMIENTRAS .
 
     $default  reduce usando la regla 9 (itCotaVariable)
 
 
-Estado 201
+Estado 217
 
     5 listaOpciones: TK_CORCHETES . expresion TK_FLECHA instrucciones listaOpciones
 
     TK_IDENTIFICADOR_BOOLEANO  desplazar e ir al estado 40
-    TK_IDENTIFICADOR           desplazar e ir al estado 84
-    TK_PARENTESIS_APERTURA     desplazar e ir al estado 85
-    TK_RESTA                   desplazar e ir al estado 86
-    TK_LITERAL_NUMERICO        desplazar e ir al estado 87
-    TK_NO                      desplazar e ir al estado 88
-    TK_VERDADERO               desplazar e ir al estado 89
-    TK_FALSO                   desplazar e ir al estado 90
+    TK_IDENTIFICADOR           desplazar e ir al estado 89
+    TK_PARENTESIS_APERTURA     desplazar e ir al estado 90
+    TK_RESTA                   desplazar e ir al estado 91
+    TK_LITERAL_NUMERICO        desplazar e ir al estado 92
+    TK_NO                      desplazar e ir al estado 93
+    TK_VERDADERO               desplazar e ir al estado 94
+    TK_FALSO                   desplazar e ir al estado 95
 
-    llamadaFuncion      ir al estado 91
-    expresion           ir al estado 214
-    expArit             ir al estado 93
-    expBool             ir al estado 94
-    operandoBooleano    ir al estado 95
-    operandoAritmetico  ir al estado 96
+    llamadaFuncion      ir al estado 96
+    expBool             ir al estado 97
+    expresion           ir al estado 230
+    expArit             ir al estado 99
+    operandoBooleano    ir al estado 100
+    operandoAritmetico  ir al estado 101
 
 
-Estado 202
+Estado 218
 
     4 alternativa: TK_SI expresion TK_FLECHA instrucciones listaOpciones . TK_FSI
 
-    TK_FSI  desplazar e ir al estado 215
+    TK_FSI  desplazar e ir al estado 231
 
 
-Estado 203
+Estado 219
 
    14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV . defTipo TK_PUNTOYCOMA
 
@@ -2598,18 +2753,18 @@ Estado 203
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 216
+    defTipo     ir al estado 232
     expresionT  ir al estado 77
 
 
-Estado 204
+Estado 220
 
    12 defFuncion: TK_FUNCION cabeceraFuncion bloque TK_DEV expresion TK_FFUNCION .
 
     $default  reduce usando la regla 12 (defFuncion)
 
 
-Estado 205
+Estado 221
 
    18 dParForm: TK_ENT listaId TK_DOSPUNTOS . defTipo
 
@@ -2621,11 +2776,11 @@ Estado 205
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 217
+    defTipo     ir al estado 233
     expresionT  ir al estado 77
 
 
-Estado 206
+Estado 222
 
    19 dParForm: TK_SAL listaId TK_DOSPUNTOS . defTipo
 
@@ -2637,11 +2792,11 @@ Estado 206
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 218
+    defTipo     ir al estado 234
     expresionT  ir al estado 77
 
 
-Estado 207
+Estado 223
 
    20 dParForm: TK_ENTSAL listaId TK_DOSPUNTOS . defTipo
 
@@ -2653,117 +2808,117 @@ Estado 207
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 219
+    defTipo     ir al estado 235
     expresionT  ir al estado 77
 
 
-Estado 208
+Estado 224
 
    13 cabeceraAccion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA defParForm TK_PARENTESIS_CIERRE TK_PUNTOYCOMA .
 
     $default  reduce usando la regla 13 (cabeceraAccion)
 
 
-Estado 209
+Estado 225
 
    15 defParForm: dParForm TK_PUNTOYCOMA defParForm .
 
     $default  reduce usando la regla 15 (defParForm)
 
 
-Estado 210
+Estado 226
 
    26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA . listaCampos
 
-    TK_IDENTIFICADOR  desplazar e ir al estado 115
+    TK_IDENTIFICADOR  desplazar e ir al estado 120
 
     $default  reduce usando la regla 27 (listaCampos)
 
-    listaCampos  ir al estado 220
+    listaCampos  ir al estado 236
 
 
-Estado 211
+Estado 227
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT . TK_CORCHETE_CIERRE TK_DE defTipo
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT . TK_CORCHETE_CIERRE TK_DE defTipo
 
-    TK_CORCHETE_CIERRE  desplazar e ir al estado 221
+    TK_CORCHETE_CIERRE  desplazar e ir al estado 237
 
 
-Estado 212
+Estado 228
 
    10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion . TK_HACER instrucciones TK_FPARA
-   58 expBool: expresion . TK_OPREL expresion
+   50 expBool: expresion . TK_OPREL expresion
 
-    TK_HACER  desplazar e ir al estado 222
-    TK_OPREL  desplazar e ir al estado 137
+    TK_HACER  desplazar e ir al estado 238
+    TK_OPREL  desplazar e ir al estado 149
 
 
-Estado 213
+Estado 229
 
    22 llamadaFuncion: TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL TK_PARENTESIS_APERTURA parametrosReales TK_PARENTESIS_CIERRE .
 
     $default  reduce usando la regla 22 (llamadaFuncion)
 
 
-Estado 214
+Estado 230
 
     5 listaOpciones: TK_CORCHETES expresion . TK_FLECHA instrucciones listaOpciones
-   58 expBool: expresion . TK_OPREL expresion
+   50 expBool: expresion . TK_OPREL expresion
 
-    TK_FLECHA  desplazar e ir al estado 223
-    TK_OPREL   desplazar e ir al estado 137
+    TK_FLECHA  desplazar e ir al estado 239
+    TK_OPREL   desplazar e ir al estado 149
 
 
-Estado 215
+Estado 231
 
     4 alternativa: TK_SI expresion TK_FLECHA instrucciones listaOpciones TK_FSI .
 
     $default  reduce usando la regla 4 (alternativa)
 
 
-Estado 216
+Estado 232
 
    14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV defTipo . TK_PUNTOYCOMA
 
-    TK_PUNTOYCOMA  desplazar e ir al estado 224
+    TK_PUNTOYCOMA  desplazar e ir al estado 240
 
 
-Estado 217
+Estado 233
 
    18 dParForm: TK_ENT listaId TK_DOSPUNTOS defTipo .
 
     $default  reduce usando la regla 18 (dParForm)
 
 
-Estado 218
+Estado 234
 
    19 dParForm: TK_SAL listaId TK_DOSPUNTOS defTipo .
 
     $default  reduce usando la regla 19 (dParForm)
 
 
-Estado 219
+Estado 235
 
    20 dParForm: TK_ENTSAL listaId TK_DOSPUNTOS defTipo .
 
     $default  reduce usando la regla 20 (dParForm)
 
 
-Estado 220
+Estado 236
 
    26 listaCampos: TK_IDENTIFICADOR TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaCampos .
 
     $default  reduce usando la regla 26 (listaCampos)
 
 
-Estado 221
+Estado 237
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE . TK_DE defTipo
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE . TK_DE defTipo
 
-    TK_DE  desplazar e ir al estado 225
+    TK_DE  desplazar e ir al estado 241
 
 
-Estado 222
+Estado 238
 
    10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER . instrucciones TK_FPARA
 
@@ -2782,11 +2937,11 @@ Estado 222
     llamadaAccion       ir al estado 50
     operandoBooleano    ir al estado 51
     operandoAritmetico  ir al estado 52
-    instrucciones       ir al estado 226
+    instrucciones       ir al estado 242
     instruccion         ir al estado 54
 
 
-Estado 223
+Estado 239
 
     5 listaOpciones: TK_CORCHETES expresion TK_FLECHA . instrucciones listaOpciones
 
@@ -2805,20 +2960,20 @@ Estado 223
     llamadaAccion       ir al estado 50
     operandoBooleano    ir al estado 51
     operandoAritmetico  ir al estado 52
-    instrucciones       ir al estado 227
+    instrucciones       ir al estado 243
     instruccion         ir al estado 54
 
 
-Estado 224
+Estado 240
 
    14 cabeceraFuncion: TK_IDENTIFICADOR TK_PARENTESIS_APERTURA listaDefsVariables TK_PARENTESIS_CIERRE TK_DEV defTipo TK_PUNTOYCOMA .
 
     $default  reduce usando la regla 14 (cabeceraFuncion)
 
 
-Estado 225
+Estado 241
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE . defTipo
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE . defTipo
 
     TK_IDENTIFICADOR    desplazar e ir al estado 69
     TK_TUPLA            desplazar e ir al estado 70
@@ -2828,43 +2983,43 @@ Estado 225
     TK_LITERALENTERO    desplazar e ir al estado 74
     TK_LITERALCARACTER  desplazar e ir al estado 75
 
-    defTipo     ir al estado 228
+    defTipo     ir al estado 244
     expresionT  ir al estado 77
 
 
-Estado 226
+Estado 242
 
    10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones . TK_FPARA
 
-    TK_FPARA  desplazar e ir al estado 229
+    TK_FPARA  desplazar e ir al estado 245
 
 
-Estado 227
+Estado 243
 
     5 listaOpciones: TK_CORCHETES expresion TK_FLECHA instrucciones . listaOpciones
 
-    TK_CORCHETES  desplazar e ir al estado 201
+    TK_CORCHETES  desplazar e ir al estado 217
 
     $default  reduce usando la regla 6 (listaOpciones)
 
-    listaOpciones  ir al estado 230
+    listaOpciones  ir al estado 246
 
 
-Estado 228
+Estado 244
 
-   95 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo .
+  100 defTipo: TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo .
 
-    $default  reduce usando la regla 95 (defTipo)
+    $default  reduce usando la regla 100 (defTipo)
 
 
-Estado 229
+Estado 245
 
    10 itCotaFija: TK_PARA TK_IDENTIFICADOR TK_DOSPUNTOS_IGUAL expresion TK_HASTA expresion TK_HACER instrucciones TK_FPARA .
 
     $default  reduce usando la regla 10 (itCotaFija)
 
 
-Estado 230
+Estado 246
 
     5 listaOpciones: TK_CORCHETES expresion TK_FLECHA instrucciones listaOpciones .
 

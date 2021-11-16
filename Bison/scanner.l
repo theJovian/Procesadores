@@ -6,6 +6,7 @@ DR_OPERADOR_SEC 	\+|-
 DR_CIFRA			[0-9]
 DR_LETRA			[A-Za-z]|_
 DR_IDENTIFICADOR	{DR_LETRA}({DR_CIFRA}|{DR_LETRA})*
+DR_IDENTIFICADOR_BOOLEANO (?i:(b_){DR_IDENTIFICADOR})
 DR_LITERALENTERO	[+\-]?{DR_CIFRA}+([eE][+|-]?{DR_CIFRA}+)?
 DR_LITERALREAL		[+\-]?{DR_CIFRA}+(\.{DR_CIFRA}+)?([eE][+\-]?{DR_CIFRA}+)?
 DR_LITERALBOOLEANO	(?:i(verdadero|falso))
@@ -59,6 +60,11 @@ ID					[a-z][a-z0-9]*
 SEPARADOR			" "|"\t"|"\n"
 
 %%
+
+{DR_TIPODATO}			{
+							printf( "Es un tipo de dato: %s", yytext);
+							return(TK_TIPOBASE);
+						}
 
 {DR_OPERADOR_SEC}		{
 							printf( "Es un operador secundario: %s\n", yytext );
@@ -172,7 +178,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_FACCION}      	{
 						printf( "An faccion: %s\n", yytext );
-						return(TK_ACCION)
+						return(TK_ACCION);
 					}
 
 {DR_ALGORITMO}	{
@@ -182,7 +188,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_FALGORITMO}	{
 					printf( "An falgoritmo: %s\n", yytext );
-					return(TK_FLALGORITMO);
+					return(TK_FALGORITMO);
 				}
 
 {DR_CONST}	{
@@ -257,30 +263,50 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_LITERALBOOLEANO}	{
 					printf("Es un booleano: %s\n", yytext );
-					return(TK)
+					if(strcmp(yytext,"verdadero")){
+						return(TK_VERDADERO);
+					}else{
+						return(TK_FALSO);
+					}
 				}
 
-{DR_OPERADO}	{
+{DR_OPERADOR_PRI}	{
 					printf("Es un operador primario: %s\n", yytext );
+					if(strcmp(yytext,"*")) {
+						return(TK_MULTIPLICACION);
+					} else if(strcmp(yytext,"/")) {
+						return(TK_DIVISION);
+					} else if(strcmp(yytext,"div")) {
+						return(TK_DIVISION_ENTERA);
+					} else {
+						return(TK_MODULO);
+					}
 				}
 
 {DR_TIPO}	{
 					printf("Es un tipo de dato: %s\n", yytext );
+					return(TK_TIPO);
 				}
+				
+{DR_IDENTIFICADOR_BOOLEANO}	  {
+					printf( "An identifier: %s\n", yytext );
+					return(TK_IDENTIFICADOR_BOOLEANO);
+}
 
 {DR_IDENTIFICADOR}	  {
 					printf( "An identifier: %s\n", yytext );
+					return(TK_IDENTIFICADOR);
 				}
-
+				
 {DR_LITERALENTERO}	{
 					printf("Es un literal entero: %s\n", yytext );
-					return(TK_ENTERO);
+					return(TK_LITERALENTERO);
 					
 				}
 
 {DR_LITERALREAL}	{
 					printf("Es un literal real: %s\n", yytext );
-					return(TK_NUMERICO);
+					return(TK_LITERAL_NUMERICO);
 				}
 
 {DR_LITERALCARACTER}	{
@@ -290,10 +316,11 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_LITERALCADENA}	{
 					printf("Es un literal cadena: %s\n", yytext );
-					return(TK_LITERALCADENA);
+					return(TK_LITERAL_CADENA);
 				}
 
 {DR_COMENTARIO}	{
 					printf("Es un comentario: %s\n", yytext );
 					return(TK_COMENTARIO);
 				}
+[ \t\n]+

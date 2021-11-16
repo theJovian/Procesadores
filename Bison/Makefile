@@ -12,3 +12,6 @@ compilar : parser.tab.c lex.yy.c
 
 ejecutar : parser
 		./parser
+		
+ejemplo: bison scanner compilar
+	./parser sumacomb.txt

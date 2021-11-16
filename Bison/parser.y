@@ -3,6 +3,10 @@
   #include <math.h>
   #include <stdlib.h>
   #include <ctype.h>
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #include <unistd.h>
   int yylex (void);
   void yyerror (char const *);
   void yywrap(void);
@@ -71,11 +75,12 @@
 %token TK_LITERALENTERO
 %token TK_LITERALCARACTER
 %token TK_ASIGNACION
+%token TK_LITERAL_CADENA
 
 %left TK_SUMA TK_RESTA
 %left TK_MULTIPLICACION TK_DIVISION TK_DIVISION_ENTERA TK_MODULO
 %nonassoc TK_NO
-%left TK_OPREL
+%nonassoc TK_OPREL
 %left TK_Y TK_O
 %% /* Grammar rules and actions follow. */
 
@@ -141,7 +146,12 @@ listaCampos:
     | /*epsiolon*/
     ;
 listaDefsConstantes:
-    TK_IDENTIFICADOR TK_ASIGNACION TK_PUNTOYCOMA listaDefsConstantes
+    TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
     | /*epsilon*/
     ;
 listaDefsVariables:
@@ -163,6 +173,16 @@ defEntrada:
 defSalida:
     TK_SAL listaDefsVariables
     ;
+expBool:
+    expBool TK_Y expBool
+    | expBool TK_O expBool
+    | TK_NO expBool
+    | operandoBooleano
+    | TK_VERDADERO
+    | TK_FALSO
+    | expresion TK_OPREL expresion
+    | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
+    ;
 expresion:
     expArit
     | expBool
@@ -179,16 +199,6 @@ expArit:
     | operandoAritmetico
     | TK_RESTA expArit
     | TK_LITERAL_NUMERICO
-    ;
-expBool:
-    expBool TK_Y expBool
-    | expBool TK_O expBool
-    | TK_NO expBool
-    | operandoBooleano
-    | TK_VERDADERO
-    | TK_FALSO
-    | expresion TK_OPREL expresion
-    | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
     ;
 operandoBooleano:
     TK_IDENTIFICADOR_BOOLEANO
@@ -269,9 +279,14 @@ expresionT:
 %%
 
 int
-main (void)
+main ( int argc, char **argv)
 {
-  return 0;
+	int yyin;
+	if ( argc  > 1) {
+		yyin = open( argv[1],O_RDONLY);
+		dup2(yyin,STDIN_FILENO);
+	}
+	yyparse();
 }
 
 /* Called by yyparse on error. */

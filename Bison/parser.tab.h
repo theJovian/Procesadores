@@ -110,7 +110,8 @@ extern int yydebug;
     TK_TIPOBASE = 316,
     TK_LITERALENTERO = 317,
     TK_LITERALCARACTER = 318,
-    TK_ASIGNACION = 319
+    TK_ASIGNACION = 319,
+    TK_LITERAL_CADENA = 320
   };
 #endif
 
