@@ -8,7 +8,7 @@ scanner: scanner.l
 		gcc -lfl lex.yy.c;
 		
 compilar : parser.tab.c lex.yy.c
-		gcc -lm -o parser parser.tab.c lex.yy.c 
+		gcc -lm -o parser parser.tab.c lex.yy.c
 
 ejecutar : parser
 		./parser

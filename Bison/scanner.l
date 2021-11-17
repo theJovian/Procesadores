@@ -1,5 +1,6 @@
 %{
 #include "parser.tab.h"
+#include <ctype.h>
 %}
 
 DR_OPERADOR_SEC 	\+|-
@@ -7,8 +8,8 @@ DR_CIFRA			[0-9]
 DR_LETRA			[A-Za-z]|_
 DR_IDENTIFICADOR	{DR_LETRA}({DR_CIFRA}|{DR_LETRA})*
 DR_IDENTIFICADOR_BOOLEANO (?i:(b_){DR_IDENTIFICADOR})
-DR_LITERALENTERO	[+\-]?{DR_CIFRA}+([eE][+|-]?{DR_CIFRA}+)?
-DR_LITERALREAL		[+\-]?{DR_CIFRA}+(\.{DR_CIFRA}+)?([eE][+\-]?{DR_CIFRA}+)?
+DR_LITERALENTERO	{DR_CIFRA}+([eE][+|-]?{DR_CIFRA}+)?
+DR_LITERALREAL		{DR_CIFRA}+(\.{DR_CIFRA}+)?([eE][+\-]?{DR_CIFRA}+)?
 DR_LITERALBOOLEANO	(?:i(verdadero|falso))
 DR_LITERALCARACTER	\".\"
 DR_LITERALCADENA	\'([^']|(\/'))+\'
@@ -50,7 +51,8 @@ DR_SAL				(?i:(sal))
 DR_TABLA			(?i:(tabla))
 DR_ENTONCES			->
 DR_OPERADORRELACIONAL	<|>|>=|<=
-DR_ASIGNACION 		:=
+DR_DOSPUNTOS_IGUAL 		:=
+DR_IGUAL			=
 DR_PUNTOYCOMA		;
 DR_COMA				,
 DR_DOSPUNTOS		:
@@ -62,8 +64,7 @@ SEPARADOR			" "|"\t"|"\n"
 %%
 
 {DR_TIPODATO}			{
-							printf( "Es un tipo de dato: %s", yytext);
-							return(TK_TIPOBASE);
+							printf( "Es un tipo de dato: %s\n", yytext);
 						}
 
 {DR_OPERADOR_SEC}		{
@@ -94,9 +95,14 @@ SEPARADOR			" "|"\t"|"\n"
 							return(TK_CORCHETES);
 						}
 
-{DR_ASIGNACION}			{
+{DR_DOSPUNTOS_IGUAL}			{
 							printf( "Asignacion: %s\n", yytext );
-							return(TK_ASIGNACION);
+							return(TK_DOSPUNTOS_IGUAL);
+						}
+						
+{DR_IGUAL}				{
+							printf( "igual: %s\n", yytext );
+							return(TK_IGUAL);
 						}
 
 {DR_COMA}				{
@@ -290,11 +296,13 @@ SEPARADOR			" "|"\t"|"\n"
 				
 {DR_IDENTIFICADOR_BOOLEANO}	  {
 					printf( "An identifier: %s\n", yytext );
+					yylval.paraCadena = strdup(yytext);		
 					return(TK_IDENTIFICADOR_BOOLEANO);
 }
 
 {DR_IDENTIFICADOR}	  {
 					printf( "An identifier: %s\n", yytext );
+					yylval.paraCadena = strdup(yytext);		
 					return(TK_IDENTIFICADOR);
 				}
 				

@@ -110,14 +110,31 @@ extern int yydebug;
     TK_TIPOBASE = 316,
     TK_LITERALENTERO = 317,
     TK_LITERALCARACTER = 318,
-    TK_ASIGNACION = 319,
+    TK_IGUAL = 319,
     TK_LITERAL_CADENA = 320
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+#line 20 "parser.y"
+union type
+{
+#line 20 "parser.y"
+
+	char *paraCadena;
+	int paraEntero;
+	float paraFloat;
+	struct paraBooleano{
+		int * true;
+		int * false;
+	} paraBooleanos;
+
+#line 134 "parser.tab.h"
+
+};
+#line 20 "parser.y"
+typedef union type YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

@@ -7,10 +7,27 @@
   #include <sys/stat.h>
   #include <fcntl.h>
   #include <unistd.h>
+  
+  #include "tablasSimbolos.h"
+  #include  "tablaCuadruplas.h"
+  
   int yylex (void);
   void yyerror (char const *);
   void yywrap(void);
 %}
+
+
+%union type{
+	char *paraCadena;
+	int paraEntero;
+	float paraFloat;
+	struct paraBooleano{
+		int * true;
+		int * false;
+	} paraBooleanos;
+}
+
+
 
 
 %token TK_PUNTOYCOMA
@@ -74,7 +91,7 @@
 %token TK_TIPOBASE
 %token TK_LITERALENTERO
 %token TK_LITERALCARACTER
-%token TK_ASIGNACION
+%token TK_IGUAL
 %token TK_LITERAL_CADENA
 
 %left TK_SUMA TK_RESTA
@@ -82,14 +99,15 @@
 %nonassoc TK_NO
 %nonassoc TK_OPREL
 %left TK_Y TK_O
+
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
     TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
 ;
 asignacion:
-	operandoBooleano TK_DOSPUNTOS_IGUAL expresion
-	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion
+	operandoBooleano TK_DOSPUNTOS_IGUAL expresion{printf("Asignacion booleana");}
+	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion{printf("Asignacion aritmetica");}
 ;
 alternativa:
 	TK_SI expresion TK_FLECHA instrucciones listaOpciones TK_FSI
@@ -146,17 +164,17 @@ listaCampos:
     | /*epsiolon*/
     ;
 listaDefsConstantes:
-    TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
-    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
-    | TK_IDENTIFICADOR TK_ASIGNACION TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
-    | TK_IDENTIFICADOR TK_ASIGNACION TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
-    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
-    | TK_IDENTIFICADOR TK_ASIGNACION TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
+    TK_IDENTIFICADOR TK_IGUAL TK_LITERALENTERO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_IGUAL TK_LITERALCARACTER TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_IGUAL TK_VERDADERO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_IGUAL TK_FALSO TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_IGUAL TK_LITERAL_CADENA TK_PUNTOYCOMA listaDefsConstantes
+    | TK_IDENTIFICADOR TK_IGUAL TK_LITERAL_NUMERICO TK_PUNTOYCOMA listaDefsConstantes
     | /*epsilon*/
     ;
 listaDefsVariables:
-    listaId TK_IDENTIFICADOR TK_COMA listaId
-    | TK_IDENTIFICADOR
+    listaId TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaDefsVariables
+    | /*epsilon*/
     ;
 listaId:
 	TK_IDENTIFICADOR TK_COMA listaId
@@ -198,7 +216,9 @@ expArit:
     | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
     | operandoAritmetico
     | TK_RESTA expArit
+    | TK_SUMA expArit
     | TK_LITERAL_NUMERICO
+    | TK_LITERALENTERO
     ;
 operandoBooleano:
     TK_IDENTIFICADOR_BOOLEANO
@@ -261,7 +281,7 @@ definicionVar:
 ;
 
 listaDefsTipo:
-    TK_IDENTIFICADOR TK_ASIGNACION defTipo TK_PUNTOYCOMA listaDefsTipo
+    TK_IDENTIFICADOR TK_IGUAL defTipo TK_PUNTOYCOMA listaDefsTipo
     | /*epsilon*/
 ;
 defTipo:    
@@ -293,6 +313,7 @@ main ( int argc, char **argv)
 void
 yyerror (char const *s)
 {
+	printf("yyerror: %s\n",s);
 }
 
 void
