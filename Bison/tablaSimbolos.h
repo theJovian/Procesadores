@@ -3,5 +3,5 @@ struct elemento {
 	int tipo;
 	int sid;
 	struct elemento *next;
-}
+};
 

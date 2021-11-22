@@ -8,7 +8,7 @@
   #include <fcntl.h>
   #include <unistd.h>
   
-  #include "tablasSimbolos.h"
+  #include "tablaSimbolos.h"
   #include  "tablaCuadruplas.h"
   
   int yylex (void);

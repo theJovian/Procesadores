@@ -1,17 +1,26 @@
-all: bison scanner compilar ejecutar
+all: bison flex-scanner simbolos cuadruplas compilar ejecutar
 
 bison : parser.y
 		bison -v -d parser.y
 		
-scanner: scanner.l
+compilar-scanner: scanner.l
 		flex scanner.l;
 		gcc -lfl lex.yy.c;
 		
-compilar : parser.tab.c lex.yy.c
-		gcc -lm -o parser parser.tab.c lex.yy.c
+flex-scanner:scanner.l
+		flex scanner.l;
+		
+compilar : parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o
+		gcc parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o -lfl -lm
 
 ejecutar : parser
 		./parser
 		
-ejemplo: bison scanner compilar
+ejemplo: bison flex-scanner compilar
 	./parser sumacomb.txt
+	
+simbolos: tablaSimbolos.c
+		gcc -c tablaSimbolos.c
+
+cuadruplas: tablaCuadruplas.c
+		gcc -c tablaCuadruplas.c
