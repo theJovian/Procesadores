@@ -65,6 +65,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_TIPODATO}			{
 							printf( "Es un tipo de dato: %s\n", yytext);
+							return (TK_TIPOBASE);
 						}
 
 {DR_OPERADOR_SEC}		{

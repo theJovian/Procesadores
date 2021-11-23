@@ -28,8 +28,6 @@
 }
 
 
-
-
 %token TK_PUNTOYCOMA
 %token TK_CONTINUAR
 %token TK_ALGORITMO
@@ -173,7 +171,7 @@ listaDefsConstantes:
     | /*epsilon*/
     ;
 listaDefsVariables:
-    listaId TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaDefsVariables
+    listaId TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaDefsVariables {printf("reduce de listaDefsVariables\n");}
     | /*epsilon*/
     ;
 listaId:
@@ -290,7 +288,7 @@ defTipo:
     | TK_IDENTIFICADOR
     | expresionT TK_PUNTO_Y_PUNTO expresionT
     | TK_REF defTipo
-    | TK_TIPOBASE
+    | TK_TIPOBASE {printf("Reduce de defTipo\n");}
 ;
 expresionT: 
     TK_LITERALENTERO

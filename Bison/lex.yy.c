@@ -1,5 +1,5 @@
 
-#line 3 "lex.yy.c"
+#line 2 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -46,6 +46,7 @@ typedef int16_t flex_int16_t;
 typedef uint16_t flex_uint16_t;
 typedef int32_t flex_int32_t;
 typedef uint32_t flex_uint32_t;
+typedef uint64_t flex_uint64_t;
 #else
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
@@ -154,7 +155,7 @@ typedef struct yy_buffer_state *YY_BUFFER_STATE;
 typedef size_t yy_size_t;
 #endif
 
-extern int yyleng;
+extern yy_size_t yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -197,7 +198,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -266,8 +267,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = NULL; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int yyleng;
+static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
+yy_size_t yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = NULL;
@@ -294,7 +295,7 @@ static void yy_init_buffer ( YY_BUFFER_STATE b, FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer ( char *base, yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string ( const char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, int len  );
+YY_BUFFER_STATE yy_scan_bytes ( const char *bytes, yy_size_t len  );
 
 void *yyalloc ( yy_size_t  );
 void *yyrealloc ( void *, yy_size_t  );
@@ -346,7 +347,7 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-	yyleng = (int) (yy_cp - yy_bp); \
+	yyleng = (yy_size_t) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
@@ -667,7 +668,7 @@ FILE *yyget_out ( void );
 
 void yyset_out  ( FILE * _out_str  );
 
-			int yyget_leng ( void );
+			yy_size_t yyget_leng ( void );
 
 char *yyget_text ( void );
 
@@ -736,7 +737,7 @@ static int input ( void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-		int n; \
+		yy_size_t n; \
 		for ( n = 0; n < max_size && \
 			     (c = getc( yyin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -910,11 +911,12 @@ YY_RULE_SETUP
 #line 66 "scanner.l"
 {
 							printf( "Es un tipo de dato: %s\n", yytext);
+							return (TK_TIPOBASE);
 						}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 70 "scanner.l"
+#line 71 "scanner.l"
 {
 							printf( "Es un operador secundario: %s\n", yytext );
 							if(strcmp(yytext,"+")) {
@@ -926,7 +928,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 80 "scanner.l"
 {
 							printf( "Es un operador logico: %s\n", yytext );
 							if(strcmp(yytext,"y")) {
@@ -938,7 +940,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 88 "scanner.l"
+#line 89 "scanner.l"
 {
 							printf( "Punto y coma: %s\n", yytext );
 							return(TK_PUNTOYCOMA);
@@ -946,7 +948,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 93 "scanner.l"
+#line 94 "scanner.l"
 {
 							printf( "Si no Si:  %s\n", yytext );
 							return(TK_CORCHETES);
@@ -954,7 +956,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 98 "scanner.l"
+#line 99 "scanner.l"
 {
 							printf( "Asignacion: %s\n", yytext );
 							return(TK_DOSPUNTOS_IGUAL);
@@ -962,7 +964,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 103 "scanner.l"
+#line 104 "scanner.l"
 {
 							printf( "igual: %s\n", yytext );
 							return(TK_IGUAL);
@@ -970,7 +972,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 108 "scanner.l"
+#line 109 "scanner.l"
 {
 							printf( "coma: %s\n", yytext );
 							return(TK_COMA);
@@ -978,7 +980,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 113 "scanner.l"
+#line 114 "scanner.l"
 {
 							printf( "Dos puntos : %s\n", yytext );
 							return(TK_DOSPUNTOS);
@@ -986,7 +988,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 118 "scanner.l"
+#line 119 "scanner.l"
 {	
 							printf( "Entonces: %s\n", yytext );
 							return(TK_FLECHA);
@@ -994,7 +996,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 123 "scanner.l"
+#line 124 "scanner.l"
 {
 							printf( "Es un operador relacional: %s\n", yytext );
 							return(TK_OPREL);
@@ -1002,12 +1004,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 128 "scanner.l"
+#line 129 "scanner.l"
 printf( "An continuar: %s\n", yytext );
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 130 "scanner.l"
+#line 131 "scanner.l"
 {
 							printf( "An de: %s\n", yytext );
 							return(TK_DE);
@@ -1015,7 +1017,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 135 "scanner.l"
+#line 136 "scanner.l"
 {
 							printf( "An dev: %s\n", yytext );
 							return(TK_DEV);
@@ -1023,7 +1025,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 140 "scanner.l"
+#line 141 "scanner.l"
 {
 							printf( "An ent: %s\n", yytext );
 							return(TK_ENT);
@@ -1031,7 +1033,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 145 "scanner.l"
+#line 146 "scanner.l"
 {
 							printf( "An entradasalida: %s\n", yytext );
 							return(TK_ENTSAL);
@@ -1039,7 +1041,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 150 "scanner.l"
+#line 151 "scanner.l"
 {
 							printf( "An hacer: %s\n", yytext );
 							return(TK_HACER);
@@ -1047,7 +1049,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 155 "scanner.l"
+#line 156 "scanner.l"
 {
 							printf( "An hasta: %s\n", yytext );
 							return(TK_HASTA);
@@ -1055,7 +1057,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 160 "scanner.l"
+#line 161 "scanner.l"
 {
 							printf( "An no: %s\n", yytext );
 							return(TK_NO);
@@ -1063,7 +1065,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 165 "scanner.l"
+#line 166 "scanner.l"
 {
 							printf( "An ref: %s\n", yytext );
 							return(TK_REF);
@@ -1071,7 +1073,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 170 "scanner.l"
+#line 171 "scanner.l"
 {
 							printf( "An sal: %s\n", yytext );
 							return(TK_SAL);
@@ -1079,7 +1081,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 175 "scanner.l"
+#line 176 "scanner.l"
 {
 							printf( "An tabla: %s\n", yytext );
 							return(TK_TABLA);
@@ -1087,7 +1089,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 180 "scanner.l"
+#line 181 "scanner.l"
 {
 							printf( "An accion: %s\n", yytext );
 							return(TK_ACCION);
@@ -1095,7 +1097,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 185 "scanner.l"
+#line 186 "scanner.l"
 {
 						printf( "An faccion: %s\n", yytext );
 						return(TK_ACCION);
@@ -1103,7 +1105,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 190 "scanner.l"
+#line 191 "scanner.l"
 {
 					printf( "An algoritmo: %s\n", yytext );
 					return(TK_ALGORITMO);
@@ -1111,7 +1113,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 195 "scanner.l"
+#line 196 "scanner.l"
 {
 					printf( "An falgoritmo: %s\n", yytext );
 					return(TK_FALGORITMO);
@@ -1119,7 +1121,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 200 "scanner.l"
+#line 201 "scanner.l"
 {
 					printf( "An const: %s\n", yytext );
 					return(TK_CONST);
@@ -1127,7 +1129,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 205 "scanner.l"
+#line 206 "scanner.l"
 {
 					printf( "An fconst: %s\n", yytext );
 					return(TK_FCONST);
@@ -1135,7 +1137,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 210 "scanner.l"
+#line 211 "scanner.l"
 {
 					printf( "An funcion: %s\n", yytext );
 					return(TK_FUNCION);
@@ -1143,7 +1145,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 215 "scanner.l"
+#line 216 "scanner.l"
 {
 					printf( "An ffuncion: %s\n", yytext );
 					return(TK_FFUNCION);
@@ -1151,7 +1153,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 220 "scanner.l"
+#line 221 "scanner.l"
 {
 					printf( "An mientras: %s\n", yytext );
 					return(TK_MIENTRAS);
@@ -1159,7 +1161,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 225 "scanner.l"
+#line 226 "scanner.l"
 {
 					printf( "An fmientras: %s\n", yytext );
 					return(TK_FMIENTRAS);
@@ -1167,7 +1169,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 230 "scanner.l"
+#line 231 "scanner.l"
 {
 					printf( "An para: %s\n", yytext );
 					return(TK_PARA);
@@ -1175,7 +1177,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 235 "scanner.l"
+#line 236 "scanner.l"
 {
 					printf( "An fpara: %s\n", yytext );
 					return(TK_FPARA);
@@ -1183,7 +1185,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 240 "scanner.l"
+#line 241 "scanner.l"
 {
 					printf( "An si: %s\n", yytext );
 					return(TK_SI);
@@ -1191,7 +1193,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 245 "scanner.l"
+#line 246 "scanner.l"
 {
 					printf( "An fsi: %s\n", yytext );
 					return(TK_FSI);
@@ -1199,7 +1201,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 250 "scanner.l"
+#line 251 "scanner.l"
 {
 					printf( "An tupla: %s\n", yytext );
 					return(TK_TUPLA);
@@ -1207,7 +1209,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 255 "scanner.l"
+#line 256 "scanner.l"
 {
 					printf( "An ftupla: %s\n", yytext );
 					return(TK_FTUPLA);
@@ -1215,7 +1217,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 260 "scanner.l"
+#line 261 "scanner.l"
 {
 					printf( "An var: %s\n", yytext );
 					return(TK_VAR);
@@ -1223,7 +1225,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 265 "scanner.l"
+#line 266 "scanner.l"
 {
 					printf( "An fvar: %s\n", yytext );
 					return(TK_FVAR);
@@ -1231,7 +1233,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 270 "scanner.l"
+#line 271 "scanner.l"
 {
 					printf("Es un booleano: %s\n", yytext );
 					if(strcmp(yytext,"verdadero")){
@@ -1243,7 +1245,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 279 "scanner.l"
+#line 280 "scanner.l"
 {
 					printf("Es un operador primario: %s\n", yytext );
 					if(strcmp(yytext,"*")) {
@@ -1259,7 +1261,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 292 "scanner.l"
+#line 293 "scanner.l"
 {
 					printf("Es un tipo de dato: %s\n", yytext );
 					return(TK_TIPO);
@@ -1267,7 +1269,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 297 "scanner.l"
+#line 298 "scanner.l"
 {
 					printf( "An identifier: %s\n", yytext );
 					yylval.paraCadena = strdup(yytext);		
@@ -1276,7 +1278,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 303 "scanner.l"
+#line 304 "scanner.l"
 {
 					printf( "An identifier: %s\n", yytext );
 					yylval.paraCadena = strdup(yytext);		
@@ -1285,7 +1287,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 309 "scanner.l"
+#line 310 "scanner.l"
 {
 					printf("Es un literal entero: %s\n", yytext );
 					return(TK_LITERALENTERO);
@@ -1294,7 +1296,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 315 "scanner.l"
+#line 316 "scanner.l"
 {
 					printf("Es un literal real: %s\n", yytext );
 					return(TK_LITERAL_NUMERICO);
@@ -1302,7 +1304,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 320 "scanner.l"
+#line 321 "scanner.l"
 {
 					printf("Es un literal caracter: %s\n", yytext );
 					return(TK_LITERALCARACTER);
@@ -1311,7 +1313,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 325 "scanner.l"
+#line 326 "scanner.l"
 {
 					printf("Es un literal cadena: %s\n", yytext );
 					return(TK_LITERAL_CADENA);
@@ -1320,7 +1322,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 330 "scanner.l"
+#line 331 "scanner.l"
 {
 					printf("Es un comentario: %s\n", yytext );
 					return(TK_COMENTARIO);
@@ -1329,15 +1331,15 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 334 "scanner.l"
+#line 335 "scanner.l"
 
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 335 "scanner.l"
+#line 336 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1341 "lex.yy.c"
+#line 1342 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1524,7 +1526,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			int num_to_read =
+			yy_size_t num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1538,7 +1540,7 @@ static int yy_get_next_buffer (void)
 
 			if ( b->yy_is_our_buffer )
 				{
-				int new_size = b->yy_buf_size * 2;
+				yy_size_t new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1596,7 +1598,7 @@ static int yy_get_next_buffer (void)
 
 	if (((yy_n_chars) + number_to_move) > YY_CURRENT_BUFFER_LVALUE->yy_buf_size) {
 		/* Extend the array by 50%, plus the number we really need. */
-		int new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
+		yy_size_t new_size = (yy_n_chars) + number_to_move + ((yy_n_chars) >> 1);
 		YY_CURRENT_BUFFER_LVALUE->yy_ch_buf = (char *) yyrealloc(
 			(void *) YY_CURRENT_BUFFER_LVALUE->yy_ch_buf, (yy_size_t) new_size  );
 		if ( ! YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
@@ -1685,7 +1687,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
+		yy_size_t number_to_move = (yy_n_chars) + 2;
 		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		char *source =
@@ -1736,7 +1738,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			int offset = (int) ((yy_c_buf_p) - (yytext_ptr));
+			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -2105,12 +2107,12 @@ YY_BUFFER_STATE yy_scan_string (const char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (const char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	int i;
+	yy_size_t i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = (yy_size_t) (_yybytes_len + 2);
@@ -2152,7 +2154,7 @@ static void yynoreturn yy_fatal_error (const char* msg )
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        int yyless_macro_arg = (n); \
+        yy_size_t yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		yytext[yyleng] = (yy_hold_char); \
 		(yy_c_buf_p) = yytext + yyless_macro_arg; \
@@ -2192,7 +2194,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-int yyget_leng  (void)
+yy_size_t yyget_leng  (void)
 {
         return yyleng;
 }
@@ -2342,4 +2344,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 335 "scanner.l"
+#line 336 "scanner.l"

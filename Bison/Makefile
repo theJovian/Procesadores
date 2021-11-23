@@ -11,7 +11,7 @@ flex-scanner:scanner.l
 		flex scanner.l;
 		
 compilar : parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o
-		gcc parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o -lfl -lm
+		gcc -o parser parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o -ll -lm
 
 ejecutar : parser
 		./parser
