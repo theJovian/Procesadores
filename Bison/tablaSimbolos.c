@@ -20,9 +20,9 @@ void imprimir();
 int main(void) {
 	inicializar();
 	char c[] = "a";
-	int tipo = 1;
+	int tipo = 3;
 	char b[] = "b";
-	int tipo2 = 2;
+	int tipo2 = 8;
 	insertarElementos(c,tipo);
 	insertarElementos(b,tipo2);
 	imprimir();	
@@ -30,46 +30,39 @@ int main(void) {
 
 void inicializar(){
 	tabla = NULL;
-	//tabla = (elemento*) malloc(1);
 	finaltabla = tabla;
 }
 
-void insertarElementos(char *nombre,int tipo){
-	/*elemento *auxiliar  = (elemento)malloc(sizeof(elemento));
+void insertarElementos(char *nombre, int tipo){
 	
-	auxiliar->nombre = nombre;
-	auxiliar->tipo = tipo;
-	auxiliar->sid = sid;
-	auxiliar->next = NULL;
-
-				 
-	if (tabla == NULL){
-		tabla = *auxiliar;
-		finaltabla = tabla;
-	}else{
-		finaltabla.next = *auxiliar;
-		finaltabla = *auxiliar;
+	if(tabla==NULL) {
+		tabla=(elemento*)malloc(sizeof(elemento));
+		tabla->next=NULL;
+		tabla->nombre=nombre;
+		tabla->tipo=tipo;
+		tabla->sid=sid;
+		finaltabla=tabla;
+		
+	}  else {
+		finaltabla->next=(elemento*)malloc(sizeof(elemento));
+		finaltabla=finaltabla->next;
+		finaltabla->next=NULL;
+		finaltabla->nombre=nombre;
+		finaltabla->tipo=tipo;
+		finaltabla->sid=sid;
 	}
-	*/
-	
-	finaltabla->next=(elemento)malloc(sizeof(elemento));
-	finaltabla=finaltabla->next;
-	finaltabla->next=NULL;
-	finaltabla->nombre=nombre;
-	finaltabla->tipo=tipo;
-	finaltabla->sid=sid;
 		
 	sid ++;
 }
 
 void imprimir(){
 
-	elemento current = tabla;
+	elemento *current = tabla;
 	while (current != NULL){
-		printf("Nombre: %c\n",current.nombre);
-		printf("Tipo: %d\n",current.tipo);
-		printf("Sid: %d\n\n",current.sid);
-		current = current.next;
+		printf("Nombre: %s\n",current->nombre);
+		printf("Tipo: %d\n",current->tipo);
+		printf("Sid: %d\n\n",current->sid);
+		current = current->next;
 	}
 		
 }
