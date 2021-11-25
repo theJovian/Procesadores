@@ -1,13 +1,6 @@
-//#include "tablaSimbolos.h"
+#include "tablaSimbolos.h"
 #include <stdio.h>
 #include <malloc.h>
-
-typedef struct elemento {
-	char *nombre;
-	int tipo;
-	int sid;
-	struct elemento *next;
-} elemento;
 
 struct elemento *tabla;
 struct elemento *finaltabla;
@@ -15,17 +8,24 @@ int sid = 1;
 
 void inicializar();
 void insertarElementos(char *nombre,int tipo);
+elemento* buscarElemento(char *nombre);
 void imprimir();
+void imprimirElemento(elemento* e);
 
 int main(void) {
 	inicializar();
-	char c[] = "a";
+	char c[] = "casa";
 	int tipo = 3;
-	char b[] = "b";
+	char b[] = "alfombra";
 	int tipo2 = 8;
 	insertarElementos(c,tipo);
 	insertarElementos(b,tipo2);
 	imprimir();	
+	elemento *e = buscarElemento(c);
+	imprimirElemento(e);
+	char d[] = "otro";
+	e = buscarElemento(d);
+	imprimirElemento(e);
 }
 
 void inicializar(){
@@ -55,6 +55,14 @@ void insertarElementos(char *nombre, int tipo){
 	sid ++;
 }
 
+elemento* buscarElemento(char *nombre) {
+	elemento *current = tabla;
+	while (current != NULL && current->nombre!=nombre) {
+		current = current->next;
+	}
+	return(current);
+}
+
 void imprimir(){
 
 	elemento *current = tabla;
@@ -64,5 +72,17 @@ void imprimir(){
 		printf("Sid: %d\n\n",current->sid);
 		current = current->next;
 	}
-		
+			
+}
+
+void imprimirElemento(elemento* e) {
+	
+	if(e!=NULL) {
+		printf("Nombre: %s\n",e->nombre);
+		printf("Tipo: %d\n",e->tipo);
+		printf("Sid: %d\n\n",e->sid);
+	} else {
+		printf("No se ha encontrado el elemento");
+	}
+	
 }
