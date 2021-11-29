@@ -1,6 +1,7 @@
 %{
 #include "parser.tab.h"
 #include <ctype.h>
+#include "tablaSimbolos.h"
 %}
 
 DR_OPERADOR_SEC 	\+|-
@@ -70,15 +71,18 @@ SEPARADOR			" "|"\t"|"\n"
 							for( int i = 0; i < size; i++){
 								tipo[i] = tolower(yytext[i]);
 							}
-							if(strcmp(tipo, "entero")){
-								yylval.paraEntero = 1;
+							if(strcmp(tipo, "entero") == 0){
+								yylval.paraEntero = TIPO_ENTERO;
+							}
+							else if(strcmp(tipo, "booleano") == 0){
+								yylval.paraEntero = TIPO_BOOLEANO;
 							}
 							return (TK_TIPOBASE);
 						}
 
 {DR_OPERADOR_SEC}		{
 							printf( "Es un operador secundario: %s\n", yytext );
-							if(strcmp(yytext,"+")) {
+							if(strcmp(yytext,"+") == 0) {
 								return(TK_SUMA);
 							} else {
 								return(TK_RESTA);
@@ -87,7 +91,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_OPERADORLOGICO}		{
 							printf( "Es un operador logico: %s\n", yytext );
-							if(strcmp(yytext,"y")) {
+							if(strcmp(yytext,"y") == 0) {
 								return(TK_Y);
 							} else {
 								return(TK_O);
@@ -106,6 +110,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_DOSPUNTOS_IGUAL}			{
 							printf( "Asignacion: %s\n", yytext );
+							yylval.paraEntero = VALOR_DOSPUNTOS_IGUAL;
 							return(TK_DOSPUNTOS_IGUAL);
 						}
 						
@@ -278,7 +283,7 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_LITERALBOOLEANO}	{
 							printf("Es un booleano: %s\n", yytext );
-							if(strcmp(yytext,"verdadero")){
+							if(strcmp(yytext,"verdadero") == 0){
 								return(TK_VERDADERO);
 							}else{
 								return(TK_FALSO);
@@ -287,11 +292,11 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_OPERADOR_PRI}	{
 						printf("Es un operador primario: %s\n", yytext );
-						if(strcmp(yytext,"*")) {
+						if(strcmp(yytext,"*") == 0) {
 							return(TK_MULTIPLICACION);
-						} else if(strcmp(yytext,"/")) {
+						} else if(strcmp(yytext,"/") == 0) {
 							return(TK_DIVISION);
-						} else if(strcmp(yytext,"div")) {
+						} else if(strcmp(yytext,"div") == 0) {
 							return(TK_DIVISION_ENTERA);
 						} else {
 							return(TK_MODULO);

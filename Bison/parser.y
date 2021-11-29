@@ -27,6 +27,8 @@
 	} paraBooleanos;
 }
 
+///Definicion de Tokens
+
 %token TK_PUNTOYCOMA
 %token TK_CONTINUAR
 %token TK_ALGORITMO
@@ -91,23 +93,42 @@
 %token TK_IGUAL
 %token TK_LITERAL_CADENA
 
+///Definicion de prioridades
+
 %left TK_SUMA TK_RESTA
 %left TK_MULTIPLICACION TK_DIVISION TK_DIVISION_ENTERA TK_MODULO
 %nonassoc TK_NO
 %nonassoc TK_OPREL
 %left TK_Y TK_O
 
+///Definicion de tipos
+
 %type<paraEntero> listaId
+%type<paraEntero> listaIdBooleanos
 %type<paraEntero> defTipo
 %type<paraEntero> TK_TIPOBASE
+%type<paraEntero>TK_DOSPUNTOS_IGUAL
+%type<paraCadena>TK_IDENTIFICADOR
+%type<paraCadena>TK_IDENTIFICADOR_BOOLEANO
+%type<paraCadena>operandoAritmetico
+%type<paraCadena>expArit
 
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
     TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
 ;
+//dudas sobre el uso de expresiones booleanas y expresiones aritmeticas
 asignacion:
-	operandoBooleano TK_DOSPUNTOS_IGUAL expresion{printf("Asignacion booleana");}
+	operandoBooleano TK_DOSPUNTOS_IGUAL expresion
+    {
+        printf("Asignacion booleana");
+        // int operador = $2;
+        // int operando1 = obtenerId($3);
+        // int operando2 = -1;
+        // int resultado = obtenerId($1);
+        // gen(operador, operando1, operando2, resultado);
+    }
 	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion{printf("Asignacion aritmetica");}
 ;
 alternativa:
@@ -175,24 +196,40 @@ listaDefsConstantes:
     ;
 listaDefsVariables:
     listaId TK_PUNTOYCOMA listaDefsVariables {printf("reduce de listaDefsVariables\n");}
+    | listaIdBooleanos TK_PUNTOYCOMA listaDefsVariables {printf("reduce de listaDefsVariables\n");}
     | /*epsilon*/
     ;
 listaId:
     TK_IDENTIFICADOR TK_DOSPUNTOS defTipo
     {
         $$ = $3;
-        /*
-        ponerSimbolo($1, $3)
-        */
+        if($3 == TIPO_BOOLEANO){
+            printf("Error, las variables booleanas no tiene un formato correcto. Prueba con b_nombreDeLaVariable\n");
+        }
+        // insertarElemento($1, $3);
     }
 	| TK_IDENTIFICADOR TK_COMA listaId
     {
         $$ = $3;
-        /*
-        ponerSimbolo($1, $3)
-        */
+        // insertarElemento($1, $3);
     }
 	;
+listaIdBooleanos:
+    TK_IDENTIFICADOR_BOOLEANO TK_DOSPUNTOS defTipo
+    {
+        $$ = $3;
+        if($3 != TIPO_BOOLEANO){
+            printf("Error, las variables estan escritas en formato de booleanos. Prueba a cambiar el tipo o cambiar a un formato diferente de b_nombreDeLaVariableBooleana\n");
+        }
+        // insertarElemento($1, $3);
+    }
+	| TK_IDENTIFICADOR_BOOLEANO TK_COMA listaIdBooleanos
+    {
+        $$ = $3;
+        // insertarElemento($1, $3);
+    }
+	;
+
 defVariablesInteraccion:
     defEntrada
     | defEntrada defSalida
@@ -221,6 +258,16 @@ expresion:
     ;
 expArit:
     expArit TK_SUMA expArit
+    {
+        // char *nombreNuevaVariableResultado = generarNombre();
+        // int tipoNuevaVariableResultado = obtenerTipo($1);
+        // insertarElemento(nombreNuevaVariable, tipoNuevaVariable);
+        // int operando1 = obtenerId($1);
+        // int operando2 = obtenerId($2);
+        // int resultado = obtenerId(nombreNuevaVariable);
+        // int operador = $2;
+        // gen(operador, operando1, operando2, resultado);
+    }
     | expArit TK_RESTA expArit
     | expArit TK_MULTIPLICACION expArit
     | expArit TK_DIVISION expArit
@@ -228,6 +275,9 @@ expArit:
     | expArit TK_MODULO expArit
     | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
     | operandoAritmetico
+    {
+        $$ = $1;
+    }
     | TK_RESTA expArit
     | TK_SUMA expArit
     | TK_LITERAL_NUMERICO
@@ -240,7 +290,10 @@ operandoBooleano:
     | operandoBooleano TK_REF
     ;
 operandoAritmetico:
-    TK_IDENTIFICADOR
+    TK_IDENTIFICADOR 
+    {
+        $$ = $1;
+    }
     | operandoAritmetico TK_PUNTO operandoAritmetico
     | operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
     | operandoAritmetico TK_REF
@@ -261,7 +314,7 @@ cabeceraAlgoritmo:
 ;
 
 bloqueAlgoritmo:
-    bloqueAlgoritmo: bloque TK_COMENTARIO
+    bloque TK_COMENTARIO
 ;
 
 defGlobales: 
@@ -303,6 +356,9 @@ defTipo:
     | TK_IDENTIFICADOR
     | expresionT TK_PUNTO_Y_PUNTO expresionT
     | TK_REF defTipo
+    {
+        $$=$2;
+    }
     | TK_TIPOBASE 
     {
         $$=$1;
@@ -323,6 +379,7 @@ main ( int argc, char **argv)
 		dup2(yyin,STDIN_FILENO);
 	}
 	yyparse();
+    inicializar();
 }
 
 /* Called by yyparse on error. */

@@ -629,8 +629,9 @@ char *yytext;
 #line 2 "scanner.l"
 #include "parser.tab.h"
 #include <ctype.h>
-#line 632 "lex.yy.c"
+#include "tablaSimbolos.h"
 #line 633 "lex.yy.c"
+#line 634 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -847,10 +848,10 @@ YY_DECL
 		}
 
 	{
-#line 64 "scanner.l"
+#line 65 "scanner.l"
 
 
-#line 853 "lex.yy.c"
+#line 854 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -909,28 +910,29 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 67 "scanner.l"
 {
 							printf( "Es un tipo de dato: %s\n", yytext);
 							int size = strlen(yytext);
 							char tipo[size];
 							for( int i = 0; i < size; i++){
-								printf("Cuenta %d \n", i);
 								tipo[i] = tolower(yytext[i]);
-								printf("Cuenta %d \n", i);
 							}
-							if(strcmp(tipo, "entero")){
-								yylval.paraEntero = 1;
+							if(strcmp(tipo, "entero") == 0){
+								yylval.paraEntero = TIPO_ENTERO;
+							}
+							else if(strcmp(tipo, "booleano") == 0){
+								yylval.paraEntero = TIPO_BOOLEANO;
 							}
 							return (TK_TIPOBASE);
 						}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 83 "scanner.l"
 {
 							printf( "Es un operador secundario: %s\n", yytext );
-							if(strcmp(yytext,"+")) {
+							if(strcmp(yytext,"+") == 0) {
 								return(TK_SUMA);
 							} else {
 								return(TK_RESTA);
@@ -939,10 +941,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 90 "scanner.l"
+#line 92 "scanner.l"
 {
 							printf( "Es un operador logico: %s\n", yytext );
-							if(strcmp(yytext,"y")) {
+							if(strcmp(yytext,"y") == 0) {
 								return(TK_Y);
 							} else {
 								return(TK_O);
@@ -951,7 +953,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 99 "scanner.l"
+#line 101 "scanner.l"
 {
 							printf( "Punto y coma: %s\n", yytext );
 							return(TK_PUNTOYCOMA);
@@ -959,7 +961,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 104 "scanner.l"
+#line 106 "scanner.l"
 {
 							printf( "Si no Si:  %s\n", yytext );
 							return(TK_CORCHETES);
@@ -967,15 +969,16 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 109 "scanner.l"
+#line 111 "scanner.l"
 {
 							printf( "Asignacion: %s\n", yytext );
+							yylval.paraEntero = VALOR_DOSPUNTOS_IGUAL;
 							return(TK_DOSPUNTOS_IGUAL);
 						}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 114 "scanner.l"
+#line 117 "scanner.l"
 {
 							printf( "igual: %s\n", yytext );
 							return(TK_IGUAL);
@@ -983,7 +986,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 119 "scanner.l"
+#line 122 "scanner.l"
 {
 							printf( "coma: %s\n", yytext );
 							return(TK_COMA);
@@ -991,7 +994,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 124 "scanner.l"
+#line 127 "scanner.l"
 {
 							printf( "Dos puntos : %s\n", yytext );
 							return(TK_DOSPUNTOS);
@@ -999,7 +1002,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 129 "scanner.l"
+#line 132 "scanner.l"
 {	
 							printf( "Entonces: %s\n", yytext );
 							return(TK_FLECHA);
@@ -1007,7 +1010,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 134 "scanner.l"
+#line 137 "scanner.l"
 {
 							printf( "Es un operador relacional: %s\n", yytext );
 							return(TK_OPREL);
@@ -1015,12 +1018,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 139 "scanner.l"
+#line 142 "scanner.l"
 printf( "An continuar: %s\n", yytext );
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 141 "scanner.l"
+#line 144 "scanner.l"
 {
 							printf( "An de: %s\n", yytext );
 							return(TK_DE);
@@ -1028,7 +1031,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 146 "scanner.l"
+#line 149 "scanner.l"
 {
 							printf( "An dev: %s\n", yytext );
 							return(TK_DEV);
@@ -1036,7 +1039,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 151 "scanner.l"
+#line 154 "scanner.l"
 {
 							printf( "An ent: %s\n", yytext );
 							return(TK_ENT);
@@ -1044,7 +1047,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 156 "scanner.l"
+#line 159 "scanner.l"
 {
 							printf( "An entradasalida: %s\n", yytext );
 							return(TK_ENTSAL);
@@ -1052,7 +1055,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 161 "scanner.l"
+#line 164 "scanner.l"
 {
 							printf( "An hacer: %s\n", yytext );
 							return(TK_HACER);
@@ -1060,7 +1063,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 166 "scanner.l"
+#line 169 "scanner.l"
 {
 							printf( "An hasta: %s\n", yytext );
 							return(TK_HASTA);
@@ -1068,7 +1071,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 171 "scanner.l"
+#line 174 "scanner.l"
 {
 							printf( "An no: %s\n", yytext );
 							return(TK_NO);
@@ -1076,7 +1079,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 176 "scanner.l"
+#line 179 "scanner.l"
 {
 							printf( "An ref: %s\n", yytext );
 							return(TK_REF);
@@ -1084,7 +1087,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 181 "scanner.l"
+#line 184 "scanner.l"
 {
 							printf( "An sal: %s\n", yytext );
 							return(TK_SAL);
@@ -1092,7 +1095,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 186 "scanner.l"
+#line 189 "scanner.l"
 {
 							printf( "An tabla: %s\n", yytext );
 							return(TK_TABLA);
@@ -1100,7 +1103,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 191 "scanner.l"
+#line 194 "scanner.l"
 {
 							printf( "An accion: %s\n", yytext );
 							return(TK_ACCION);
@@ -1108,7 +1111,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 196 "scanner.l"
+#line 199 "scanner.l"
 {
 						printf( "An faccion: %s\n", yytext );
 						return(TK_ACCION);
@@ -1116,7 +1119,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 201 "scanner.l"
+#line 204 "scanner.l"
 {
 					printf( "An algoritmo: %s\n", yytext );
 					return(TK_ALGORITMO);
@@ -1124,7 +1127,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 206 "scanner.l"
+#line 209 "scanner.l"
 {
 					printf( "An falgoritmo: %s\n", yytext );
 					return(TK_FALGORITMO);
@@ -1132,7 +1135,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 211 "scanner.l"
+#line 214 "scanner.l"
 {
 					printf( "An const: %s\n", yytext );
 					return(TK_CONST);
@@ -1140,7 +1143,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 216 "scanner.l"
+#line 219 "scanner.l"
 {
 					printf( "An fconst: %s\n", yytext );
 					return(TK_FCONST);
@@ -1148,7 +1151,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 221 "scanner.l"
+#line 224 "scanner.l"
 {
 					printf( "An funcion: %s\n", yytext );
 					return(TK_FUNCION);
@@ -1156,7 +1159,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 226 "scanner.l"
+#line 229 "scanner.l"
 {
 					printf( "An ffuncion: %s\n", yytext );
 					return(TK_FFUNCION);
@@ -1164,7 +1167,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 231 "scanner.l"
+#line 234 "scanner.l"
 {
 					printf( "An mientras: %s\n", yytext );
 					return(TK_MIENTRAS);
@@ -1172,7 +1175,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 236 "scanner.l"
+#line 239 "scanner.l"
 {
 					printf( "An fmientras: %s\n", yytext );
 					return(TK_FMIENTRAS);
@@ -1180,7 +1183,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 241 "scanner.l"
+#line 244 "scanner.l"
 {
 					printf( "An para: %s\n", yytext );
 					return(TK_PARA);
@@ -1188,7 +1191,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 246 "scanner.l"
+#line 249 "scanner.l"
 {
 					printf( "An fpara: %s\n", yytext );
 					return(TK_FPARA);
@@ -1196,7 +1199,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 251 "scanner.l"
+#line 254 "scanner.l"
 {
 					printf( "An si: %s\n", yytext );
 					return(TK_SI);
@@ -1204,7 +1207,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 256 "scanner.l"
+#line 259 "scanner.l"
 {
 					printf( "An fsi: %s\n", yytext );
 					return(TK_FSI);
@@ -1212,7 +1215,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 261 "scanner.l"
+#line 264 "scanner.l"
 {
 					printf( "An tupla: %s\n", yytext );
 					return(TK_TUPLA);
@@ -1220,7 +1223,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 266 "scanner.l"
+#line 269 "scanner.l"
 {
 					printf( "An ftupla: %s\n", yytext );
 					return(TK_FTUPLA);
@@ -1228,7 +1231,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 271 "scanner.l"
+#line 274 "scanner.l"
 {
 					printf( "An var: %s\n", yytext );
 					return(TK_VAR);
@@ -1236,7 +1239,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 276 "scanner.l"
+#line 279 "scanner.l"
 {
 					printf( "An fvar: %s\n", yytext );
 					return(TK_FVAR);
@@ -1244,10 +1247,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 281 "scanner.l"
+#line 284 "scanner.l"
 {
 							printf("Es un booleano: %s\n", yytext );
-							if(strcmp(yytext,"verdadero")){
+							if(strcmp(yytext,"verdadero") == 0){
 								return(TK_VERDADERO);
 							}else{
 								return(TK_FALSO);
@@ -1256,14 +1259,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 290 "scanner.l"
+#line 293 "scanner.l"
 {
 						printf("Es un operador primario: %s\n", yytext );
-						if(strcmp(yytext,"*")) {
+						if(strcmp(yytext,"*") == 0) {
 							return(TK_MULTIPLICACION);
-						} else if(strcmp(yytext,"/")) {
+						} else if(strcmp(yytext,"/") == 0) {
 							return(TK_DIVISION);
-						} else if(strcmp(yytext,"div")) {
+						} else if(strcmp(yytext,"div") == 0) {
 							return(TK_DIVISION_ENTERA);
 						} else {
 							return(TK_MODULO);
@@ -1272,7 +1275,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 303 "scanner.l"
+#line 306 "scanner.l"
 {
 					printf("Es un tipo de dato: %s\n", yytext );
 					return(TK_TIPO);
@@ -1280,7 +1283,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 308 "scanner.l"
+#line 311 "scanner.l"
 {
 					printf( "An identifier: %s\n", yytext );
 					yylval.paraCadena = strdup(yytext);		
@@ -1289,7 +1292,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 314 "scanner.l"
+#line 317 "scanner.l"
 {
 					printf( "An identifier: %s\n", yytext );
 					yylval.paraCadena = strdup(yytext);		
@@ -1298,7 +1301,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 320 "scanner.l"
+#line 323 "scanner.l"
 {
 					printf("Es un literal entero: %s\n", yytext );
 					return(TK_LITERALENTERO);
@@ -1307,7 +1310,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 326 "scanner.l"
+#line 329 "scanner.l"
 {
 					printf("Es un literal real: %s\n", yytext );
 					return(TK_LITERAL_NUMERICO);
@@ -1315,7 +1318,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 331 "scanner.l"
+#line 334 "scanner.l"
 {
 					printf("Es un literal caracter: %s\n", yytext );
 					return(TK_LITERALCARACTER);
@@ -1324,7 +1327,7 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 336 "scanner.l"
+#line 339 "scanner.l"
 {
 					printf("Es un literal cadena: %s\n", yytext );
 					return(TK_LITERAL_CADENA);
@@ -1333,7 +1336,7 @@ YY_RULE_SETUP
 case 50:
 /* rule 50 can match eol */
 YY_RULE_SETUP
-#line 341 "scanner.l"
+#line 344 "scanner.l"
 {
 					printf("Es un comentario: %s\n", yytext );
 					return(TK_COMENTARIO);
@@ -1342,15 +1345,15 @@ YY_RULE_SETUP
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 345 "scanner.l"
+#line 348 "scanner.l"
 
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 346 "scanner.l"
+#line 349 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1353 "lex.yy.c"
+#line 1356 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2355,5 +2358,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 346 "scanner.l"
+#line 349 "scanner.l"
 
