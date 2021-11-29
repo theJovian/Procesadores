@@ -65,6 +65,14 @@ SEPARADOR			" "|"\t"|"\n"
 
 {DR_TIPODATO}			{
 							printf( "Es un tipo de dato: %s\n", yytext);
+							int size = strlen(yytext);
+							char tipo[size];
+							for( int i = 0; i < size; i++){
+								tipo[i] = tolower(yytext[i]);
+							}
+							if(strcmp(tipo, "entero")){
+								yylval.paraEntero = 1;
+							}
 							return (TK_TIPOBASE);
 						}
 
@@ -269,26 +277,26 @@ SEPARADOR			" "|"\t"|"\n"
 				}
 
 {DR_LITERALBOOLEANO}	{
-					printf("Es un booleano: %s\n", yytext );
-					if(strcmp(yytext,"verdadero")){
-						return(TK_VERDADERO);
-					}else{
-						return(TK_FALSO);
-					}
-				}
+							printf("Es un booleano: %s\n", yytext );
+							if(strcmp(yytext,"verdadero")){
+								return(TK_VERDADERO);
+							}else{
+								return(TK_FALSO);
+							}
+						}	
 
 {DR_OPERADOR_PRI}	{
-					printf("Es un operador primario: %s\n", yytext );
-					if(strcmp(yytext,"*")) {
-						return(TK_MULTIPLICACION);
-					} else if(strcmp(yytext,"/")) {
-						return(TK_DIVISION);
-					} else if(strcmp(yytext,"div")) {
-						return(TK_DIVISION_ENTERA);
-					} else {
-						return(TK_MODULO);
+						printf("Es un operador primario: %s\n", yytext );
+						if(strcmp(yytext,"*")) {
+							return(TK_MULTIPLICACION);
+						} else if(strcmp(yytext,"/")) {
+							return(TK_DIVISION);
+						} else if(strcmp(yytext,"div")) {
+							return(TK_DIVISION_ENTERA);
+						} else {
+							return(TK_MODULO);
+						}
 					}
-				}
 
 {DR_TIPO}	{
 					printf("Es un tipo de dato: %s\n", yytext );
@@ -333,3 +341,4 @@ SEPARADOR			" "|"\t"|"\n"
 					return(TK_COMENTARIO);
 				}
 [ \t\n]+
+%%

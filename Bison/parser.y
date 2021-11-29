@@ -27,7 +27,6 @@
 	} paraBooleanos;
 }
 
-
 %token TK_PUNTOYCOMA
 %token TK_CONTINUAR
 %token TK_ALGORITMO
@@ -97,6 +96,10 @@
 %nonassoc TK_NO
 %nonassoc TK_OPREL
 %left TK_Y TK_O
+
+%type<paraEntero> listaId
+%type<paraEntero> defTipo
+%type<paraEntero> TK_TIPOBASE
 
 %% /* Grammar rules and actions follow. */
 
@@ -171,12 +174,24 @@ listaDefsConstantes:
     | /*epsilon*/
     ;
 listaDefsVariables:
-    listaId TK_DOSPUNTOS defTipo TK_PUNTOYCOMA listaDefsVariables {printf("reduce de listaDefsVariables\n");}
+    listaId TK_PUNTOYCOMA listaDefsVariables {printf("reduce de listaDefsVariables\n");}
     | /*epsilon*/
     ;
 listaId:
-	TK_IDENTIFICADOR TK_COMA listaId
-	| TK_IDENTIFICADOR
+    TK_IDENTIFICADOR TK_DOSPUNTOS defTipo
+    {
+        $$ = $3;
+        /*
+        ponerSimbolo($1, $3)
+        */
+    }
+	| TK_IDENTIFICADOR TK_COMA listaId
+    {
+        $$ = $3;
+        /*
+        ponerSimbolo($1, $3)
+        */
+    }
 	;
 defVariablesInteraccion:
     defEntrada
@@ -288,7 +303,10 @@ defTipo:
     | TK_IDENTIFICADOR
     | expresionT TK_PUNTO_Y_PUNTO expresionT
     | TK_REF defTipo
-    | TK_TIPOBASE {printf("Reduce de defTipo\n");}
+    | TK_TIPOBASE 
+    {
+        $$=$1;
+    }
 ;
 expresionT: 
     TK_LITERALENTERO
