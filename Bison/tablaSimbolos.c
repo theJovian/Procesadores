@@ -1,33 +1,36 @@
 #include "tablaSimbolos.h"
 #include <stdio.h>
-//#include <malloc.h>
 #include <stdlib.h>
 
 struct elemento *tabla;
 struct elemento *finaltabla;
 int sid = 1;
+int temp = 1;
 
 void inicializar();
-void insertarElementos(char *nombre,int tipo);
+void insertarElemento(char *nombre,int tipo);
 elemento* buscarElemento(char *nombre);
-void imprimir();
+void imprimirSimbolos();
 void imprimirElemento(elemento* e);
+char* generarNombre();
 
-// int main(void) {
-// 	inicializar();
-// 	char c[] = "casa";
-// 	int tipo = 3;
-// 	char b[] = "alfombra";
-// 	int tipo2 = 8;
-// 	insertarElementos(c,tipo);
-// 	insertarElementos(b,tipo2);
-// 	imprimir();	
-// 	elemento *e = buscarElemento(c);
-// 	imprimirElemento(e);
-// 	char d[] = "otro";
-// 	e = buscarElemento(d);
-// 	imprimirElemento(e);
-// }
+int main(void) {
+	inicializar();
+	char c[] = "casa";
+	int tipo = 3;
+	char b[] = "alfombra";
+	int tipo2 = 8;
+	insertarElemento(c,tipo);
+	insertarElemento(b,tipo2);
+	imprimirSimbolos();	
+	elemento *e = buscarElemento(c);
+	imprimirElemento(e);
+	char d[] = "otro";
+	e = buscarElemento(d);
+	imprimirElemento(e);
+	printf("%s",generarNombre());
+	printf("%s",generarNombre());
+}
 
 void inicializar(){
 	tabla = NULL;
@@ -64,7 +67,7 @@ elemento* buscarElemento(char *nombre) {
 	return(current);
 }
 
-void imprimir(){
+void imprimirSimbolos(){
 
 	elemento *current = tabla;
 	while (current != NULL){
@@ -83,7 +86,14 @@ void imprimirElemento(elemento* e) {
 		printf("Tipo: %d\n",e->tipo);
 		printf("Sid: %d\n\n",e->sid);
 	} else {
-		printf("No se ha encontrado el elemento");
+		printf("No se ha encontrado el elemento\n");
 	}
 	
+}
+
+char* generarNombre() {
+	char *var;
+	var = (char*)malloc(sizeof(char)*7);
+	sprintf(var,"temp_%d\n",temp++);
+	return(var);
 }
