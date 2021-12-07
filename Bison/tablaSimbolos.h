@@ -20,10 +20,24 @@ typedef struct elemento {
 
 #define VALOR_VACIO -1
 
+
+// Funcion que inicializa la tabla de simbolos
 void inicializar();
+
+// Funcion que inserta el nombre y tipo del elemento
 void insertarElemento(char *nombre,int tipo);
+
+// Funcion que busca un elemento a traves de su nombre en la tabla
 elemento* buscarElemento(char *nombre);
+
+// Funcion que busca un elemento a traves de su sid en la tabla
 elemento* buscarElementoPorSid(int sid);
+
+// Funcion que imprime la tabla de simbolos
 void imprimirSimbolos();
+
+// Funcion que imprime un elemento de la tabla de simbolos
 void imprimirElemento(elemento* e);
+
+// Funcion que genera un nombre secuencial para una variable temporal
 char* generarNombre();

@@ -10,40 +10,34 @@ void gen(int op1, int op2, int operador, int res);
 void imprimirCuadruplas();
 void inicializarCuadruplas();
 
-// int main(void) {
-// 	cuadruplas.nextQuad = 0;
-// 	int op1 = 2;
-// 	int op2 = 3;
-// 	int operador = 1;
-// 	int res = 5;
-// 	gen(op1,op2,operador,res);
-// 	op1 = 10;
-// 	op2 = 100;
-// 	operador = 3;
-// 	res = 1000;
-// 	gen(op1,op2,operador,res);
-// 	imprimirCuadruplas();
-	
-// }
+// Funcion para testear la tabla de cuadruplas
+/*int main(void) {
+	cuadruplas.nextQuad = 0;
+ 	int op1 = 2;
+ 	int op2 = 3;
+ 	int operador = 1;
+ 	int res = 5;
+	gen(op1,op2,operador,res);
+ 	op1 = 10;
+	op2 = 100;
+ 	operador = 3;
+ 	res = 1000;
+ 	gen(op1,op2,operador,res);
+	imprimirCuadruplas();
+}*/
 
 void gen(int op1, int op2, int operador, int res) {
-
 	cuadruplas.tabla[cuadruplas.nextQuad][0] = op1;
 	cuadruplas.tabla[cuadruplas.nextQuad][1] = op2;
 	cuadruplas.tabla[cuadruplas.nextQuad][2] = operador;
 	cuadruplas.tabla[cuadruplas.nextQuad][3] = res;
 	cuadruplas.nextQuad++;
-	
 }
 
 void imprimirCuadruplas(){
 	printf("Inicio tabla de cuadruplas\n");
 	for (int i = 0; i < cuadruplas.nextQuad; i++)
 	{
-		// printf("Operando 1: %d\n", cuadruplas.tabla[i][0]);
-		// printf("Operando 2: %d\n", cuadruplas.tabla[i][1]);
-		// printf("Operador: %d\n", cuadruplas.tabla[i][2]);
-		// printf("Resultado: %d\n\n", cuadruplas.tabla[i][3]);
 		elemento *elementoOperando1 = buscarElementoPorSid(cuadruplas.tabla[i][0]);
 		elemento *elementoOperando2 = buscarElementoPorSid(cuadruplas.tabla[i][1]);
 		int elementoOperador = cuadruplas.tabla[i][2];
@@ -69,7 +63,6 @@ void imprimirCuadruplas(){
 		}else{
 			resultado = strdup(elementoResultado->nombre);
 		}
-
 		if(elementoOperador == VALOR_DOSPUNTOS_IGUAL){
 			operador = strdup(":=");
 			printf("%s %s %s %s\n", resultado, operador, operando1, operando2);
@@ -94,8 +87,7 @@ void imprimirCuadruplas(){
 		}
 			printf("%s := %s %s %s\n", resultado, operando1, operador, operando2);
 		}
-	}
-			
+	}		
 }
 
 void inicializarCuadruplas(){

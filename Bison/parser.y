@@ -22,10 +22,6 @@
 	char *paraCadena;
 	int paraEntero;
 	float paraFloat;
-	struct paraBooleano{
-		int * true;
-		int * false;
-	} paraBooleanos;
 }
 
 ///Definicion de Tokens
@@ -104,10 +100,15 @@
 
 ///Definicion de tipos
 
-%type<paraEntero> listaId
-%type<paraEntero> listaIdBooleanos
-%type<paraEntero> defTipo
-%type<paraEntero> TK_TIPOBASE
+%type<paraCadena>TK_FALSO
+%type<paraCadena>TK_VERDADERO
+%type<paraCadena>TK_LITERAL_NUMERICO
+%type<paraCadena>llamadaFuncion
+%type<paraCadena>expBool
+%type<paraEntero>listaId
+%type<paraEntero>listaIdBooleanos
+%type<paraEntero>defTipo
+%type<paraEntero>TK_TIPOBASE
 %type<paraEntero>TK_DOSPUNTOS_IGUAL
 %type<paraCadena>TK_IDENTIFICADOR
 %type<paraCadena>TK_IDENTIFICADOR_BOOLEANO
@@ -271,19 +272,36 @@ defSalida:
     TK_SAL listaDefsVariables
     ;
 expBool:
-    expBool TK_Y expBool
+    expBool TK_Y M expBool
+    {
+		
+    }
     | expBool TK_O expBool
     | TK_NO expBool
+    {
+		$$ = $2;
+	}
     | operandoBooleano
     | TK_VERDADERO
+    {
+		insertarElemento("verdadero", TIPO_BOOLEANO);
+		$$=$1;
+	}
     | TK_FALSO
+    {
+		insertarElemento("falso", TIPO_BOOLEANO);
+		$$=$1;
+	}
     | expresion TK_OPREL expresion
     | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
     {
         printf("expBool -> ( expbool )\n");
-        $$ = $2;
+        //$$ = $2;
     }
     ;
+M: 
+	/*empty*/	{}
+	;
 expresion:
     expArit
     | expBool
@@ -465,10 +483,10 @@ listaDefsTipo:
     | /*epsilon*/
 ;
 defTipo:    
-    TK_TUPLA listaCampos TK_FTUPLA
-    | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo
-    | TK_IDENTIFICADOR
-    | expresionT TK_PUNTO_Y_PUNTO expresionT
+    TK_TUPLA listaCampos TK_FTUPLA {}
+    | TK_TABLA TK_CORCHETE_APERTURA expresionT TK_PUNTO_Y_PUNTO expresionT TK_CORCHETE_CIERRE TK_DE defTipo {}
+    | TK_IDENTIFICADOR {}
+    | expresionT TK_PUNTO_Y_PUNTO expresionT {}
     | TK_REF defTipo
     {
         $$=$2;
@@ -492,7 +510,7 @@ main ( int argc, char **argv)
     inicializar();
     inicializarCuadruplas();
 	yyparse();
-    // imprimirSimbolos();
+    imprimirSimbolos();
     imprimirCuadruplas();
 }
 

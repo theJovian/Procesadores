@@ -3,11 +3,12 @@ algoritmo sumacomb;
     sal suma: entero;
 {Prec: n= N AND m = M AND M >= N >0}
     var
-        i, comb: entero;
+        i, comb, comb2: entero;
     fvar
     i:= 0;
     suma:= 0;
-    comb:= (1 - 2) * 3; 
+    comb:= (1 - 2) * 3;
+    comb2:= 2+6/3; 
 {Post: n =N AND suma = SUMATORIO(i=1..N)(M sobre i)}
 falgoritmo
 

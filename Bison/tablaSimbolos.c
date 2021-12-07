@@ -16,23 +16,24 @@ void imprimirSimbolos();
 void imprimirElemento(elemento* e);
 char* generarNombre();
 
-// int main(void) {
-// 	inicializar();
-// 	char c[] = "casa";
-// 	int tipo = 3;
-// 	char b[] = "alfombra";
-// 	int tipo2 = 8;
-// 	insertarElemento(c,tipo);
-// 	insertarElemento(b,tipo2);
-// 	imprimirSimbolos();	
-// 	elemento *e = buscarElemento(c);
-// 	imprimirElemento(e);
-// 	char d[] = "otro";
-// 	e = buscarElemento(d);
-// 	imprimirElemento(e);
-// 	printf("%s",generarNombre());
-// 	printf("%s",generarNombre());
-// }
+// Funcion para testear la tabla de simbolos
+/*int main(void) {
+ 	inicializar();
+ 	char c[] = "casa";
+ 	int tipo = 3;
+ 	char b[] = "alfombra";
+ 	int tipo2 = 8;
+ 	insertarElemento(c,tipo);
+ 	insertarElemento(b,tipo2);
+ 	imprimirSimbolos();	
+ 	elemento *e = buscarElemento(c);
+ 	imprimirElemento(e);
+ 	char d[] = "otro";
+ 	e = buscarElemento(d);
+ 	imprimirElemento(e);
+ 	printf("%s",generarNombre());
+ 	printf("%s",generarNombre());
+ }*/
 
 void inicializar(){
 	tabla = NULL;
@@ -40,7 +41,6 @@ void inicializar(){
 }
 
 void insertarElemento(char *nombre, int tipo){
-	
 	if(tabla==NULL) {
 		tabla=(elemento*)malloc(sizeof(elemento));
 		tabla->next=NULL;
@@ -56,8 +56,7 @@ void insertarElemento(char *nombre, int tipo){
 		finaltabla->nombre=nombre;
 		finaltabla->tipo=tipo;
 		finaltabla->sid=sid;
-	}
-		
+	}	
 	sid ++;
 }
 
@@ -78,19 +77,16 @@ elemento* buscarElementoPorSid(int sid) {
 }
 
 void imprimirSimbolos(){
-
 	elemento *current = tabla;
 	while (current != NULL){
 		printf("Nombre: %s\n",current->nombre);
 		printf("Tipo: %d\n",current->tipo);
 		printf("Sid: %d\n\n",current->sid);
 		current = current->next;
-	}
-			
+	}		
 }
 
 void imprimirElemento(elemento* e) {
-	
 	if(e!=NULL) {
 		printf("Nombre: %s\n",e->nombre);
 		printf("Tipo: %d\n",e->tipo);
@@ -98,7 +94,6 @@ void imprimirElemento(elemento* e) {
 	} else {
 		printf("No se ha encontrado el elemento\n");
 	}
-	
 }
 
 char* generarNombre() {
