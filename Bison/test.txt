@@ -1,0 +1,13 @@
+algoritmo sumacomb;
+    ent n, m: entero;
+    sal suma: entero;
+{Prec: n= N AND m = M AND M >= N >0}
+    var
+        i, comb: entero;
+    fvar
+    i:= 0;
+    suma:= 0;
+    comb:= (1 - 2) * 3; 
+{Post: n =N AND suma = SUMATORIO(i=1..N)(M sobre i)}
+falgoritmo
+

@@ -58,7 +58,8 @@ DR_PUNTOYCOMA		;
 DR_COMA				,
 DR_DOSPUNTOS		:
 DR_SINOSI			\[\]
-
+DR_PARENTESIS_APERTURA \(
+DR_PARENTESIS_CIERRE \)
 ID					[a-z][a-z0-9]*
 SEPARADOR			" "|"\t"|"\n"
 
@@ -71,10 +72,10 @@ SEPARADOR			" "|"\t"|"\n"
 							for( int i = 0; i < size; i++){
 								tipo[i] = tolower(yytext[i]);
 							}
-							if(strcmp(tipo, "entero") == 0){
+							if(strncmp(tipo, "entero", size) == 0){
 								yylval.paraEntero = TIPO_ENTERO;
 							}
-							else if(strcmp(tipo, "booleano") == 0){
+							else if(strncmp(tipo, "booleano", size) == 0){
 								yylval.paraEntero = TIPO_BOOLEANO;
 							}
 							return (TK_TIPOBASE);
@@ -83,8 +84,10 @@ SEPARADOR			" "|"\t"|"\n"
 {DR_OPERADOR_SEC}		{
 							printf( "Es un operador secundario: %s\n", yytext );
 							if(strcmp(yytext,"+") == 0) {
+								yylval.paraEntero = VALOR_SUMA;
 								return(TK_SUMA);
 							} else {
+								yylval.paraEntero = VALOR_RESTA;
 								return(TK_RESTA);
 							}
 						}
@@ -293,12 +296,16 @@ SEPARADOR			" "|"\t"|"\n"
 {DR_OPERADOR_PRI}	{
 						printf("Es un operador primario: %s\n", yytext );
 						if(strcmp(yytext,"*") == 0) {
+							yylval.paraEntero = VALOR_MULTIPLICACION;
 							return(TK_MULTIPLICACION);
 						} else if(strcmp(yytext,"/") == 0) {
+							yylval.paraEntero = VALOR_DIVISION;
 							return(TK_DIVISION);
 						} else if(strcmp(yytext,"div") == 0) {
+							yylval.paraEntero = VALOR_DIVISION_ENTERA;
 							return(TK_DIVISION_ENTERA);
 						} else {
+							yylval.paraEntero = VALOR_MODULO;
 							return(TK_MODULO);
 						}
 					}
@@ -309,7 +316,7 @@ SEPARADOR			" "|"\t"|"\n"
 				}
 				
 {DR_IDENTIFICADOR_BOOLEANO}	  {
-					printf( "An identifier: %s\n", yytext );
+					printf( "A boolean identifier: %s\n", yytext );
 					yylval.paraCadena = strdup(yytext);		
 					return(TK_IDENTIFICADOR_BOOLEANO);
 }
@@ -322,8 +329,8 @@ SEPARADOR			" "|"\t"|"\n"
 				
 {DR_LITERALENTERO}	{
 					printf("Es un literal entero: %s\n", yytext );
+					yylval.paraCadena = strdup(yytext);
 					return(TK_LITERALENTERO);
-					
 				}
 
 {DR_LITERALREAL}	{
@@ -344,6 +351,14 @@ SEPARADOR			" "|"\t"|"\n"
 {DR_COMENTARIO}	{
 					printf("Es un comentario: %s\n", yytext );
 					return(TK_COMENTARIO);
+				}
+{DR_PARENTESIS_APERTURA} {
+					printf("Esto es un parentesis de apertura: %s\n", yytext);
+					return(TK_PARENTESIS_APERTURA);
+				}
+{DR_PARENTESIS_CIERRE} {
+					printf("Esto es un parentesis de cierre: %s\n", yytext);
+					return(TK_PARENTESIS_CIERRE);
 				}
 [ \t\n]+
 %%

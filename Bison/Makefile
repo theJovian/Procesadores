@@ -11,13 +11,22 @@ flex-scanner:scanner.l
 		flex scanner.l;
 		
 compilar : parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o
-		gcc -o parser parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o -lfl -lm
+		gcc -o parser parser.tab.c lex.yy.c tablaSimbolos.o tablaCuadruplas.o -ll -lm
 
 ejecutar : parser
 		./parser
 		
-ejemplo: bison flex-scanner compilar
+intercambio: bison flex-scanner compilar
+	./parser intercambio.txt
+
+booleanas: bison flex-scanner compilar
+	./parser booleanas.txt
+
+sumacomb: bison flex-scanner compilar
 	./parser sumacomb.txt
+
+test: bison flex-scanner compilar
+	./parser test.txt	
 	
 simbolos: tablaSimbolos.c
 		gcc -c tablaSimbolos.c

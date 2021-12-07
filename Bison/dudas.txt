@@ -1,0 +1,5 @@
+como insertar literales enteros
+considerar tipo de datos: enteros, reales
+como evaluar la asigancion de expresiones(cambiar la forma actual de hacerlo)
+TODO
+comprobar la asignacion unaria

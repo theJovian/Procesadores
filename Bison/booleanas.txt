@@ -3,22 +3,22 @@ algoritmo sumacomb;
     sal suma: entero;
 {Prec: n= N AND m = M AND M >= N >0}
     var
-        ba, bc, bd: booleano;
+        b_a, b_c, b_d: booleano;
         i, j: entero;
     fvar
-    ba = bc and bd;
-    ba = bc or bd;
-    ba =  (bc);
-    ba = bd;
-    ba =  (bc or bd);
-    ba = i < j;
-    ba = i > j;
-    ba = i == j;
-    ba = i >= j;
-    ba = i <= j;
-    ba = no bc;
-    ba = verdadero;
-    ba = falso
+    b_a := b_c y b_d;
+    b_a := b_c o b_d;
+    b_a :=  (b_c);
+    b_a := b_d;
+    b_a :=  (b_c or b_d);
+    b_a := i < j;
+    b_a := i > j;
+    b_a := i == j;
+    b_a := i >= j;
+    b_a := i <= j;
+    b_a := no b_c;
+    b_a := verdadero;
+    b_a := falso
 {Post: n =N AND suma = SUMATORIO(i=1..N)(M sobre i)}
 falgoritmo
 

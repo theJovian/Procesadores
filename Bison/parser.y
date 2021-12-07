@@ -7,6 +7,7 @@
   #include <sys/stat.h>
   #include <fcntl.h>
   #include <unistd.h>
+  #include <string.h>
   
   #include "tablaSimbolos.h"
   #include  "tablaCuadruplas.h"
@@ -111,25 +112,53 @@
 %type<paraCadena>TK_IDENTIFICADOR
 %type<paraCadena>TK_IDENTIFICADOR_BOOLEANO
 %type<paraCadena>operandoAritmetico
+%type<paraCadena>operandoBooleano
 %type<paraCadena>expArit
+%type<paraCadena>expresion
+%type<paraEntero>TK_SUMA
+%type<paraEntero>TK_RESTA
+%type<paraEntero>TK_MULTIPLICACION
+%type<paraEntero>TK_DIVISION
+%type<paraEntero>TK_DIVISION_ENTERA
+%type<paraEntero>TK_MODULO
+%type<paraCadena>TK_LITERALENTERO
 
 %% /* Grammar rules and actions follow. */
 
 descAlgoritmo: 
-    TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO  
+    TK_ALGORITMO TK_IDENTIFICADOR TK_PUNTOYCOMA cabeceraAlgoritmo bloqueAlgoritmo TK_FALGORITMO{
+        printf("Final de descAlgoritmo\n");
+    }
 ;
 //dudas sobre el uso de expresiones booleanas y expresiones aritmeticas
 asignacion:
 	operandoBooleano TK_DOSPUNTOS_IGUAL expresion
     {
-        printf("Asignacion booleana");
-        // int operador = $2;
-        // int operando1 = obtenerId($3);
-        // int operando2 = -1;
-        // int resultado = obtenerId($1);
-        // gen(operador, operando1, operando2, resultado);
+        printf("Asignacion booleana\n");
+        struct elemento *elementoOperando1 = buscarElemento($3);
+        struct elemento *elementoOperando2 = buscarElemento($1); 
+        int operador = $2;
+        printf("Error 1\n");
+        int operando1 = elementoOperando1->sid;
+        int operando2 = VALOR_VACIO;
+        printf("Error 2\n");
+        int resultado = elementoOperando2->sid;
+        gen(operando1, operando2, operador, resultado);
+        printf("Error 3\n");
     }
-	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion{printf("Asignacion aritmetica");}
+	| operandoAritmetico TK_DOSPUNTOS_IGUAL expresion
+    {
+        printf("Asignacion aritmetica\n");
+        elemento *elementoOperando1;
+        elementoOperando1 = buscarElemento($3);
+        elemento *elementoResultado;
+        elementoResultado = buscarElemento($1);
+        int operador = $2;
+        int operando1 = elementoOperando1->sid;
+        int operando2 = VALOR_VACIO;
+        int resultado = elementoResultado->sid;
+        gen(operando1, operando2, operador, resultado);
+    }
 ;
 alternativa:
 	TK_SI expresion TK_FLECHA instrucciones listaOpciones TK_FSI
@@ -206,12 +235,12 @@ listaId:
         if($3 == TIPO_BOOLEANO){
             printf("Error, las variables booleanas no tiene un formato correcto. Prueba con b_nombreDeLaVariable\n");
         }
-        // insertarElemento($1, $3);
+        insertarElemento($1, $3);
     }
 	| TK_IDENTIFICADOR TK_COMA listaId
     {
         $$ = $3;
-        // insertarElemento($1, $3);
+        insertarElemento($1, $3);
     }
 	;
 listaIdBooleanos:
@@ -221,12 +250,12 @@ listaIdBooleanos:
         if($3 != TIPO_BOOLEANO){
             printf("Error, las variables estan escritas en formato de booleanos. Prueba a cambiar el tipo o cambiar a un formato diferente de b_nombreDeLaVariableBooleana\n");
         }
-        // insertarElemento($1, $3);
+        insertarElemento($1, $3);
     }
 	| TK_IDENTIFICADOR_BOOLEANO TK_COMA listaIdBooleanos
     {
         $$ = $3;
-        // insertarElemento($1, $3);
+        insertarElemento($1, $3);
     }
 	;
 
@@ -250,6 +279,10 @@ expBool:
     | TK_FALSO
     | expresion TK_OPREL expresion
     | TK_PARENTESIS_APERTURA expBool TK_PARENTESIS_CIERRE
+    {
+        printf("expBool -> ( expbool )\n");
+        $$ = $2;
+    }
     ;
 expresion:
     expArit
@@ -259,29 +292,111 @@ expresion:
 expArit:
     expArit TK_SUMA expArit
     {
-        // char *nombreNuevaVariableResultado = generarNombre();
-        // int tipoNuevaVariableResultado = obtenerTipo($1);
-        // insertarElemento(nombreNuevaVariable, tipoNuevaVariable);
-        // int operando1 = obtenerId($1);
-        // int operando2 = obtenerId($2);
-        // int resultado = obtenerId(nombreNuevaVariable);
-        // int operador = $2;
-        // gen(operador, operando1, operando2, resultado);
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
     }
     | expArit TK_RESTA expArit
-    | expArit TK_MULTIPLICACION expArit
-    | expArit TK_DIVISION expArit
-    | expArit TK_DIVISION_ENTERA expArit
-    | expArit TK_MODULO expArit
-    | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE
-    | operandoAritmetico
     {
-        $$ = $1;
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
     }
+    | expArit TK_MULTIPLICACION expArit
+    {
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
+    }
+    | expArit TK_DIVISION expArit
+    {
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
+    }
+    | expArit TK_DIVISION_ENTERA expArit
+    {
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
+    }
+    | expArit TK_MODULO expArit {
+        char *nombreNuevaVariableResultado = generarNombre();
+        elemento *elementoOperando1 = buscarElemento($1);
+        elemento *elementoOperando2 = buscarElemento($3);
+        int tipoNuevaVariableResultado = elementoOperando1->tipo;
+        insertarElemento(nombreNuevaVariableResultado, tipoNuevaVariableResultado);
+        struct elemento *elementoResultado = buscarElemento(nombreNuevaVariableResultado);  
+        int operando1 = elementoOperando1->sid;
+        int operando2 = elementoOperando2->sid;
+        int resultado = elementoResultado->sid;
+        int operador = $2;
+        gen(operando1, operando2, operador,  resultado);
+        $$ = strdup(nombreNuevaVariableResultado);
+    }
+    | TK_PARENTESIS_APERTURA expArit TK_PARENTESIS_CIERRE  
+    {
+        $$ = $2;
+    }
+    | operandoAritmetico
     | TK_RESTA expArit
+    {
+        $$ = $2;
+    }
     | TK_SUMA expArit
+    {
+        $$ = $2;
+    }
     | TK_LITERAL_NUMERICO
     | TK_LITERALENTERO
+    {
+        insertarElemento($1, TIPO_ENTERO);
+    }
     ;
 operandoBooleano:
     TK_IDENTIFICADOR_BOOLEANO
@@ -290,10 +405,7 @@ operandoBooleano:
     | operandoBooleano TK_REF
     ;
 operandoAritmetico:
-    TK_IDENTIFICADOR 
-    {
-        $$ = $1;
-    }
+    TK_IDENTIFICADOR
     | operandoAritmetico TK_PUNTO operandoAritmetico
     | operandoAritmetico TK_CORCHETE_APERTURA expresion TK_CORCHETE_CIERRE
     | operandoAritmetico TK_REF
@@ -314,7 +426,9 @@ cabeceraAlgoritmo:
 ;
 
 bloqueAlgoritmo:
-    bloque TK_COMENTARIO
+    bloque TK_COMENTARIO{
+        printf("Bloque algoritmo -> bloque TK_COMENTARIO\n");
+    }
 ;
 
 defGlobales: 
@@ -359,10 +473,7 @@ defTipo:
     {
         $$=$2;
     }
-    | TK_TIPOBASE 
-    {
-        $$=$1;
-    }
+    | TK_TIPOBASE
 ;
 expresionT: 
     TK_LITERALENTERO
@@ -378,8 +489,11 @@ main ( int argc, char **argv)
 		yyin = open( argv[1],O_RDONLY);
 		dup2(yyin,STDIN_FILENO);
 	}
-	yyparse();
     inicializar();
+    inicializarCuadruplas();
+	yyparse();
+    // imprimirSimbolos();
+    imprimirCuadruplas();
 }
 
 /* Called by yyparse on error. */
